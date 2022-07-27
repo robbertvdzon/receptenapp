@@ -1,8 +1,10 @@
-import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'model.g.dart';
+
+var uuid = Uuid();
+
 
 @JsonSerializable()
 class ReceptenBoek {
