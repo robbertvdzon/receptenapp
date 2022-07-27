@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:get_it/get_it.dart';
-import 'package:receptenapp/src/services/AppRepository.dart';
+import 'package:receptenapp/src/global.dart';
+import 'package:receptenapp/src/services/ReceptenRepository.dart';
+import 'package:receptenapp/src/services/UserRepository.dart';
 import 'package:receptenapp/src/widgets/ReceptenApp.dart';
 import 'firebase_options.dart';
 import 'dart:async';
-
-import 'src/utils/helpers.dart';
-
-final _getIt = GetIt.instance;
 
 Future<void> main() async {
 
@@ -17,12 +14,15 @@ Future<void> main() async {
 
   await setupDependencies();
 
-  var appRepository = _getIt<AppRepository>();
-
-  appRepository.addReceptenbookIfNeeded();
-  appRepository.printReceptenbook();
+  addSampleWhenNeeded();
 
   runApp(ReceptenApp());
+}
+
+void addSampleWhenNeeded() {
+  var appRepository = getIt<ReceptenRepository>();
+  appRepository.addReceptenbookIfNeeded();
+  appRepository.printReceptenbook();
 }
 
 Future<void> setupDependencies() async {
@@ -30,8 +30,9 @@ Future<void> setupDependencies() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  _getIt.registerSingleton<FirebaseFirestore>(FirebaseFirestore.instance);
-  _getIt.registerSingleton<AppRepository>(AppRepository());
+  getIt.registerSingleton<FirebaseFirestore>(FirebaseFirestore.instance);
+  getIt.registerSingleton<ReceptenRepository>(ReceptenRepository());
+  getIt.registerSingleton<UserRepository>(UserRepository());
 }
 
 

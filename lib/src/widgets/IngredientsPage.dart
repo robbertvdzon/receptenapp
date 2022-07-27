@@ -3,29 +3,28 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
-import '../services/AppRepository.dart';
-
-final _getIt = GetIt.instance;
+import '../global.dart';
+import '../services/ReceptenRepository.dart';
+import '../services/UserRepository.dart';
 
 class IngredientsPage extends StatefulWidget {
-  late User user;
 
-  IngredientsPage(this.user, {Key? key, required this.title})
+  IngredientsPage({Key? key, required this.title})
       : super(key: key) {
   }
 
   final String title;
 
   @override
-  State<IngredientsPage> createState() => _MyHomePageState2(user);
+  State<IngredientsPage> createState() => _MyHomePageState2();
 }
 
 class _MyHomePageState2 extends State<IngredientsPage> {
   String _ingredientenJson = "?";
-  var appRepository = _getIt<AppRepository>();
-  late User user;
+  var appRepository = getIt<ReceptenRepository>();
+  var userRepository = getIt<UserRepository>();
 
-  _MyHomePageState2(this.user) {
+  _MyHomePageState2() {
     appRepository.loadReceptenbook().then((value) => {
           setState(() {
             _ingredientenJson = value;
@@ -50,7 +49,7 @@ class _MyHomePageState2 extends State<IngredientsPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              'user: ${user?.email}',
+              'user: ${userRepository.getUser()?.email}',
               style: Theme.of(context).textTheme.bodySmall,
             ),
             Text(

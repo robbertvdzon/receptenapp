@@ -2,27 +2,29 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get_it/get_it.dart';
+import '../global.dart';
+import '../services/UserRepository.dart';
 import 'IngredientsPage.dart';
 
 class HomePage extends StatefulWidget {
-  late User user;
 
-  HomePage(this.user, {Key? key, required this.title})
+  HomePage({Key? key, required this.title})
       : super(key: key) {
   }
 
   final String title;
 
   @override
-  State<HomePage> createState() => _HomePageState(user);
+  State<HomePage> createState() => _HomePageState();
 }
 
 
 class _HomePageState extends State<HomePage> {
   int _counter = 1;
-  late User user;
+  var userRepository = getIt<UserRepository>();
 
-  _HomePageState(this.user) {
+  _HomePageState() {
   }
 
   void _incrementCounter() {
@@ -83,7 +85,7 @@ class _HomePageState extends State<HomePage> {
                   context,
                   MaterialPageRoute(
                       builder: (context) =>
-                          IngredientsPage(user, title: 'Ingredienten')),
+                          IngredientsPage(title: 'Ingredienten')),
                 );
                 print('Hello');
               },

@@ -3,12 +3,11 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get_it/get_it.dart';
 
+import '../global.dart';
 import '../model/model.dart';
 
-final _getIt = GetIt.instance;
-
-class AppRepository {
-  var _db = _getIt<FirebaseFirestore>();
+class ReceptenRepository {
+  var _db = getIt<FirebaseFirestore>();
 
   void addReceptenbookIfNeeded() {
     print("test boek");
