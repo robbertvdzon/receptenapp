@@ -27,7 +27,7 @@ class ReceptenApp extends StatelessWidget {
                 brightness: Brightness.dark,
                 primarySwatch: Colors.blue,
               ),
-              home: HomePage(title: 'Flutter Demo Home Page'),
+              home: HomePage(title: 'Recepten App'),
             );
           }
           return MaterialApp(
