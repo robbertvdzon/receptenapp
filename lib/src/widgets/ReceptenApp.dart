@@ -5,10 +5,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'HomePage.dart';
 
 class ReceptenApp extends StatelessWidget {
-  FirebaseFirestore? db = null;
 
-  ReceptenApp(FirebaseFirestore? db, {Key? key}) : super(key: key) {
-    this.db = db;
+  ReceptenApp({Key? key}) : super(key: key) {
   }
 
   // This widget is the root of your application.
@@ -23,7 +21,7 @@ class ReceptenApp extends StatelessWidget {
                 brightness: Brightness.dark,
                 primarySwatch: Colors.blue,
               ),
-              home: HomePage(db,snapshot.data!!, title: 'Flutter Demo Home Page'),
+              home: HomePage(snapshot.data!!, title: 'Flutter Demo Home Page'),
             );
           }
           return MaterialApp(

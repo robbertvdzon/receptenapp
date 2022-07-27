@@ -4,55 +4,39 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
 import '../services/AppRepository.dart';
-import '../utils/helpers.dart';
 
-final getIt = GetIt.instance;
+final _getIt = GetIt.instance;
 
 class IngredientsPage extends StatefulWidget {
-  FirebaseFirestore? db = null;
   late User user;
 
-  IngredientsPage(FirebaseFirestore? db, this.user, {Key? key, required this.title})
+  IngredientsPage(this.user, {Key? key, required this.title})
       : super(key: key) {
-    this.db = db;
   }
 
   final String title;
 
   @override
-  State<IngredientsPage> createState() => _MyHomePageState2(db, user);
+  State<IngredientsPage> createState() => _MyHomePageState2(user);
 }
 
 class _MyHomePageState2 extends State<IngredientsPage> {
   String _ingredientenJson = "?";
-  FirebaseFirestore? db = null;
-  var myAppModel = getIt<AppRepository>();
+  var appRepository = _getIt<AppRepository>();
   late User user;
 
-  _MyHomePageState2(FirebaseFirestore? db, this.user) {
-    this.db = db;
-    if (db != null) {
-      loadReceptenbook(db).then((value) => {
-            setState(() {
-              _ingredientenJson = value;
-            })
-          });
-    }
+  _MyHomePageState2(this.user) {
+    appRepository.loadReceptenbook().then((value) => {
+          setState(() {
+            _ingredientenJson = value;
+          })
+        });
   }
 
   void _updateJson(String json) {
     print("UPDATING");
     print("start insert sample boek $json");
-    final receptenboeken = <String, String>{"robbert": json};
-    final db = this.db;
-    if (db != null) {
-      db
-          .collection("data")
-          .doc("receptenboeken")
-          .set(receptenboeken)
-          .onError((e, _) => print("Error writing document: $e"));
-      print("sample book interted");
-    }
+    appRepository.updateJson(json);
   }
 
   @override
@@ -87,11 +71,6 @@ class _MyHomePageState2 extends State<IngredientsPage> {
           ],
         ),
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: _incrementCounter,
-      //   tooltip: 'Increment',
-      //   child: const Icon(Icons.add),
-      // ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }

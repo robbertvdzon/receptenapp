@@ -5,55 +5,28 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'IngredientsPage.dart';
 
 class HomePage extends StatefulWidget {
-  FirebaseFirestore? db = null;
   late User user;
 
-  HomePage(FirebaseFirestore? db, this.user, {Key? key, required this.title})
+  HomePage(this.user, {Key? key, required this.title})
       : super(key: key) {
-    this.db = db;
   }
 
   final String title;
 
   @override
-  State<HomePage> createState() => _HomePageState(db, user);
+  State<HomePage> createState() => _HomePageState(user);
 }
 
 
 class _HomePageState extends State<HomePage> {
   int _counter = 1;
-  FirebaseFirestore? db = null;
   late User user;
 
-  _HomePageState(FirebaseFirestore? db, this.user) {
-    this.db = db;
-    if (db != null) {
-      db.collection("counter").doc("count").get().then((event) {
-        var data = event.data();
-        if (data != null) {
-          var cnt = data.values.first;
-          this._counter = cnt;
-          setState(() {
-            _counter = cnt;
-          });
-        }
-      });
-    }
+  _HomePageState(this.user) {
   }
 
   void _incrementCounter() {
     setState(() {
-      _counter++;
-      final db = this.db;
-      if (db != null) {
-        final counter = <String, int>{"count": _counter};
-        db
-            .collection("counter")
-            .doc("count")
-            .set(counter)
-            .onError((e, _) => print("Error writing document: $e"));
-      }
-      ;
     });
   }
 
@@ -110,7 +83,7 @@ class _HomePageState extends State<HomePage> {
                   context,
                   MaterialPageRoute(
                       builder: (context) =>
-                          IngredientsPage(db, user, title: 'Ingredienten')),
+                          IngredientsPage(user, title: 'Ingredienten')),
                 );
                 print('Hello');
               },

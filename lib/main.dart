@@ -9,27 +9,29 @@ import 'dart:async';
 
 import 'src/utils/helpers.dart';
 
+final _getIt = GetIt.instance;
 
 Future<void> main() async {
 
-  setup();
   WidgetsFlutterBinding.ensureInitialized();
+
+  await setupDependencies();
+
+  var appRepository = _getIt<AppRepository>();
+
+  appRepository.addReceptenbookIfNeeded();
+  appRepository.printReceptenbook();
+
+  runApp(ReceptenApp());
+}
+
+Future<void> setupDependencies() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  final FirebaseFirestore db = FirebaseFirestore.instance;
-
-  addReceptenbookIfNeeded(db);
-  printReceptenbook(db);
-
-  runApp(ReceptenApp(db));
-}
-
-void setup() {
-  final getIt = GetIt.instance;
-
-  getIt.registerSingleton<AppRepository>(AppRepository());
+  _getIt.registerSingleton<FirebaseFirestore>(FirebaseFirestore.instance);
+  _getIt.registerSingleton<AppRepository>(AppRepository());
 }
 
 
