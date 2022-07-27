@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutterfire_ui/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'MyHomePage.dart';
+import 'HomePage.dart';
 
-class MyApp extends StatelessWidget {
+class ReceptenApp extends StatelessWidget {
   FirebaseFirestore? db = null;
 
-  MyApp(FirebaseFirestore? db, {Key? key}) : super(key: key) {
+  ReceptenApp(FirebaseFirestore? db, {Key? key}) : super(key: key) {
     this.db = db;
   }
 
@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
                 brightness: Brightness.dark,
                 primarySwatch: Colors.blue,
               ),
-              home: MyHomePage(db,snapshot.data!!, title: 'Flutter Demo Home Page'),
+              home: HomePage(db,snapshot.data!!, title: 'Flutter Demo Home Page'),
             );
           }
           return MaterialApp(

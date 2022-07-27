@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:receptenapp/src/MyApp.dart';
+import 'package:receptenapp/src/widgets/ReceptenApp.dart';
 import 'firebase_options.dart';
 import 'dart:async';
 
-import 'src/helpers.dart';
+import 'src/utils/helpers.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,7 +18,7 @@ Future<void> main() async {
   addReceptenbookIfNeeded(db);
   printReceptenbook(db);
 
-  runApp(MyApp(db));
+  runApp(ReceptenApp(db));
 }
 
 

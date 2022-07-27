@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'helpers.dart';
+import '../utils/helpers.dart';
 
-class MyHomePage2 extends StatefulWidget {
+class IngredientsPage extends StatefulWidget {
   FirebaseFirestore? db = null;
   late User user;
 
-  MyHomePage2(FirebaseFirestore? db, this.user, {Key? key, required this.title})
+  IngredientsPage(FirebaseFirestore? db, this.user, {Key? key, required this.title})
       : super(key: key) {
     this.db = db;
   }
@@ -16,10 +16,10 @@ class MyHomePage2 extends StatefulWidget {
   final String title;
 
   @override
-  State<MyHomePage2> createState() => _MyHomePageState2(db, user);
+  State<IngredientsPage> createState() => _MyHomePageState2(db, user);
 }
 
-class _MyHomePageState2 extends State<MyHomePage2> {
+class _MyHomePageState2 extends State<IngredientsPage> {
   String _ingredientenJson = "?";
   FirebaseFirestore? db = null;
   late User user;

@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'MyHomePage2.dart';
+import 'IngredientsPage.dart';
 
-class MyHomePage extends StatefulWidget {
+class HomePage extends StatefulWidget {
   FirebaseFirestore? db = null;
   late User user;
 
-  MyHomePage(FirebaseFirestore? db, this.user, {Key? key, required this.title})
+  HomePage(FirebaseFirestore? db, this.user, {Key? key, required this.title})
       : super(key: key) {
     this.db = db;
   }
@@ -16,16 +16,16 @@ class MyHomePage extends StatefulWidget {
   final String title;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState(db, user);
+  State<HomePage> createState() => _HomePageState(db, user);
 }
 
 
-class _MyHomePageState extends State<MyHomePage> {
+class _HomePageState extends State<HomePage> {
   int _counter = 1;
   FirebaseFirestore? db = null;
   late User user;
 
-  _MyHomePageState(FirebaseFirestore? db, this.user) {
+  _HomePageState(FirebaseFirestore? db, this.user) {
     this.db = db;
     if (db != null) {
       db.collection("counter").doc("count").get().then((event) {
@@ -110,7 +110,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   context,
                   MaterialPageRoute(
                       builder: (context) =>
-                          MyHomePage2(db, user, title: 'Ingredienten')),
+                          IngredientsPage(db, user, title: 'Ingredienten')),
                 );
                 print('Hello');
               },
