@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get_it/get_it.dart';
+import '../services/AppRepository.dart';
 import '../utils/helpers.dart';
+
+final getIt = GetIt.instance;
 
 class IngredientsPage extends StatefulWidget {
   FirebaseFirestore? db = null;
@@ -22,6 +26,7 @@ class IngredientsPage extends StatefulWidget {
 class _MyHomePageState2 extends State<IngredientsPage> {
   String _ingredientenJson = "?";
   FirebaseFirestore? db = null;
+  var myAppModel = getIt<AppRepository>();
   late User user;
 
   _MyHomePageState2(FirebaseFirestore? db, this.user) {
