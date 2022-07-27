@@ -1,5 +1,5 @@
-name: receptenapp
-description: Recepten app
+name: test1
+description: A new Flutter project.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -34,8 +34,19 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
+  firebase_storage: ^10.3.3
+  firebase_core: ^1.20.0
+  firebase_database: ^9.0.20
+  cloud_firestore: ^3.4.0
+  uuid: 3.0.6
+  json_annotation: 4.6.0
+  firebase_auth: ^3.5.1
+  flutterfire_ui: ^0.4.3+1
 
 dev_dependencies:
+  build_runner: 2.2.0
+  json_serializable: 6.3.1
+
   flutter_test:
     sdk: flutter
 

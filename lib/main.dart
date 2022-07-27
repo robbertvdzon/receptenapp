@@ -1,63 +1,209 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(const MyApp());
+// import 'package:firebase_storage/firebase_storage.dart';
+// import 'package:firebase_database/firebase_database.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutterfire_ui/auth.dart';
+import 'firebase_options.dart';
+import 'package:uuid/uuid.dart';
+
+import 'dart:async';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
+import 'package:json_annotation/json_annotation.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+/// This allows the `User` class to access private members in
+/// the generated file. The value for this is *.g.dart, where
+/// the star denotes the source file name.
+part 'main.g.dart';
+
+// main() => runApp(const MyApp());
+
+// void main() {
+//   runApp(const MyApp());
+// }
+
+var uuid = Uuid();
+
+void addReceptenbookIfNeeded(FirebaseFirestore db) {
+  print("test boek");
+  db.collection("data").doc("receptenboeken").get().then((event) {
+    print("test boek2");
+    print(event);
+    var data = event.data();
+    if (data == null) {
+      print("insert sample boek");
+      final sample = createSample();
+      final Map<String, dynamic> json = sample.toJson();
+      final receptenboeken = <String, String>{"robbert": jsonEncode(json)};
+
+      print("start insert sample boek $json");
+      db
+          .collection("data")
+          .doc("receptenboeken")
+          .set(receptenboeken)
+          .onError((e, _) => print("Error writing document: $e"));
+      print("sample book interted");
+    }
+    print(data);
+  });
+}
+
+void printReceptenbook(FirebaseFirestore db) {
+  print("read boek");
+  db.collection("data").doc("receptenboeken").get().then((event) {
+    print("read boek2");
+    print(event);
+    Map<String, dynamic>? data = event.data();
+    if (data != null) {
+      var robbert = data["robbert"];
+      var json = robbert as String;
+      var jsonObj = jsonDecode(json);
+      final receptenboek = ReceptenBoek.fromJson(jsonObj);
+      print(receptenboek);
+    }
+    print(data);
+  });
+}
+
+Future<String> loadReceptenbook(FirebaseFirestore db) async {
+  print("read boek");
+  final event = await db.collection("data").doc("receptenboeken").get();
+  print("read boek2");
+  print(event);
+  Map<String, dynamic>? data = event.data();
+  if (data != null) {
+    var robbert = data["robbert"];
+    var json = robbert as String;
+    return json;
+  }
+  return "?";
+}
+
+ReceptenBoek createSample() {
+  final patat = Ingredient("patat");
+  final hamburger = Ingredient("hamburger");
+  final brood = Ingredient("brood");
+  final boter = Ingredient("boter");
+  final kaas = Ingredient("kaas");
+  final hamburgermenu = Recept([patat, hamburger, brood], "hamburgermenu");
+  final broodjeKaas = Recept([brood, boter, kaas], "broodje kaas");
+  final receptenboek = ReceptenBoek(
+      [hamburgermenu, broodjeKaas], [patat, hamburger, brood, boter, kaas]);
+  return receptenboek;
+}
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  final FirebaseFirestore db = FirebaseFirestore.instance;
+
+  addReceptenbookIfNeeded(db);
+  printReceptenbook(db);
+
+  runApp(MyApp(db));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  FirebaseFirestore? db = null;
+
+  MyApp(FirebaseFirestore? db, {Key? key}) : super(key: key) {
+    this.db = db;
+  }
 
   // This widget is the root of your application.
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
+  Widget build(BuildContext context) => StreamBuilder<User?>(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return MaterialApp(
+              title: 'Flutter Demo',
+              theme: ThemeData(
+                brightness: Brightness.dark,
+                primarySwatch: Colors.blue,
+              ),
+              home: MyHomePage(db,snapshot.data!!, title: 'Flutter Demo Home Page'),
+            );
+          }
+          return MaterialApp(
+              home: SignInScreen(
+                  providerConfigs: [EmailProviderConfiguration()]));
+        },
+      );
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
+  FirebaseFirestore? db = null;
+  late User user;
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
+  MyHomePage(FirebaseFirestore? db, this.user, {Key? key, required this.title})
+      : super(key: key) {
+    this.db = db;
+  }
 
   final String title;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<MyHomePage> createState() => _MyHomePageState(db, user);
+}
+
+class MyHomePage2 extends StatefulWidget {
+  FirebaseFirestore? db = null;
+  late User user;
+
+  MyHomePage2(FirebaseFirestore? db, this.user, {Key? key, required this.title})
+      : super(key: key) {
+    this.db = db;
+  }
+
+  final String title;
+
+  @override
+  State<MyHomePage2> createState() => _MyHomePageState2(db, user);
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  int _counter = 1;
+  FirebaseFirestore? db = null;
+  late User user;
+
+  _MyHomePageState(FirebaseFirestore? db, this.user) {
+    this.db = db;
+    if (db != null) {
+      db.collection("counter").doc("count").get().then((event) {
+        var data = event.data();
+        if (data != null) {
+          var cnt = data.values.first;
+          this._counter = cnt;
+          setState(() {
+            _counter = cnt;
+          });
+        }
+      });
+    }
+  }
 
   void _incrementCounter() {
     setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
       _counter++;
+      final db = this.db;
+      if (db != null) {
+        final counter = <String, int>{"count": _counter};
+        db
+            .collection("counter")
+            .doc("count")
+            .set(counter)
+            .onError((e, _) => print("Error writing document: $e"));
+      }
+      ;
     });
   }
 
@@ -74,6 +220,11 @@ class _MyHomePageState extends State<MyHomePage> {
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
+        actions: [
+          IconButton(
+              onPressed: () => FirebaseAuth.instance.signOut(),
+              icon: Icon(Icons.logout))
+        ],
       ),
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
@@ -102,6 +253,18 @@ class _MyHomePageState extends State<MyHomePage> {
               '$_counter',
               style: Theme.of(context).textTheme.headline4,
             ),
+            ElevatedButton(
+              child: Text('Open ingredients'),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          MyHomePage2(db, user, title: 'Ingredienten')),
+                );
+                print('Hello');
+              },
+            ),
           ],
         ),
       ),
@@ -112,4 +275,115 @@ class _MyHomePageState extends State<MyHomePage> {
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
+}
+
+class _MyHomePageState2 extends State<MyHomePage2> {
+  String _ingredientenJson = "?";
+  FirebaseFirestore? db = null;
+  late User user;
+
+  _MyHomePageState2(FirebaseFirestore? db, this.user) {
+    this.db = db;
+    if (db != null) {
+      loadReceptenbook(db).then((value) => {
+            setState(() {
+              _ingredientenJson = value;
+            })
+          });
+    }
+  }
+
+  void _updateJson(String json) {
+    print("UPDATING");
+    print("start insert sample boek $json");
+    final receptenboeken = <String, String>{"robbert": json};
+    final db = this.db;
+    if (db != null) {
+      db
+          .collection("data")
+          .doc("receptenboeken")
+          .set(receptenboeken)
+          .onError((e, _) => print("Error writing document: $e"));
+      print("sample book interted");
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              'user: ${user?.email}',
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
+            Text(
+              'Ingredienten:',
+              style: Theme.of(context).textTheme.headline4,
+            ),
+            TextFormField(
+                decoration: InputDecoration(border: InputBorder.none),
+                autofocus: true,
+                keyboardType: TextInputType.multiline,
+                maxLines: null,
+                // initialValue: '$_ingredientenJson',
+                controller: TextEditingController()
+                  ..text = '$_ingredientenJson',
+                onChanged: (text) => {_updateJson(text)}
+                // controller: _noteController
+                ),
+          ],
+        ),
+      ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: _incrementCounter,
+      //   tooltip: 'Increment',
+      //   child: const Icon(Icons.add),
+      // ), // This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+}
+
+@JsonSerializable()
+class ReceptenBoek {
+  List<Ingredient> ingredienten;
+  List<Recept> recepten;
+
+  ReceptenBoek(this.recepten, this.ingredienten);
+
+  factory ReceptenBoek.fromJson(Map<String, dynamic> json) =>
+      _$ReceptenBoekFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ReceptenBoekToJson(this);
+}
+
+@JsonSerializable()
+class Recept {
+  String uuid = Uuid().v1();
+  String name;
+  List<Ingredient> ingredienten;
+
+  Recept(this.ingredienten, this.name);
+
+  factory Recept.fromJson(Map<String, dynamic> json) => _$ReceptFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ReceptToJson(this);
+}
+
+@JsonSerializable()
+class Ingredient {
+  String uuid = Uuid().v1();
+  String name;
+
+  Ingredient(this.name);
+
+  factory Ingredient.fromJson(Map<String, dynamic> json) =>
+      _$IngredientFromJson(json);
+
+  Map<String, dynamic> toJson() => _$IngredientToJson(this);
 }
