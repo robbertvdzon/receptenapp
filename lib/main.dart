@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutterfire_ui/auth.dart';
+import 'package:receptenapp/src/model.dart';
 import 'firebase_options.dart';
 import 'package:uuid/uuid.dart';
 
@@ -19,7 +20,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 /// This allows the `User` class to access private members in
 /// the generated file. The value for this is *.g.dart, where
 /// the star denotes the source file name.
-part 'main.g.dart';
+// part 'main.g.dart';
 
 // main() => runApp(const MyApp());
 
@@ -347,43 +348,4 @@ class _MyHomePageState2 extends State<MyHomePage2> {
       // ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
-}
-
-@JsonSerializable()
-class ReceptenBoek {
-  List<Ingredient> ingredienten;
-  List<Recept> recepten;
-
-  ReceptenBoek(this.recepten, this.ingredienten);
-
-  factory ReceptenBoek.fromJson(Map<String, dynamic> json) =>
-      _$ReceptenBoekFromJson(json);
-
-  Map<String, dynamic> toJson() => _$ReceptenBoekToJson(this);
-}
-
-@JsonSerializable()
-class Recept {
-  String uuid = Uuid().v1();
-  String name;
-  List<Ingredient> ingredienten;
-
-  Recept(this.ingredienten, this.name);
-
-  factory Recept.fromJson(Map<String, dynamic> json) => _$ReceptFromJson(json);
-
-  Map<String, dynamic> toJson() => _$ReceptToJson(this);
-}
-
-@JsonSerializable()
-class Ingredient {
-  String uuid = Uuid().v1();
-  String name;
-
-  Ingredient(this.name);
-
-  factory Ingredient.fromJson(Map<String, dynamic> json) =>
-      _$IngredientFromJson(json);
-
-  Map<String, dynamic> toJson() => _$IngredientToJson(this);
 }
