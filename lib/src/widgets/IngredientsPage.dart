@@ -18,7 +18,6 @@ class IngredientsPage extends StatefulWidget {
 }
 
 class _MyHomePageState2 extends State<IngredientsPage> {
-  String _ingredientenJson = "?";
   ReceptenBoek receptenBoek = ReceptenBoek(List.empty(), List.empty());
   var appRepository = getIt<ReceptenRepository>();
   var userRepository = getIt<UserRepository>();
@@ -26,16 +25,9 @@ class _MyHomePageState2 extends State<IngredientsPage> {
   _MyHomePageState2() {
     appRepository.loadReceptenbook().then((value) => {
           setState(() {
-            _ingredientenJson = value;
             receptenBoek = appRepository.createSample();
           })
         });
-  }
-
-  void _updateJson(String json) {
-    print("UPDATING");
-    print("start insert sample boek $json");
-    appRepository.updateJson(json);
   }
 
   void _incrementCounter() {
@@ -52,14 +44,6 @@ class _MyHomePageState2 extends State<IngredientsPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
-              'user: ${userRepository.getUser()?.email}',
-              style: Theme.of(context).textTheme.bodySmall,
-            ),
-            Text(
-              'Ingredienten:',
-              style: Theme.of(context).textTheme.headline4,
-            ),
             SizedBox(
               height: 400,
               child: ListView(

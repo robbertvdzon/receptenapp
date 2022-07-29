@@ -26,8 +26,6 @@ Future<void> addSampleWhenNeeded() async {
 
   appRepository.addReceptenbookIfNeeded();
   baseIngredientsRepository.addBaseIngriedentsIfNeeded();
-  final baseIngredients = await baseIngredientsRepository.loadBaseIngredients();
-    print(baseIngredients.toJson());
 }
 
 Future<void> setupDependencies() async {

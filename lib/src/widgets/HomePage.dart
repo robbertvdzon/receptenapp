@@ -43,19 +43,21 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            Spacer(),
             ElevatedButton(
-              child: Text('Open base ingredients'),
+              child: Text('Voedingswaarde tabel'),
               onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                       builder: (context) =>
-                          BaseIngredientsPage(title: 'Base Ingredienten')),
+                          BaseIngredientsPage(title: 'Voedingswaarde tabel')),
                 );
               },
             ),
+            Spacer(),
             ElevatedButton(
-              child: Text('Open ingredients'),
+              child: Text('Ingredienten lijst'),
               onPressed: () {
                 Navigator.push(
                   context,
@@ -65,6 +67,7 @@ class _HomePageState extends State<HomePage> {
                 );
               },
             ),
+            Spacer(),
           ],
         ),
       ),

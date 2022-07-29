@@ -21,7 +21,6 @@ class BaseIngredientsPage extends StatefulWidget {
 class _BaseIngredientsPageState extends State<BaseIngredientsPage> {
   BaseIngredients baseIngredients = BaseIngredients(List.empty());
   var baseIngredientsRepository = getIt<BaseIngredientsRepository>();
-  var userRepository = getIt<UserRepository>();
 
   _BaseIngredientsPageState() {
     baseIngredientsRepository.loadBaseIngredients().then((value) => {
@@ -48,14 +47,6 @@ class _BaseIngredientsPageState extends State<BaseIngredientsPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
-              'user: ${userRepository.getUser()?.email}',
-              style: Theme.of(context).textTheme.bodySmall,
-            ),
-            Text(
-              'Base Ingredienten:',
-              style: Theme.of(context).textTheme.headline4,
-            ),
             SizedBox(
               height: 400,
               child: ListView(
@@ -64,23 +55,12 @@ class _BaseIngredientsPageState extends State<BaseIngredientsPage> {
                     child:
                     Column(
                       children: [
-                        Text("naam:"+strone.name!),
-                        Text("eenheid:"+strone.quantity!),
-                        Text("kcal:"+strone.kcal!),
-                        Text("prot:"+strone.prot!),
-                        Text("nt:"+strone.nt!),
-                        Text("fat:"+strone.fat!),
-                        Text("sugar:"+strone.sugar!),
-                        Text("na:"+strone.na!),
-                        Text("k:"+strone.k!),
-                        Text("fe:"+strone.fe!),
-                        Text("mg:"+strone.mg!),
                         Container(
                           constraints: BoxConstraints.expand(
                             height: Theme.of(context).textTheme.headline4!.fontSize! * 1.1 + 200.0,
                           ),
                           padding: const EdgeInsets.all(20.0),
-                          color: Colors.blue[600],
+                          color: Colors.white60,
                           alignment: Alignment.center,
                           // transform: Matrix4.rotationZ(0.1),
                           child:                     Table(children: [
@@ -89,11 +69,16 @@ class _BaseIngredientsPageState extends State<BaseIngredientsPage> {
                               Text(":"),
                               Text(strone.name!),
                             ]),
-                            TableRow(children:[
-                              Text("Eenheid"),
-                              Text(":"),
-                              Text(strone.quantity!),
-                            ]),
+                            TableRow(children:[Text("Eenheid"),Text(":"),Text(strone.quantity!),]),
+                            TableRow(children:[Text("kcal"),Text(":"),Text(strone.kcal!),]),
+                            TableRow(children:[Text("prot"),Text(":"),Text(strone.prot!),]),
+                            TableRow(children:[Text("nt"),Text(":"),Text(strone.nt!),]),
+                            TableRow(children:[Text("fat"),Text(":"),Text(strone.fat!),]),
+                            TableRow(children:[Text("sugar"),Text(":"),Text(strone.sugar!),]),
+                            TableRow(children:[Text("na"),Text(":"),Text(strone.na!),]),
+                            TableRow(children:[Text("k"),Text(":"),Text(strone.k!),]),
+                            TableRow(children:[Text("fe"),Text(":"),Text(strone.fe!),]),
+                            TableRow(children:[Text("mg"),Text(":"),Text(strone.mg!),]),
                           ])
                         ),
                       ],
