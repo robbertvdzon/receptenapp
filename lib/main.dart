@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:receptenapp/src/global.dart';
+import 'package:receptenapp/src/services/BaseIngriedientsRepository.dart';
 import 'package:receptenapp/src/services/ReceptenRepository.dart';
 import 'package:receptenapp/src/services/UserRepository.dart';
 import 'package:receptenapp/src/widgets/ReceptenApp.dart';
@@ -19,10 +20,14 @@ Future<void> main() async {
   runApp(ReceptenApp());
 }
 
-void addSampleWhenNeeded() {
+Future<void> addSampleWhenNeeded() async {
   var appRepository = getIt<ReceptenRepository>();
+  var baseIngredientsRepository = getIt<BaseIngredientsRepository>();
+
   appRepository.addReceptenbookIfNeeded();
-  appRepository.printReceptenbook();
+  baseIngredientsRepository.addBaseIngriedentsIfNeeded();
+  final baseIngredients = await baseIngredientsRepository.loadBaseIngredients();
+    print(baseIngredients.toJson());
 }
 
 Future<void> setupDependencies() async {
@@ -32,6 +37,7 @@ Future<void> setupDependencies() async {
 
   getIt.registerSingleton<FirebaseFirestore>(FirebaseFirestore.instance);
   getIt.registerSingleton<ReceptenRepository>(ReceptenRepository());
+  getIt.registerSingleton<BaseIngredientsRepository>(BaseIngredientsRepository());
   getIt.registerSingleton<UserRepository>(UserRepository());
 }
 

@@ -43,3 +43,45 @@ Map<String, dynamic> _$IngredientToJson(Ingredient instance) =>
       'uuid': instance.uuid,
       'name': instance.name,
     };
+
+BaseIngredients _$BaseIngredientsFromJson(Map<String, dynamic> json) =>
+    BaseIngredients(
+      (json['ingredienten'] as List<dynamic>)
+          .map((e) => BaseIngredient.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$BaseIngredientsToJson(BaseIngredients instance) =>
+    <String, dynamic>{
+      'ingredienten': instance.ingredienten,
+    };
+
+BaseIngredient _$BaseIngredientFromJson(Map<String, dynamic> json) =>
+    BaseIngredient(
+      json['name'] as String?,
+    )
+      ..quantity = json['quantity'] as String?
+      ..kcal = json['kcal'] as String?
+      ..prot = json['prot'] as String?
+      ..nt = json['nt'] as String?
+      ..fat = json['fat'] as String?
+      ..sugar = json['sugar'] as String?
+      ..na = json['na'] as String?
+      ..k = json['k'] as String?
+      ..fe = json['fe'] as String?
+      ..mg = json['mg'] as String?;
+
+Map<String, dynamic> _$BaseIngredientToJson(BaseIngredient instance) =>
+    <String, dynamic>{
+      'name': instance.name,
+      'quantity': instance.quantity,
+      'kcal': instance.kcal,
+      'prot': instance.prot,
+      'nt': instance.nt,
+      'fat': instance.fat,
+      'sugar': instance.sugar,
+      'na': instance.na,
+      'k': instance.k,
+      'fe': instance.fe,
+      'mg': instance.mg,
+    };

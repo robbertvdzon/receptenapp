@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../global.dart';
 import '../services/UserRepository.dart';
+import 'BaseIngredientsPage.dart';
 import 'IngredientsPage.dart';
 
 class HomePage extends StatefulWidget {
@@ -42,6 +43,17 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            ElevatedButton(
+              child: Text('Open base ingredients'),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          BaseIngredientsPage(title: 'Base Ingredienten')),
+                );
+              },
+            ),
             ElevatedButton(
               child: Text('Open ingredients'),
               onPressed: () {

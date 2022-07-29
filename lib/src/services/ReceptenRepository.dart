@@ -10,18 +10,12 @@ class ReceptenRepository {
   var _db = getIt<FirebaseFirestore>();
 
   void addReceptenbookIfNeeded() {
-    print("test boek");
     _db.collection("data").doc("receptenboeken").get().then((event) {
-      print("test boek2");
-      print(event);
       var data = event.data();
       if (data == null) {
-        print("insert sample boek");
         final sample = createSample();
         final Map<String, dynamic> json = sample.toJson();
         final receptenboeken = <String, String>{"robbert": jsonEncode(json)};
-
-        print("start insert sample boek $json");
         _db
             .collection("data")
             .doc("receptenboeken")
@@ -29,7 +23,6 @@ class ReceptenRepository {
             .onError((e, _) => print("Error writing document: $e"));
         print("sample book interted");
       }
-      print(data);
     });
   }
 
@@ -61,10 +54,7 @@ class ReceptenRepository {
   }
 
   Future<String> loadReceptenbook() async {
-    print("read boek");
     final event = await _db.collection("data").doc("receptenboeken").get();
-    print("read boek2");
-    print(event);
     Map<String, dynamic>? data = event.data();
     if (data != null) {
       var robbert = data["robbert"];
@@ -86,49 +76,6 @@ class ReceptenRepository {
         [hamburgermenu, broodjeKaas],
         [
           patat, hamburger, brood, boter, kaas,
-          patat, hamburger, brood, boter, kaas,
-          patat, hamburger, brood, boter, kaas,
-          patat, hamburger, brood, boter, kaas,
-          patat, hamburger, brood, boter, kaas,
-          patat, hamburger, brood, boter, kaas,
-          patat, hamburger, brood, boter, kaas,
-          patat, hamburger, brood, boter, kaas,
-          patat, hamburger, brood, boter, kaas,
-          patat, hamburger, brood, boter, kaas,
-          patat, hamburger, brood, boter, kaas,
-          patat, hamburger, brood, boter, kaas,
-          patat, hamburger, brood, boter, kaas,
-          patat, hamburger, brood, boter, kaas,
-          patat, hamburger, brood, boter, kaas,
-          patat, hamburger, brood, boter, kaas,
-          patat, hamburger, brood, boter, kaas,
-          patat, hamburger, brood, boter, kaas,
-          patat, hamburger, brood, boter, kaas,
-          patat, hamburger, brood, boter, kaas,
-          patat, hamburger, brood, boter, kaas,
-          patat, hamburger, brood, boter, kaas,
-          patat, hamburger, brood, boter, kaas,
-          patat, hamburger, brood, boter, kaas,
-          patat, hamburger, brood, boter, kaas,
-          patat, hamburger, brood, boter, kaas,
-          patat, hamburger, brood, boter, kaas,
-          patat, hamburger, brood, boter, kaas,
-          patat, hamburger, brood, boter, kaas,
-          patat, hamburger, brood, boter, kaas,
-          patat, hamburger, brood, boter, kaas,
-          patat, hamburger, brood, boter, kaas,
-          patat, hamburger, brood, boter, kaas,
-          patat, hamburger, brood, boter, kaas,
-          patat, hamburger, brood, boter, kaas,
-          patat, hamburger, brood, boter, kaas,
-          patat, hamburger, brood, boter, kaas,
-          patat, hamburger, brood, boter, kaas,
-          patat, hamburger, brood, boter, kaas,
-          patat, hamburger, brood, boter, kaas,
-          patat, hamburger, brood, boter, kaas,
-          patat, hamburger, brood, boter, kaas,
-          patat, hamburger, brood, boter, kaas,
-          patat, hamburger, brood, boter, kaas
         ]
     );
     return receptenboek;

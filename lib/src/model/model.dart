@@ -44,3 +44,37 @@ class Ingredient {
 
   Map<String, dynamic> toJson() => _$IngredientToJson(this);
 }
+
+@JsonSerializable()
+class BaseIngredients {
+  List<BaseIngredient> ingredienten;
+  BaseIngredients(this.ingredienten);
+
+  factory BaseIngredients.fromJson(Map<String, dynamic> json) => _$BaseIngredientsFromJson(json);
+
+  Map<String, dynamic> toJson() => _$BaseIngredientsToJson(this);
+
+}
+
+
+@JsonSerializable()
+class BaseIngredient {
+  String? name;
+  String? quantity;
+  String? kcal;
+  String? prot;
+  String? nt;
+  String? fat;
+  String? sugar;
+  String? na;
+  String? k;
+  String? fe;
+  String? mg;
+
+  BaseIngredient(this.name);
+
+  factory BaseIngredient.fromJson(Map<String, dynamic> json) =>
+      _$BaseIngredientFromJson(json);
+
+  Map<String, dynamic> toJson() => _$BaseIngredientToJson(this);
+}
