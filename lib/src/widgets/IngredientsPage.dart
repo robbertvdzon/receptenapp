@@ -23,14 +23,6 @@ class _MyHomePageState2 extends State<IngredientsPage> {
   var appRepository = getIt<ReceptenRepository>();
   var userRepository = getIt<UserRepository>();
 
-  List<String> strs = [
-    "Hari Prasad Chaudhary",
-    "Krishna Chaudhary",
-    "John Cena",
-    "Jonney Deep",
-    "Clint Eastwood"
-  ];
-
   _MyHomePageState2() {
     appRepository.loadReceptenbook().then((value) => {
           setState(() {
@@ -81,17 +73,17 @@ class _MyHomePageState2 extends State<IngredientsPage> {
                 }).toList(),
               ),
             ),
-            TextFormField(
-                decoration: InputDecoration(border: InputBorder.none),
-                autofocus: true,
-                keyboardType: TextInputType.multiline,
-                maxLines: null,
-                // initialValue: '$_ingredientenJson',
-                controller: TextEditingController()
-                  ..text = '$_ingredientenJson',
-                onChanged: (text) => {_updateJson(text)}
-                // controller: _noteController
-                ),
+            // TextFormField(
+            //     decoration: InputDecoration(border: InputBorder.none),
+            //     autofocus: true,
+            //     keyboardType: TextInputType.multiline,
+            //     maxLines: null,
+            //     // initialValue: '$_ingredientenJson',
+            //     controller: TextEditingController()
+            //       ..text = '$_ingredientenJson',
+            //     onChanged: (text) => {_updateJson(text)}
+            //     // controller: _noteController
+            //     ),
           ],
         ),
       ),
