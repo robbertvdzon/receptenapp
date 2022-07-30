@@ -20,17 +20,28 @@ class BaseIngredientsPage extends StatefulWidget {
 
 class _BaseIngredientsPageState extends State<BaseIngredientsPage> {
   BaseIngredients baseIngredients = BaseIngredients(List.empty());
+  List<BaseIngredient> filteredIngredients = List.empty();
   var baseIngredientsRepository = getIt<BaseIngredientsRepository>();
+  String _filter = "";
 
   _BaseIngredientsPageState() {
     baseIngredientsRepository.loadBaseIngredients().then((value) => {
           setState(() {
             baseIngredients = value;
+            filteredIngredients = baseIngredients.ingredienten.where((element) => element.name!=null && element.name!.contains(_filter)).toList();
           })
         });
   }
 
-  void _updateJson(String json) {
+  void _updateFilter(String filter) {
+    setState(() {
+      _filter = filter;
+      _filterIngredients();
+    });
+  }
+
+  void _filterIngredients() {
+    filteredIngredients = baseIngredients.ingredienten.where((element) => element.name!=null && element.name!.toLowerCase().contains(_filter.toLowerCase())).toList();
   }
 
   void _incrementCounter() {
@@ -47,10 +58,23 @@ class _BaseIngredientsPageState extends State<BaseIngredientsPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            TextFormField(
+                key: Key(_filter.toString()),
+                decoration: InputDecoration(border: InputBorder.none, labelText: 'Filter: (${filteredIngredients.length} ingredienten)'),
+                autofocus: true,
+                keyboardType: TextInputType.multiline,
+                maxLines: null,
+                // initialValue: '$_ingredientenJson',
+                controller: TextEditingController()
+                  ..text = '$_filter',
+                onChanged: (text) => {_updateFilter(text)},
+              // controller: _noteController
+            ),
+
             SizedBox(
               height: 400,
               child: ListView(
-                children: baseIngredients.ingredienten.map((strone) {
+                children: filteredIngredients.map((strone) {
                   return Container(
                     child:
                     Column(

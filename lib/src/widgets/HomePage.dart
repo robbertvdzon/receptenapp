@@ -45,25 +45,25 @@ class _HomePageState extends State<HomePage> {
           children: <Widget>[
             Spacer(),
             ElevatedButton(
-              child: Text('Voedingswaarde tabel'),
+              child: Text('Ingredienten'),
               onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                       builder: (context) =>
-                          BaseIngredientsPage(title: 'Voedingswaarde tabel')),
+                          BaseIngredientsPage(title: 'Ingredienten')),
                 );
               },
             ),
             Spacer(),
             ElevatedButton(
-              child: Text('Ingredienten lijst'),
+              child: Text('Aliassen'),
               onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                       builder: (context) =>
-                          IngredientsPage(title: 'Ingredienten')),
+                          IngredientsPage(title: 'Aliassen')),
                 );
               },
             ),
