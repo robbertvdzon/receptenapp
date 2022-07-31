@@ -8,6 +8,7 @@ import '../model/model.dart';
 import '../services/BaseIngriedientsRepository.dart';
 import '../services/ReceptenRepository.dart';
 import '../services/UserRepository.dart';
+import 'BaseIngredientsItemWidget.dart';
 
 class BaseIngredientsPage extends StatefulWidget {
   BaseIngredientsPage({Key? key, required this.title}) : super(key: key) {}
@@ -40,6 +41,11 @@ class _BaseIngredientsPageState extends State<BaseIngredientsPage> {
     });
   }
 
+  void _updateFormFilter(String text, String field) {
+    print("_updateFormFilter : $field = $text");
+  }
+
+
   void _filterIngredients() {
     filteredIngredients = baseIngredients.ingredienten.where((element) => element.name!=null && element.name!.toLowerCase().contains(_filter.toLowerCase())).toList();
   }
@@ -58,21 +64,9 @@ class _BaseIngredientsPageState extends State<BaseIngredientsPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            TextFormField(
-                key: Key(_filter.toString()),
-                decoration: InputDecoration(border: InputBorder.none, labelText: 'Filter: (${filteredIngredients.length} ingredienten)'),
-                autofocus: true,
-                keyboardType: TextInputType.multiline,
-                maxLines: null,
-                // initialValue: '$_ingredientenJson',
-                controller: TextEditingController()
-                  ..text = '$_filter',
-                onChanged: (text) => {_updateFilter(text)},
-              // controller: _noteController
-            ),
-
+            buildSearchTextFormField(),
             SizedBox(
-              height: 400,
+              height: 600,
               child: ListView(
                 children: filteredIngredients.map((strone) {
                   return Container(
@@ -81,29 +75,12 @@ class _BaseIngredientsPageState extends State<BaseIngredientsPage> {
                       children: [
                         Container(
                           constraints: BoxConstraints.expand(
-                            height: Theme.of(context).textTheme.headline4!.fontSize! * 1.1 + 200.0,
+                            height: 600.0,
                           ),
-                          padding: const EdgeInsets.all(20.0),
                           color: Colors.white60,
                           alignment: Alignment.center,
-                          // transform: Matrix4.rotationZ(0.1),
-                          child:                     Table(children: [
-                            TableRow(children: [
-                              Text("Naam"),
-                              Text(":"),
-                              Text(strone.name!),
-                            ]),
-                            TableRow(children:[Text("Eenheid"),Text(":"),Text(strone.quantity!),]),
-                            TableRow(children:[Text("kcal"),Text(":"),Text(strone.kcal!),]),
-                            TableRow(children:[Text("prot"),Text(":"),Text(strone.prot!),]),
-                            TableRow(children:[Text("nt"),Text(":"),Text(strone.nt!),]),
-                            TableRow(children:[Text("fat"),Text(":"),Text(strone.fat!),]),
-                            TableRow(children:[Text("sugar"),Text(":"),Text(strone.sugar!),]),
-                            TableRow(children:[Text("na"),Text(":"),Text(strone.na!),]),
-                            TableRow(children:[Text("k"),Text(":"),Text(strone.k!),]),
-                            TableRow(children:[Text("fe"),Text(":"),Text(strone.fe!),]),
-                            TableRow(children:[Text("mg"),Text(":"),Text(strone.mg!),]),
-                          ])
+                          child:
+                        BaseIngredientsItemWidget(ingredient: strone),
                         ),
                       ],
 
@@ -127,4 +104,23 @@ class _BaseIngredientsPageState extends State<BaseIngredientsPage> {
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
+
+  TextFormField buildSearchTextFormField() {
+    return TextFormField(
+              key: Key(_filter.toString()),
+              decoration: InputDecoration(border: InputBorder.none, labelText: 'Filter: (${filteredIngredients.length} ingredienten)'),
+              autofocus: true,
+              controller: TextEditingController()..text = '$_filter',
+              onChanged: (text) => {_updateFilter(text)},
+          );
+  }
+
+  TextFormField buildFieldTextFormField(String field, String fieldText) {
+    return TextFormField(
+              decoration: InputDecoration(border: InputBorder.none, labelText: field),
+              controller: TextEditingController()..text = fieldText,
+              onChanged: (text) => {_updateFormFilter(text, field)},
+          );
+  }
+
 }
