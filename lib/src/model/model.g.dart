@@ -36,22 +36,25 @@ Map<String, dynamic> _$ReceptToJson(Recept instance) => <String, dynamic>{
 
 Ingredient _$IngredientFromJson(Map<String, dynamic> json) => Ingredient(
       json['name'] as String,
-    )..uuid = json['uuid'] as String;
+    )
+      ..uuid = json['uuid'] as String
+      ..nutrientName = json['nutrientName'] as String?;
 
 Map<String, dynamic> _$IngredientToJson(Ingredient instance) =>
     <String, dynamic>{
       'uuid': instance.uuid,
       'name': instance.name,
+      'nutrientName': instance.nutrientName,
     };
 
 Nutrients _$NutrientsFromJson(Map<String, dynamic> json) => Nutrients(
-      (json['ingredienten'] as List<dynamic>)
+      (json['nutrients'] as List<dynamic>)
           .map((e) => Nutrient.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 
 Map<String, dynamic> _$NutrientsToJson(Nutrients instance) => <String, dynamic>{
-      'ingredienten': instance.nutrients,
+      'nutrients': instance.nutrients,
     };
 
 Nutrient _$NutrientFromJson(Map<String, dynamic> json) => Nutrient(

@@ -25,13 +25,14 @@ class _WidgetState extends State<IngredientItemWidget> {
   }
 
   _saveForm(){
-      receptenRepository.loadReceptenbook().then((value) => saveNutrient(value, newIngredient));
+      receptenRepository.loadReceptenbook().then((value) => saveIngredient(value, newIngredient));
   }
 
-  saveNutrient(ReceptenBoek receptenBoek, Ingredient newIngredient) {
+  saveIngredient(ReceptenBoek receptenBoek, Ingredient newIngredient) {
     // receptenBoek.ingredienten.remove(ingredient);
-    receptenBoek.ingredienten.where((element) => element.name==ingredient.name).forEach((element) {
+    receptenBoek.ingredienten.where((element) => element.uuid==ingredient.uuid).forEach((element) {
       element.name = newIngredient.name;
+      element.nutrientName = newIngredient.nutrientName;
     });
     receptenRepository.saveReceptenBoek(receptenBoek);
   }
@@ -42,9 +43,18 @@ class _WidgetState extends State<IngredientItemWidget> {
     return Column(
       children: <Widget>[
         TextFormField(
+          decoration: InputDecoration(label:   Text('uuid:')),
+          initialValue: "${ingredient.uuid}",
+        ),
+        TextFormField(
           decoration: InputDecoration(label:   Text('Name:')),
           initialValue: "${ingredient.name}",
           onChanged: (text) {newIngredient.name = text;},
+        ),
+        TextFormField(
+          decoration: InputDecoration(label:   Text('Voedingsmiddel:')),
+          initialValue: "${ingredient.nutrientName}",
+          onChanged: (text) {newIngredient.nutrientName = text;},
         ),
 
         ElevatedButton(

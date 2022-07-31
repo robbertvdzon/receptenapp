@@ -36,6 +36,7 @@ class Recept {
 class Ingredient {
   String uuid = Uuid().v1();
   String name;
+  String? nutrientName;
 
   Ingredient(this.name);
 
