@@ -39,11 +39,17 @@ class NutrientsRepository {
     print("read nutrients");
     print(event);
     Map<String, dynamic>? data = event.data();
+    print("read nutrients1");
     if (data != null) {
+      print("read nutrients2");
       var robbert = data["robbert"];
+      print("read nutrients3");
       var json = robbert as String;
       var jsonObj = jsonDecode(json);
-      return Nutrients.fromJson(jsonObj);
+      print("read nutrients5");
+      final result =  Nutrients.fromJson(jsonObj);
+      print("read nutrients6");
+      return result;
     }
     return Nutrients(List.empty());
   }

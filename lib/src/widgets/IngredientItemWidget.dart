@@ -5,32 +5,27 @@ import '../model/model.dart';
 import '../services/NutrientsRepository.dart';
 
 class IngredientItemWidget extends StatefulWidget {
-  IngredientItemWidget({Key? key, required this.ingredient})
+  IngredientItemWidget({Key? key, required this.ingredient, required this.categories})
       : super(key: key) {}
 
   final Ingredient ingredient;
+  final List<String> categories;
 
   @override
-  State<IngredientItemWidget> createState() => _WidgetState(ingredient);
+  State<IngredientItemWidget> createState() => _WidgetState(ingredient, categories);
 }
 
 class _WidgetState extends State<IngredientItemWidget> {
   late Ingredient ingredient;
   late Ingredient newIngredient;
-  List<String> categories = ["One","Two","","groente", "Four","Three"];
+  late List<String> categories;
   var receptenRepository = getIt<ReceptenRepository>();
   var nutrientsRepository = getIt<NutrientsRepository>();
 
-  _WidgetState(Ingredient ingredient) {
+  _WidgetState(Ingredient ingredient, List<String> categories) {
     this.ingredient = ingredient;
     this.newIngredient = ingredient;
-    // final r = await nutrientsRepository.loadNutrients();
-
-    nutrientsRepository.loadNutrients().then((value) => {
-      setState(() {
-        categories = value.nutrients.map((e) => e.category??"").toSet().toList();
-      })
-    });
+    this.categories= categories;
 
   }
 
@@ -79,10 +74,10 @@ class _WidgetState extends State<IngredientItemWidget> {
           value: "${ingredient.nutrientName??''}",
           icon: const Icon(Icons.arrow_downward),
           elevation: 16,
-          style: const TextStyle(color: Colors.deepPurple),
+          // style: const TextStyle(color: Colors.deepPurple),
           underline: Container(
             height: 2,
-            color: Colors.deepPurpleAccent,
+            // color: Colors.deepPurpleAccent,
           ),
           onChanged: (String? newValue) {
             setState(() {

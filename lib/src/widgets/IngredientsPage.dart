@@ -23,9 +23,12 @@ class IngredientsPage extends StatefulWidget {
 class _IngredientsPageState extends State<IngredientsPage> {
   List<Ingredient> ingredients = List.empty();
   List<Ingredient> filteredIngredients = List.empty();
+  List<String> categories = ["One","Two","","groente", "Four","Three"];
+
   TextEditingController _textFieldController = TextEditingController();
   TextEditingController _filterTextFieldController = TextEditingController();
   var receptenRepository = getIt<ReceptenRepository>();
+  var nutrientsRepository = getIt<NutrientsRepository>();
   String _filter = "";
   String codeDialog ="";
   String valueText = "";
@@ -37,6 +40,18 @@ class _IngredientsPageState extends State<IngredientsPage> {
         filteredIngredients = ingredients.where((element) => element.name!=null && element.name!.contains(_filter)).toList();
       })
     });
+    nutrientsRepository.loadNutrients().then((value) => {
+      // list(value)
+      list(value)
+    });
+
+  }
+
+  void list(Nutrients value) {
+    categories = value.nutrients.map((e) => e.category ?? "").toSet().toList();
+    categories.add("groente");
+    categories.add("Four");
+    categories.add("");
   }
 
   void _updateFilter(String filter) {
@@ -132,7 +147,7 @@ class _IngredientsPageState extends State<IngredientsPage> {
                           color: Colors.white60,
                           alignment: Alignment.center,
                           child:
-                          IngredientItemWidget(ingredient: strone),
+                          IngredientItemWidget(ingredient: strone, categories: categories,),
                         ),
                       ],
 
