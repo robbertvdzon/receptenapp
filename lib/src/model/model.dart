@@ -61,7 +61,7 @@ class BaseIngredients {
 class BaseIngredient {
   String? name;
   String? category;
-  String? nevoCode;
+  int? nevoCode;
   String? quantity;
   String? kcal;
   String? prot;

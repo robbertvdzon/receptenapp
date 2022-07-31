@@ -132,7 +132,6 @@ class _WidgetState extends State<BaseIngredientsItemWidget> {
         TextFormField(
           decoration: InputDecoration(label:   Text('nevo code:')),
           initialValue: "${ingredient.nevoCode}",
-          onChanged: (text) {newIngredient.nevoCode = text;},
         ),
         TextFormField(
           decoration: InputDecoration(label:   Text('custom field:')),

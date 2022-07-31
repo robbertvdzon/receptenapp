@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:receptenapp/src/widgets/CategoriesPage.dart';
 import '../global.dart';
 import '../services/UserRepository.dart';
 import 'BaseIngredientsPage.dart';
@@ -64,6 +65,18 @@ class _HomePageState extends State<HomePage> {
                   MaterialPageRoute(
                       builder: (context) =>
                           IngredientsPage(title: 'Aliassen')),
+                );
+              },
+            ),
+            Spacer(),
+            ElevatedButton(
+              child: Text('Categorieen'),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          CategoriesPage(title: 'Categorieen')),
                 );
               },
             ),

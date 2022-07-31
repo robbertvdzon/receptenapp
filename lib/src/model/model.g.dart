@@ -61,7 +61,7 @@ BaseIngredient _$BaseIngredientFromJson(Map<String, dynamic> json) =>
       json['name'] as String?,
     )
       ..category = json['category'] as String?
-      ..nevoCode = json['nevoCode'] as String?
+      ..nevoCode = json['nevoCode'] as int?
       ..quantity = json['quantity'] as String?
       ..kcal = json['kcal'] as String?
       ..prot = json['prot'] as String?

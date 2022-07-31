@@ -14,18 +14,18 @@ class BaseIngredientsRepository {
 
   void addBaseIngriedentsIfNeeded() {
     print("test base_ingredients");
-    _db.collection("data").doc("base_ingredients").get().then((event) async {
+    _db.collection("data").doc("ingredients").get().then((event) async {
       print(event);
       var data = event.data();
       if (data == null) {
         print("insert base ingredients");
         final sample = await readBaseIngredients();
         final Map<String, dynamic> json = sample.toJson();
-        final baseIngredients = <String, String>{"data": jsonEncode(json)};
+        final baseIngredients = <String, String>{"robbert": jsonEncode(json)};
         print("start insert baseIngredients $baseIngredients");
         _db
             .collection("data")
-            .doc("base_ingredients")
+            .doc("ingredients")
             .set(baseIngredients)
             .onError((e, _) => print("Error writing document: $e"));
         print("sample baseIngredients inserted");
@@ -35,12 +35,12 @@ class BaseIngredientsRepository {
   }
 
   Future<BaseIngredients> loadBaseIngredients() async {
-    final event = await _db.collection("data").doc("base_ingredients").get();
-    print("read base_ingredients");
+    final event = await _db.collection("data").doc("ingredients").get();
+    print("read ingredients");
     print(event);
     Map<String, dynamic>? data = event.data();
     if (data != null) {
-      var robbert = data["data"];
+      var robbert = data["robbert"];
       var json = robbert as String;
       var jsonObj = jsonDecode(json);
       return BaseIngredients.fromJson(jsonObj);
@@ -56,18 +56,14 @@ class BaseIngredientsRepository {
     final String response = await rootBundle.loadString('NEVO2021.csv');
     List<List<dynamic>> rowsAsListOfValues = const CsvToListConverter(fieldDelimiter: "|").convert(response);
 
-    // final Iterable<BaseIngredient> list = rowsAsListOfValues.skip(1).map((element) => baseIngredient());
     final List<BaseIngredient> list = rowsAsListOfValues.skip(1).map((element) => parseToBaseIngredient(element)).toList();
-
-    // list.map((e) => e.)
-
     return BaseIngredients(list);
   }
 
   BaseIngredient parseToBaseIngredient(List<dynamic> element) {
     final bi = BaseIngredient(element[4]);
     bi.category = element[1];
-    bi.nevoCode = element[2];
+    bi.nevoCode = element[3];
     bi.quantity = element[7];
     bi.kcal = element[12];
     bi.prot = element[14];
@@ -82,21 +78,13 @@ class BaseIngredientsRepository {
     return bi;
   }
 
-    BaseIngredients createSample() {
-      readBaseIngredients();
-      final r1 = BaseIngredient("r1");
-      final r2 = BaseIngredient("r2");
-      final r3 = BaseIngredient("r3");
-      return BaseIngredients([r1,r2,r3]);
-  }
-
   void saveBaseIngredients(BaseIngredients baseIngredients) {
     final Map<String, dynamic> json = baseIngredients.toJson();
-    final baseIngredientsJson = <String, String>{"data": jsonEncode(json)};
+    final baseIngredientsJson = <String, String>{"robbert": jsonEncode(json)};
 
     _db
         .collection("data")
-        .doc("base_ingredients")
+        .doc("ingredients")
         .set(baseIngredientsJson)
         .onError((e, _) => print("Error writing document: $e"));
     print("sample baseIngredients inserted");
