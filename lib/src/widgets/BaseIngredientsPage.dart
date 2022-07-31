@@ -22,8 +22,12 @@ class BaseIngredientsPage extends StatefulWidget {
 class _BaseIngredientsPageState extends State<BaseIngredientsPage> {
   BaseIngredients baseIngredients = BaseIngredients(List.empty());
   List<BaseIngredient> filteredIngredients = List.empty();
+  TextEditingController _textFieldController = TextEditingController();
+  TextEditingController _filterTextFieldController = TextEditingController();
   var baseIngredientsRepository = getIt<BaseIngredientsRepository>();
   String _filter = "";
+  String codeDialog ="";
+  String valueText = "";
 
   _BaseIngredientsPageState() {
     baseIngredientsRepository.loadBaseIngredients().then((value) => {
@@ -41,19 +45,60 @@ class _BaseIngredientsPageState extends State<BaseIngredientsPage> {
     });
   }
 
-  void _updateFormFilter(String text, String field) {
-    print("_updateFormFilter : $field = $text");
-  }
+  void addIngredient(String name) {
+    baseIngredientsRepository.addIngredient(name).then((value) => {
+      setState(() {
+        baseIngredients = value;
+        filteredIngredients = baseIngredients.ingredienten.where((element) => element.name!=null && element.name!.contains(_filter)).toList();
+      })
+    });
 
+  }
 
   void _filterIngredients() {
     filteredIngredients = baseIngredients.ingredienten.where((element) => element.name!=null && element.name!.toLowerCase().contains(_filter.toLowerCase())).toList();
   }
 
-  void _incrementCounter() {
-    setState(() {});
+  Future<void> _displayTextInputDialog(BuildContext context) async {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('TextField in Dialog'),
+            content: TextField(
+              onChanged: (value) {
+                setState(() {
+                  valueText = value;
+                });
+              },
+              controller: _textFieldController,
+              decoration: InputDecoration(hintText: "Text Field in Dialog"),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                color: Colors.red,
+                textColor: Colors.white,
+                child: Text('CANCEL'),
+                onPressed: () {
+                  setState(() {
+                    Navigator.pop(context);
+                  });
+                },
+              ),
+              FlatButton(
+                color: Colors.green,
+                textColor: Colors.white,
+                child: Text('OK'),
+                onPressed: () {
+                  addIngredient(valueText);
+                  _updateFilter(valueText);
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          );
+        });
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,7 +109,13 @@ class _BaseIngredientsPageState extends State<BaseIngredientsPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            buildSearchTextFormField(),
+          TextFormField(key: Key(_filter.toString()),
+            decoration: InputDecoration(border: InputBorder.none, labelText: 'Filter: (${filteredIngredients.length} ingredienten)'),
+            autofocus: true,
+            controller: _filterTextFieldController..text = '$_filter',
+            onChanged: (text) => {_updateFilter(text)},
+          )
+            ,
             SizedBox(
               height: 600,
               child: ListView(
@@ -97,29 +148,16 @@ class _BaseIngredientsPageState extends State<BaseIngredientsPage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
+        onPressed: () {
+          // _filterTextFieldController.text ="bla";
+          // _incrementCounter(_filterTextFieldController);
+          _displayTextInputDialog(context);
+        },
+        tooltip: 'Add ingredient',
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 
-  TextFormField buildSearchTextFormField() {
-    return TextFormField(
-              key: Key(_filter.toString()),
-              decoration: InputDecoration(border: InputBorder.none, labelText: 'Filter: (${filteredIngredients.length} ingredienten)'),
-              autofocus: true,
-              controller: TextEditingController()..text = '$_filter',
-              onChanged: (text) => {_updateFilter(text)},
-          );
-  }
-
-  TextFormField buildFieldTextFormField(String field, String fieldText) {
-    return TextFormField(
-              decoration: InputDecoration(border: InputBorder.none, labelText: field),
-              controller: TextEditingController()..text = fieldText,
-              onChanged: (text) => {_updateFormFilter(text, field)},
-          );
-  }
 
 }

@@ -98,6 +98,18 @@ class BaseIngredientsRepository {
 
   }
 
+  Future<BaseIngredients> addIngredient(String name) async {
+    return loadBaseIngredients().then((ingredients) => _addIngredient(ingredients, name));
+  }
+
+  Future<BaseIngredients> _addIngredient(BaseIngredients baseIngredients, String name) async {
+    final baseIngredient = BaseIngredient(name);
+    baseIngredients.ingredienten.add(baseIngredient);
+    saveBaseIngredients(baseIngredients);
+    return baseIngredients;
+  }
+
+
 }
 
 /*
