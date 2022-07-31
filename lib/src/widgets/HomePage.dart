@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:receptenapp/src/widgets/CategoriesPage.dart';
 import '../global.dart';
 import '../services/UserRepository.dart';
-import 'BaseIngredientsPage.dart';
+import 'NutrientsPage.dart';
 import 'IngredientsPage.dart';
 
 class HomePage extends StatefulWidget {
@@ -64,7 +64,7 @@ class _HomePageState extends State<HomePage> {
                   context,
                   MaterialPageRoute(
                       builder: (context) =>
-                          BaseIngredientsPage(title: 'Voedingsmiddelen')),
+                          NutrientsPage(title: 'Voedingsmiddelen')),
                 );
               },
             ),

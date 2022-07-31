@@ -8,32 +8,32 @@ import '../model/model.dart';
 import '../services/BaseIngriedientsRepository.dart';
 import '../services/ReceptenRepository.dart';
 import '../services/UserRepository.dart';
-import 'BaseIngredientsItemWidget.dart';
+import 'NutrientItemWidget.dart';
 
-class BaseIngredientsPage extends StatefulWidget {
-  BaseIngredientsPage({Key? key, required this.title}) : super(key: key) {}
+class NutrientsPage extends StatefulWidget {
+  NutrientsPage({Key? key, required this.title}) : super(key: key) {}
 
   final String title;
 
   @override
-  State<BaseIngredientsPage> createState() => _BaseIngredientsPageState();
+  State<NutrientsPage> createState() => _NutrientsPageState();
 }
 
-class _BaseIngredientsPageState extends State<BaseIngredientsPage> {
-  Nutrients baseIngredients = Nutrients(List.empty());
-  List<Nutrient> filteredIngredients = List.empty();
+class _NutrientsPageState extends State<NutrientsPage> {
+  Nutrients nutrients = Nutrients(List.empty());
+  List<Nutrient> filteredNutrients = List.empty();
   TextEditingController _textFieldController = TextEditingController();
   TextEditingController _filterTextFieldController = TextEditingController();
-  var baseIngredientsRepository = getIt<NutrientsRepository>();
+  var nutrientsRepository = getIt<NutrientsRepository>();
   String _filter = "";
   String codeDialog ="";
   String valueText = "";
 
-  _BaseIngredientsPageState() {
-    baseIngredientsRepository.loadNutrients().then((value) => {
+  _NutrientsPageState() {
+    nutrientsRepository.loadNutrients().then((value) => {
           setState(() {
-            baseIngredients = value;
-            filteredIngredients = baseIngredients.nutrients.where((element) => element.name!=null && element.name!.contains(_filter)).toList();
+            nutrients = value;
+            filteredNutrients = nutrients.nutrients.where((element) => element.name!=null && element.name!.contains(_filter)).toList();
           })
         });
   }
@@ -41,22 +41,22 @@ class _BaseIngredientsPageState extends State<BaseIngredientsPage> {
   void _updateFilter(String filter) {
     setState(() {
       _filter = filter;
-      _filterIngredients();
+      _filterNutrients();
     });
   }
 
-  void addIngredient(String name) {
-    baseIngredientsRepository.addNutrient(name).then((value) => {
+  void addNutrient(String name) {
+    nutrientsRepository.addNutrient(name).then((value) => {
       setState(() {
-        baseIngredients = value;
-        filteredIngredients = baseIngredients.nutrients.where((element) => element.name!=null && element.name!.contains(_filter)).toList();
+        nutrients = value;
+        filteredNutrients = nutrients.nutrients.where((element) => element.name!=null && element.name!.contains(_filter)).toList();
       })
     });
 
   }
 
-  void _filterIngredients() {
-    filteredIngredients = baseIngredients.nutrients.where((element) => element.name!=null && element.name!.toLowerCase().contains(_filter.toLowerCase())).toList();
+  void _filterNutrients() {
+    filteredNutrients = nutrients.nutrients.where((element) => element.name!=null && element.name!.toLowerCase().contains(_filter.toLowerCase())).toList();
   }
 
   Future<void> _displayTextInputDialog(BuildContext context) async {
@@ -90,7 +90,7 @@ class _BaseIngredientsPageState extends State<BaseIngredientsPage> {
                 textColor: Colors.white,
                 child: Text('OK'),
                 onPressed: () {
-                  addIngredient(valueText);
+                  addNutrient(valueText);
                   _updateFilter(valueText);
                   Navigator.pop(context);
                 },
@@ -110,7 +110,7 @@ class _BaseIngredientsPageState extends State<BaseIngredientsPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
           TextFormField(key: Key(_filter.toString()),
-            decoration: InputDecoration(border: InputBorder.none, labelText: 'Filter: (${filteredIngredients.length} ingredienten)'),
+            decoration: InputDecoration(border: InputBorder.none, labelText: 'Filter: (${filteredNutrients.length} ingredienten)'),
             autofocus: true,
             controller: _filterTextFieldController..text = '$_filter',
             onChanged: (text) => {_updateFilter(text)},
@@ -119,7 +119,7 @@ class _BaseIngredientsPageState extends State<BaseIngredientsPage> {
             SizedBox(
               height: 750,
               child: ListView(
-                children: filteredIngredients.map((strone) {
+                children: filteredNutrients.map((strone) {
                   return Container(
                     child:
                     Column(
@@ -131,7 +131,7 @@ class _BaseIngredientsPageState extends State<BaseIngredientsPage> {
                           color: Colors.white60,
                           alignment: Alignment.center,
                           child:
-                        BaseIngredientsItemWidget(ingredient: strone),
+                        NutrientItemWidget(nutrient: strone),
                         ),
                       ],
 
@@ -153,7 +153,7 @@ class _BaseIngredientsPageState extends State<BaseIngredientsPage> {
           // _incrementCounter(_filterTextFieldController);
           _displayTextInputDialog(context);
         },
-        tooltip: 'Add ingredient',
+        tooltip: 'Add nutrient',
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
