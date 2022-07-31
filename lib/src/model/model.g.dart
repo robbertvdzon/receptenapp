@@ -44,20 +44,17 @@ Map<String, dynamic> _$IngredientToJson(Ingredient instance) =>
       'name': instance.name,
     };
 
-BaseIngredients _$BaseIngredientsFromJson(Map<String, dynamic> json) =>
-    BaseIngredients(
+Nutrients _$NutrientsFromJson(Map<String, dynamic> json) => Nutrients(
       (json['ingredienten'] as List<dynamic>)
-          .map((e) => BaseIngredient.fromJson(e as Map<String, dynamic>))
+          .map((e) => Nutrient.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 
-Map<String, dynamic> _$BaseIngredientsToJson(BaseIngredients instance) =>
-    <String, dynamic>{
-      'ingredienten': instance.ingredienten,
+Map<String, dynamic> _$NutrientsToJson(Nutrients instance) => <String, dynamic>{
+      'ingredienten': instance.nutrients,
     };
 
-BaseIngredient _$BaseIngredientFromJson(Map<String, dynamic> json) =>
-    BaseIngredient(
+Nutrient _$NutrientFromJson(Map<String, dynamic> json) => Nutrient(
       json['name'] as String?,
     )
       ..category = json['category'] as String?
@@ -72,10 +69,9 @@ BaseIngredient _$BaseIngredientFromJson(Map<String, dynamic> json) =>
       ..k = json['k'] as String?
       ..fe = json['fe'] as String?
       ..mg = json['mg'] as String?
-      ..customIngredient = json['customIngredient'] as bool?;
+      ..customNutrient = json['customNutrient'] as bool?;
 
-Map<String, dynamic> _$BaseIngredientToJson(BaseIngredient instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$NutrientToJson(Nutrient instance) => <String, dynamic>{
       'name': instance.name,
       'category': instance.category,
       'nevoCode': instance.nevoCode,
@@ -89,5 +85,5 @@ Map<String, dynamic> _$BaseIngredientToJson(BaseIngredient instance) =>
       'k': instance.k,
       'fe': instance.fe,
       'mg': instance.mg,
-      'customIngredient': instance.customIngredient,
+      'customNutrient': instance.customNutrient,
     };

@@ -6,19 +6,19 @@ import '../services/BaseIngriedientsRepository.dart';
 class BaseIngredientsItemWidget extends StatefulWidget {
   BaseIngredientsItemWidget({Key? key, required this.ingredient}) : super(key: key) {}
 
-  final BaseIngredient ingredient;
+  final Nutrient ingredient;
 
   @override
   State<BaseIngredientsItemWidget> createState() => _WidgetState(ingredient);
 }
 
 class _WidgetState extends State<BaseIngredientsItemWidget> {
-  late BaseIngredient ingredient;
-  late BaseIngredient newIngredient;
-  var baseIngredientsRepository = getIt<BaseIngredientsRepository>();
+  late Nutrient ingredient;
+  late Nutrient newIngredient;
+  var baseIngredientsRepository = getIt<NutrientsRepository>();
 
 
-  _WidgetState(BaseIngredient ingredient) {
+  _WidgetState(Nutrient ingredient) {
     this.ingredient = ingredient;
     this.newIngredient = ingredient;
   }
@@ -26,12 +26,12 @@ class _WidgetState extends State<BaseIngredientsItemWidget> {
   _saveForm(){
       print("SAVE");
       print(newIngredient.name);
-      baseIngredientsRepository.loadBaseIngredients().then((value) => saveIngredient(value, newIngredient));
+      baseIngredientsRepository.loadNutrients().then((value) => saveIngredient(value, newIngredient));
   }
 
-  saveIngredient(BaseIngredients baseIngredients, BaseIngredient newIngredient) {
-    baseIngredients.ingredienten.remove(ingredient);
-    baseIngredients.ingredienten.where((element) => element.name==ingredient.name).forEach((element) {
+  saveIngredient(Nutrients baseIngredients, Nutrient newIngredient) {
+    baseIngredients.nutrients.remove(ingredient);
+    baseIngredients.nutrients.where((element) => element.name==ingredient.name).forEach((element) {
       element.name = newIngredient.name;
       element.quantity = newIngredient.quantity;
       element.category = newIngredient.category;
@@ -45,9 +45,9 @@ class _WidgetState extends State<BaseIngredientsItemWidget> {
       element.k = newIngredient.k;
       element.fe = newIngredient.fe;
       element.mg = newIngredient.mg;
-      element.customIngredient = newIngredient.customIngredient;
+      element.customNutrient = newIngredient.customNutrient;
     });
-    baseIngredientsRepository.saveBaseIngredients(baseIngredients);
+    baseIngredientsRepository.saveNutrients(baseIngredients);
 
 
 
@@ -135,7 +135,7 @@ class _WidgetState extends State<BaseIngredientsItemWidget> {
         ),
         TextFormField(
           decoration: InputDecoration(label:   Text('custom field:')),
-          initialValue: "${ingredient.customIngredient}",
+          initialValue: "${ingredient.customNutrient}",
         ),
 
         ElevatedButton(

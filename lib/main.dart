@@ -22,10 +22,10 @@ Future<void> main() async {
 
 Future<void> addSampleWhenNeeded() async {
   var appRepository = getIt<ReceptenRepository>();
-  var baseIngredientsRepository = getIt<BaseIngredientsRepository>();
+  var baseIngredientsRepository = getIt<NutrientsRepository>();
 
   appRepository.addReceptenbookIfNeeded();
-  baseIngredientsRepository.addBaseIngriedentsIfNeeded();
+  baseIngredientsRepository.addNutrientsIfNeeded();
 }
 
 Future<void> setupDependencies() async {
@@ -35,7 +35,7 @@ Future<void> setupDependencies() async {
 
   getIt.registerSingleton<FirebaseFirestore>(FirebaseFirestore.instance);
   getIt.registerSingleton<ReceptenRepository>(ReceptenRepository());
-  getIt.registerSingleton<BaseIngredientsRepository>(BaseIngredientsRepository());
+  getIt.registerSingleton<NutrientsRepository>(NutrientsRepository());
   getIt.registerSingleton<UserRepository>(UserRepository());
 }
 

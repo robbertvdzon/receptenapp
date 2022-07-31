@@ -46,37 +46,37 @@ class _HomePageState extends State<HomePage> {
           children: <Widget>[
             Spacer(),
             ElevatedButton(
+              child: Text('Voedingsmiddelen categorieen'),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          CategoriesPage(title: 'Voedingsmiddelen categorieen')),
+                );
+              },
+            ),
+            Spacer(),
+            ElevatedButton(
+              child: Text('Voedingsmiddelen'),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          BaseIngredientsPage(title: 'Voedingsmiddelen')),
+                );
+              },
+            ),
+            Spacer(),
+            ElevatedButton(
               child: Text('Ingredienten'),
               onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                       builder: (context) =>
-                          BaseIngredientsPage(title: 'Ingredienten')),
-                );
-              },
-            ),
-            Spacer(),
-            ElevatedButton(
-              child: Text('Aliassen'),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          IngredientsPage(title: 'Aliassen')),
-                );
-              },
-            ),
-            Spacer(),
-            ElevatedButton(
-              child: Text('Categorieen'),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          CategoriesPage(title: 'Categorieen')),
+                          IngredientsPage(title: 'Ingredienten')),
                 );
               },
             ),

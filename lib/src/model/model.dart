@@ -46,19 +46,19 @@ class Ingredient {
 }
 
 @JsonSerializable()
-class BaseIngredients {
-  List<BaseIngredient> ingredienten;
-  BaseIngredients(this.ingredienten);
+class Nutrients {
+  List<Nutrient> nutrients;
+  Nutrients(this.nutrients);
 
-  factory BaseIngredients.fromJson(Map<String, dynamic> json) => _$BaseIngredientsFromJson(json);
+  factory Nutrients.fromJson(Map<String, dynamic> json) => _$NutrientsFromJson(json);
 
-  Map<String, dynamic> toJson() => _$BaseIngredientsToJson(this);
+  Map<String, dynamic> toJson() => _$NutrientsToJson(this);
 
 }
 
 
 @JsonSerializable()
-class BaseIngredient {
+class Nutrient {
   String? name;
   String? category;
   int? nevoCode;
@@ -72,12 +72,12 @@ class BaseIngredient {
   String? k;
   String? fe;
   String? mg;
-  bool? customIngredient = false;
+  bool? customNutrient = false;
 
-  BaseIngredient(this.name);
+  Nutrient(this.name);
 
-  factory BaseIngredient.fromJson(Map<String, dynamic> json) =>
-      _$BaseIngredientFromJson(json);
+  factory Nutrient.fromJson(Map<String, dynamic> json) =>
+      _$NutrientFromJson(json);
 
-  Map<String, dynamic> toJson() => _$BaseIngredientToJson(this);
+  Map<String, dynamic> toJson() => _$NutrientToJson(this);
 }

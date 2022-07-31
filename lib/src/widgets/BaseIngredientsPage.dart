@@ -20,20 +20,20 @@ class BaseIngredientsPage extends StatefulWidget {
 }
 
 class _BaseIngredientsPageState extends State<BaseIngredientsPage> {
-  BaseIngredients baseIngredients = BaseIngredients(List.empty());
-  List<BaseIngredient> filteredIngredients = List.empty();
+  Nutrients baseIngredients = Nutrients(List.empty());
+  List<Nutrient> filteredIngredients = List.empty();
   TextEditingController _textFieldController = TextEditingController();
   TextEditingController _filterTextFieldController = TextEditingController();
-  var baseIngredientsRepository = getIt<BaseIngredientsRepository>();
+  var baseIngredientsRepository = getIt<NutrientsRepository>();
   String _filter = "";
   String codeDialog ="";
   String valueText = "";
 
   _BaseIngredientsPageState() {
-    baseIngredientsRepository.loadBaseIngredients().then((value) => {
+    baseIngredientsRepository.loadNutrients().then((value) => {
           setState(() {
             baseIngredients = value;
-            filteredIngredients = baseIngredients.ingredienten.where((element) => element.name!=null && element.name!.contains(_filter)).toList();
+            filteredIngredients = baseIngredients.nutrients.where((element) => element.name!=null && element.name!.contains(_filter)).toList();
           })
         });
   }
@@ -46,17 +46,17 @@ class _BaseIngredientsPageState extends State<BaseIngredientsPage> {
   }
 
   void addIngredient(String name) {
-    baseIngredientsRepository.addIngredient(name).then((value) => {
+    baseIngredientsRepository.addNutrient(name).then((value) => {
       setState(() {
         baseIngredients = value;
-        filteredIngredients = baseIngredients.ingredienten.where((element) => element.name!=null && element.name!.contains(_filter)).toList();
+        filteredIngredients = baseIngredients.nutrients.where((element) => element.name!=null && element.name!.contains(_filter)).toList();
       })
     });
 
   }
 
   void _filterIngredients() {
-    filteredIngredients = baseIngredients.ingredienten.where((element) => element.name!=null && element.name!.toLowerCase().contains(_filter.toLowerCase())).toList();
+    filteredIngredients = baseIngredients.nutrients.where((element) => element.name!=null && element.name!.toLowerCase().contains(_filter.toLowerCase())).toList();
   }
 
   Future<void> _displayTextInputDialog(BuildContext context) async {

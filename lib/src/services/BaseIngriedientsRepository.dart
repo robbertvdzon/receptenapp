@@ -9,59 +9,59 @@ import 'package:flutter/services.dart';
 import '../global.dart';
 import '../model/model.dart';
 
-class BaseIngredientsRepository {
+class NutrientsRepository {
   var _db = getIt<FirebaseFirestore>();
 
-  void addBaseIngriedentsIfNeeded() {
+  void addNutrientsIfNeeded() {
     print("test base_ingredients");
-    _db.collection("data").doc("ingredients").get().then((event) async {
+    _db.collection("data").doc("nutrients").get().then((event) async {
       print(event);
       var data = event.data();
       if (data == null) {
-        print("insert base ingredients");
-        final sample = await readBaseIngredients();
+        print("insert base nutrients");
+        final sample = await readPreloadedNutrients();
         final Map<String, dynamic> json = sample.toJson();
         final baseIngredients = <String, String>{"robbert": jsonEncode(json)};
-        print("start insert baseIngredients $baseIngredients");
+        print("start insert nutrients $baseIngredients");
         _db
             .collection("data")
-            .doc("ingredients")
+            .doc("nutrients")
             .set(baseIngredients)
             .onError((e, _) => print("Error writing document: $e"));
-        print("sample baseIngredients inserted");
+        print("sample nutrients inserted");
 
       }
     });
   }
 
-  Future<BaseIngredients> loadBaseIngredients() async {
-    final event = await _db.collection("data").doc("ingredients").get();
-    print("read ingredients");
+  Future<Nutrients> loadNutrients() async {
+    final event = await _db.collection("data").doc("nutrients").get();
+    print("read nutrients");
     print(event);
     Map<String, dynamic>? data = event.data();
     if (data != null) {
       var robbert = data["robbert"];
       var json = robbert as String;
       var jsonObj = jsonDecode(json);
-      return BaseIngredients.fromJson(jsonObj);
+      return Nutrients.fromJson(jsonObj);
     }
-    return BaseIngredients(List.empty());
+    return Nutrients(List.empty());
   }
 
 
 
 
 
-  Future<BaseIngredients> readBaseIngredients() async {
+  Future<Nutrients> readPreloadedNutrients() async {
     final String response = await rootBundle.loadString('NEVO2021.csv');
     List<List<dynamic>> rowsAsListOfValues = const CsvToListConverter(fieldDelimiter: "|").convert(response);
 
-    final List<BaseIngredient> list = rowsAsListOfValues.skip(1).map((element) => parseToBaseIngredient(element)).toList();
-    return BaseIngredients(list);
+    final List<Nutrient> list = rowsAsListOfValues.skip(1).map((element) => parseToNutrients(element)).toList();
+    return Nutrients(list);
   }
 
-  BaseIngredient parseToBaseIngredient(List<dynamic> element) {
-    final bi = BaseIngredient(element[4]);
+  Nutrient parseToNutrients(List<dynamic> element) {
+    final bi = Nutrient(element[4]);
     bi.category = element[1];
     bi.nevoCode = element[3];
     bi.quantity = element[7];
@@ -74,31 +74,31 @@ class BaseIngredientsRepository {
     bi.k = element[36];
     bi.fe = element[40];
     bi.mg = element[39];
-    bi.customIngredient = false;
+    bi.customNutrient = false;
     return bi;
   }
 
-  void saveBaseIngredients(BaseIngredients baseIngredients) {
+  void saveNutrients(Nutrients baseIngredients) {
     final Map<String, dynamic> json = baseIngredients.toJson();
     final baseIngredientsJson = <String, String>{"robbert": jsonEncode(json)};
 
     _db
         .collection("data")
-        .doc("ingredients")
+        .doc("nutrients")
         .set(baseIngredientsJson)
         .onError((e, _) => print("Error writing document: $e"));
     print("sample baseIngredients inserted");
 
   }
 
-  Future<BaseIngredients> addIngredient(String name) async {
-    return loadBaseIngredients().then((ingredients) => _addIngredient(ingredients, name));
+  Future<Nutrients> addNutrient(String name) async {
+    return loadNutrients().then((ingredients) => _addNutrient(ingredients, name));
   }
 
-  Future<BaseIngredients> _addIngredient(BaseIngredients baseIngredients, String name) async {
-    final baseIngredient = BaseIngredient(name);
-    baseIngredients.ingredienten.add(baseIngredient);
-    saveBaseIngredients(baseIngredients);
+  Future<Nutrients> _addNutrient(Nutrients baseIngredients, String name) async {
+    final baseIngredient = Nutrient(name);
+    baseIngredients.nutrients.add(baseIngredient);
+    saveNutrients(baseIngredients);
     return baseIngredients;
   }
 

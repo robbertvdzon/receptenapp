@@ -20,13 +20,13 @@ class CategoriesPage extends StatefulWidget {
 
 class _PageState extends State<CategoriesPage> {
   List<String?> categories = List.empty();
-  var baseIngredientsRepository = getIt<BaseIngredientsRepository>();
+  var baseIngredientsRepository = getIt<NutrientsRepository>();
 
   _PageState() {
-    baseIngredientsRepository.loadBaseIngredients().then((value) => {
+    baseIngredientsRepository.loadNutrients().then((value) => {
           setState(() {
             categories =
-                value.ingredienten.map((e) => e.category).toSet().toList();
+                value.nutrients.map((e) => e.category).toSet().toList();
           })
         });
   }
