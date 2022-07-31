@@ -92,7 +92,6 @@ class _WidgetState extends State<IngredientItemWidget> {
         DropdownSearch<String>(
           popupProps: PopupProps.menu(
             showSelectedItems: true,
-            disabledItemFn: (String s) => s.startsWith('I'),
           ),
           items: categories,
           // items: ["Brazil", "Italia (Disabled)", "Tunisia", 'Canada'],
