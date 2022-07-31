@@ -5,7 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
 import '../global.dart';
 import '../model/model.dart';
-import '../services/BaseIngriedientsRepository.dart';
+import '../services/NutrientsRepository.dart';
 import '../services/ReceptenRepository.dart';
 import '../services/UserRepository.dart';
 

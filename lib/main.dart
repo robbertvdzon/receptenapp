@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:receptenapp/src/global.dart';
-import 'package:receptenapp/src/services/BaseIngriedientsRepository.dart';
+import 'package:receptenapp/src/services/NutrientsRepository.dart';
 import 'package:receptenapp/src/services/ReceptenRepository.dart';
 import 'package:receptenapp/src/services/UserRepository.dart';
 import 'package:receptenapp/src/widgets/ReceptenApp.dart';

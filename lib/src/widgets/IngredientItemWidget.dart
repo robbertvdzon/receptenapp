@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:receptenapp/src/services/ReceptenRepository.dart';
 import '../global.dart';
 import '../model/model.dart';
-import '../services/BaseIngriedientsRepository.dart';
+import '../services/NutrientsRepository.dart';
 
 class IngredientItemWidget extends StatefulWidget {
   IngredientItemWidget({Key? key, required this.ingredient}) : super(key: key) {}

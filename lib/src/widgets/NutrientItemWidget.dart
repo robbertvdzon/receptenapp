@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../global.dart';
 import '../model/model.dart';
-import '../services/BaseIngriedientsRepository.dart';
+import '../services/NutrientsRepository.dart';
 
 class NutrientItemWidget extends StatefulWidget {
   NutrientItemWidget({Key? key, required this.nutrient}) : super(key: key) {}
