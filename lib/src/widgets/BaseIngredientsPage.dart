@@ -117,7 +117,7 @@ class _BaseIngredientsPageState extends State<BaseIngredientsPage> {
           )
             ,
             SizedBox(
-              height: 600,
+              height: 750,
               child: ListView(
                 children: filteredIngredients.map((strone) {
                   return Container(
@@ -126,7 +126,7 @@ class _BaseIngredientsPageState extends State<BaseIngredientsPage> {
                       children: [
                         Container(
                           constraints: BoxConstraints.expand(
-                            height: 600.0,
+                            height: 750.0,
                           ),
                           color: Colors.white60,
                           alignment: Alignment.center,

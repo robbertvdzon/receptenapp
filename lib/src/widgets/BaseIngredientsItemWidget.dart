@@ -34,6 +34,8 @@ class _WidgetState extends State<BaseIngredientsItemWidget> {
     baseIngredients.ingredienten.where((element) => element.name==ingredient.name).forEach((element) {
       element.name = newIngredient.name;
       element.quantity = newIngredient.quantity;
+      element.category = newIngredient.category;
+      element.nevoCode = newIngredient.nevoCode;
       element.kcal = newIngredient.kcal;
       element.prot = newIngredient.prot;
       element.nt = newIngredient.nt;
@@ -43,6 +45,7 @@ class _WidgetState extends State<BaseIngredientsItemWidget> {
       element.k = newIngredient.k;
       element.fe = newIngredient.fe;
       element.mg = newIngredient.mg;
+      element.customIngredient = newIngredient.customIngredient;
     });
     baseIngredientsRepository.saveBaseIngredients(baseIngredients);
 
@@ -120,6 +123,20 @@ class _WidgetState extends State<BaseIngredientsItemWidget> {
           decoration: InputDecoration(label:   Text('Suiker:')),
           initialValue: "${ingredient.sugar}",
           onChanged: (text) {newIngredient.sugar = text;},
+        ),
+        TextFormField(
+          decoration: InputDecoration(label:   Text('Category:')),
+          initialValue: "${ingredient.category}",
+          onChanged: (text) {newIngredient.category = text;},
+        ),
+        TextFormField(
+          decoration: InputDecoration(label:   Text('nevo code:')),
+          initialValue: "${ingredient.nevoCode}",
+          onChanged: (text) {newIngredient.nevoCode = text;},
+        ),
+        TextFormField(
+          decoration: InputDecoration(label:   Text('custom field:')),
+          initialValue: "${ingredient.customIngredient}",
         ),
 
         ElevatedButton(

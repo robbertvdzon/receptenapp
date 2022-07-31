@@ -58,11 +58,16 @@ class BaseIngredientsRepository {
 
     // final Iterable<BaseIngredient> list = rowsAsListOfValues.skip(1).map((element) => baseIngredient());
     final List<BaseIngredient> list = rowsAsListOfValues.skip(1).map((element) => parseToBaseIngredient(element)).toList();
+
+    // list.map((e) => e.)
+
     return BaseIngredients(list);
   }
 
   BaseIngredient parseToBaseIngredient(List<dynamic> element) {
     final bi = BaseIngredient(element[4]);
+    bi.category = element[1];
+    bi.nevoCode = element[2];
     bi.quantity = element[7];
     bi.kcal = element[12];
     bi.prot = element[14];
@@ -73,6 +78,7 @@ class BaseIngredientsRepository {
     bi.k = element[36];
     bi.fe = element[40];
     bi.mg = element[39];
+    bi.customIngredient = false;
     return bi;
   }
 
@@ -82,7 +88,6 @@ class BaseIngredientsRepository {
       final r2 = BaseIngredient("r2");
       final r3 = BaseIngredient("r3");
       return BaseIngredients([r1,r2,r3]);
-
   }
 
   void saveBaseIngredients(BaseIngredients baseIngredients) {

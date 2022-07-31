@@ -60,6 +60,8 @@ BaseIngredient _$BaseIngredientFromJson(Map<String, dynamic> json) =>
     BaseIngredient(
       json['name'] as String?,
     )
+      ..category = json['category'] as String?
+      ..nevoCode = json['nevoCode'] as String?
       ..quantity = json['quantity'] as String?
       ..kcal = json['kcal'] as String?
       ..prot = json['prot'] as String?
@@ -69,11 +71,14 @@ BaseIngredient _$BaseIngredientFromJson(Map<String, dynamic> json) =>
       ..na = json['na'] as String?
       ..k = json['k'] as String?
       ..fe = json['fe'] as String?
-      ..mg = json['mg'] as String?;
+      ..mg = json['mg'] as String?
+      ..customIngredient = json['customIngredient'] as bool?;
 
 Map<String, dynamic> _$BaseIngredientToJson(BaseIngredient instance) =>
     <String, dynamic>{
       'name': instance.name,
+      'category': instance.category,
+      'nevoCode': instance.nevoCode,
       'quantity': instance.quantity,
       'kcal': instance.kcal,
       'prot': instance.prot,
@@ -84,4 +89,5 @@ Map<String, dynamic> _$BaseIngredientToJson(BaseIngredient instance) =>
       'k': instance.k,
       'fe': instance.fe,
       'mg': instance.mg,
+      'customIngredient': instance.customIngredient,
     };

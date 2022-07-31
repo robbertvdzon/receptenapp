@@ -60,6 +60,8 @@ class BaseIngredients {
 @JsonSerializable()
 class BaseIngredient {
   String? name;
+  String? category;
+  String? nevoCode;
   String? quantity;
   String? kcal;
   String? prot;
@@ -70,6 +72,7 @@ class BaseIngredient {
   String? k;
   String? fe;
   String? mg;
+  bool? customIngredient = false;
 
   BaseIngredient(this.name);
 
