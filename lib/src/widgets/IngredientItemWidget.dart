@@ -1,3 +1,4 @@
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:receptenapp/src/services/ReceptenRepository.dart';
 import '../global.dart';
@@ -70,22 +71,48 @@ class _WidgetState extends State<IngredientItemWidget> {
         //     newIngredient.nutrientName = text;
         //   },
         // ),
-        DropdownButton<String>(
-          value: "${ingredient.nutrientName??''}",
-          icon: const Icon(Icons.arrow_downward),
-          elevation: 16,
-          // style: const TextStyle(color: Colors.deepPurple),
-          underline: Container(
-            height: 2,
-            // color: Colors.deepPurpleAccent,
+        // DropdownButton<String>(
+        //   value: "${ingredient.nutrientName??''}",
+        //   icon: const Icon(Icons.arrow_downward),
+        //   elevation: 16,
+        //   // style: const TextStyle(color: Colors.deepPurple),
+        //   underline: Container(
+        //     height: 2,
+        //     // color: Colors.deepPurpleAccent,
+        //   ),
+        //   onChanged: (String? newValue) {
+        //     setState(() {
+        //       newIngredient.nutrientName = newValue;
+        //     });
+        //   },
+        //   items: buildList(),
+        // ),
+
+
+        DropdownSearch<String>(
+          popupProps: PopupProps.menu(
+            showSelectedItems: true,
+            disabledItemFn: (String s) => s.startsWith('I'),
           ),
-          onChanged: (String? newValue) {
-            setState(() {
-              newIngredient.nutrientName = newValue;
-            });
-          },
-          items: buildList(),
+          items: categories,
+          // items: ["Brazil", "Italia (Disabled)", "Tunisia", 'Canada'],
+          // dropdownSearchDecoration: InputDecoration(
+          //   labelText: "Menu mode",
+          //   hintText: "country in menu mode",
+          // ),
+          // onChanged: print,
+
+            onChanged: (String? newValue) {
+              setState(() {
+                newIngredient.nutrientName = newValue;
+              });
+            },
+
+
+
+          selectedItem: "${ingredient.nutrientName??''}",
         ),
+
         ElevatedButton(
           child: Text('SAVE'),
           onPressed: () {
@@ -105,3 +132,5 @@ class _WidgetState extends State<IngredientItemWidget> {
         }).toList();
   }
 }
+
+

@@ -41,18 +41,11 @@ class _IngredientsPageState extends State<IngredientsPage> {
       })
     });
     nutrientsRepository.loadNutrients().then((value) => {
-      // list(value)
-      list(value)
+      categories = value.nutrients.map((e) => e.category ?? "").toSet().toList()
     });
 
   }
 
-  void list(Nutrients value) {
-    categories = value.nutrients.map((e) => e.category ?? "").toSet().toList();
-    categories.add("groente");
-    categories.add("Four");
-    categories.add("");
-  }
 
   void _updateFilter(String filter) {
     setState(() {
@@ -142,7 +135,7 @@ class _IngredientsPageState extends State<IngredientsPage> {
                       children: [
                         Container(
                           constraints: BoxConstraints.expand(
-                            height: 250.0,
+                            height: 450.0,
                           ),
                           color: Colors.white60,
                           alignment: Alignment.center,
