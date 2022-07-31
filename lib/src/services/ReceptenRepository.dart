@@ -53,15 +53,17 @@ class ReceptenRepository {
     });
   }
 
-  Future<String> loadReceptenbook() async {
+  Future<ReceptenBoek> loadReceptenbook() async {
     final event = await _db.collection("data").doc("receptenboeken").get();
     Map<String, dynamic>? data = event.data();
     if (data != null) {
       var robbert = data["robbert"];
       var json = robbert as String;
-      return json;
+      var jsonObj = jsonDecode(json);
+      final receptenboek = ReceptenBoek.fromJson(jsonObj);
+      return receptenboek;
     }
-    return "?";
+    return ReceptenBoek(List.empty(), List.empty());
   }
 
   ReceptenBoek createSample() {
@@ -79,6 +81,30 @@ class ReceptenRepository {
         ]
     );
     return receptenboek;
+  }
+
+  void saveReceptenBoek(ReceptenBoek receptenBoek) {
+    final Map<String, dynamic> json = receptenBoek.toJson();
+    final receptenBoekJson = <String, String>{"robbert": jsonEncode(json)};
+    _db
+        .collection("data")
+        .doc("receptenboeken")
+        .set(receptenBoekJson)
+        .onError((e, _) => print("Error writing document: $e"));
+    print("receptenboek saves");
+
+  }
+
+
+  Future<ReceptenBoek> addIngredient(String name) async {
+    return loadReceptenbook().then((receptenBook) => _addIngredient(receptenBook, name));
+  }
+
+  Future<ReceptenBoek> _addIngredient(ReceptenBoek receptenBoek, String name) async {
+    final ingredient = Ingredient(name);
+    receptenBoek.ingredienten.add(ingredient);
+    saveReceptenBoek(receptenBoek);
+    return receptenBoek;
   }
 
 }

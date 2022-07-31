@@ -28,7 +28,7 @@ class _WidgetState extends State<NutrientItemWidget> {
   }
 
   saveNutrient(Nutrients baseIngredients, Nutrient newIngredient) {
-    baseIngredients.nutrients.remove(nutrient);
+    // baseIngredients.nutrients.remove(nutrient);
     baseIngredients.nutrients.where((element) => element.name==nutrient.name).forEach((element) {
       element.name = newIngredient.name;
       element.quantity = newIngredient.quantity;
