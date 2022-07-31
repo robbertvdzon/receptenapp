@@ -17,12 +17,24 @@ class IngredientItemWidget extends StatefulWidget {
 class _WidgetState extends State<IngredientItemWidget> {
   late Ingredient ingredient;
   late Ingredient newIngredient;
+  List<String> categories = ["One","Two","","groente", "Four","Three"];
   var receptenRepository = getIt<ReceptenRepository>();
+  var nutrientsRepository = getIt<NutrientsRepository>();
 
   _WidgetState(Ingredient ingredient) {
     this.ingredient = ingredient;
     this.newIngredient = ingredient;
+    // final r = await nutrientsRepository.loadNutrients();
+
+    nutrientsRepository.loadNutrients().then((value) => {
+      setState(() {
+        categories = value.nutrients.map((e) => e.category??"").toSet().toList();
+      })
+    });
+
   }
+
+
 
   _saveForm() {
     receptenRepository
@@ -77,13 +89,7 @@ class _WidgetState extends State<IngredientItemWidget> {
               newIngredient.nutrientName = newValue;
             });
           },
-          items: <String>['One', 'Two', 'Free', 'Four','','groente']
-              .map<DropdownMenuItem<String>>((String value) {
-            return DropdownMenuItem<String>(
-              value: value,
-              child: Text(value),
-            );
-          }).toList(),
+          items: buildList(),
         ),
         ElevatedButton(
           child: Text('SAVE'),
@@ -93,5 +99,14 @@ class _WidgetState extends State<IngredientItemWidget> {
         )
       ],
     );
+  }
+
+  List<DropdownMenuItem<String>> buildList() {
+    return categories.map<DropdownMenuItem<String>>((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          );
+        }).toList();
   }
 }
