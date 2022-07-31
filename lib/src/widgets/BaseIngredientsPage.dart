@@ -84,7 +84,6 @@ class _BaseIngredientsPageState extends State<BaseIngredientsPage> {
                         ),
                       ],
 
-
                   ),
 
                     margin: EdgeInsets.all(5),

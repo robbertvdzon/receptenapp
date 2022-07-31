@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import '../global.dart';
 import '../model/model.dart';
+import '../services/BaseIngriedientsRepository.dart';
 
 class BaseIngredientsItemWidget extends StatefulWidget {
   BaseIngredientsItemWidget({Key? key, required this.ingredient}) : super(key: key) {}
@@ -13,16 +15,41 @@ class BaseIngredientsItemWidget extends StatefulWidget {
 class _WidgetState extends State<BaseIngredientsItemWidget> {
   late BaseIngredient ingredient;
   late BaseIngredient newIngredient;
+  var baseIngredientsRepository = getIt<BaseIngredientsRepository>();
+
 
   _WidgetState(BaseIngredient ingredient) {
     this.ingredient = ingredient;
     this.newIngredient = ingredient;
   }
 
-  void _saveForm(){
+  _saveForm(){
       print("SAVE");
       print(newIngredient.name);
+      baseIngredientsRepository.loadBaseIngredients().then((value) => saveIngredient(value, newIngredient));
   }
+
+  saveIngredient(BaseIngredients baseIngredients, BaseIngredient newIngredient) {
+    baseIngredients.ingredienten.remove(ingredient);
+    baseIngredients.ingredienten.where((element) => element.name==ingredient.name).forEach((element) {
+      element.name = newIngredient.name;
+      element.quantity = newIngredient.quantity;
+      element.kcal = newIngredient.kcal;
+      element.prot = newIngredient.prot;
+      element.nt = newIngredient.nt;
+      element.fat = newIngredient.fat;
+      element.sugar = newIngredient.sugar;
+      element.na = newIngredient.na;
+      element.k = newIngredient.k;
+      element.fe = newIngredient.fe;
+      element.mg = newIngredient.mg;
+    });
+    baseIngredientsRepository.saveBaseIngredients(baseIngredients);
+
+
+
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -105,6 +132,7 @@ class _WidgetState extends State<BaseIngredientsItemWidget> {
       ],
     );
   }
+
 
 
 }

@@ -85,6 +85,19 @@ class BaseIngredientsRepository {
 
   }
 
+  void saveBaseIngredients(BaseIngredients baseIngredients) {
+    final Map<String, dynamic> json = baseIngredients.toJson();
+    final baseIngredientsJson = <String, String>{"data": jsonEncode(json)};
+
+    _db
+        .collection("data")
+        .doc("base_ingredients")
+        .set(baseIngredientsJson)
+        .onError((e, _) => print("Error writing document: $e"));
+    print("sample baseIngredients inserted");
+
+  }
+
 }
 
 /*
