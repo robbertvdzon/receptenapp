@@ -127,7 +127,7 @@ class _IngredientsPageState extends State<IngredientsPage> {
                       children: [
                         Container(
                           constraints: BoxConstraints.expand(
-                            height: 200.0,
+                            height: 250.0,
                           ),
                           color: Colors.white60,
                           alignment: Alignment.center,
