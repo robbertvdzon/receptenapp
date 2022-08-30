@@ -38,6 +38,7 @@ class Ingredient {
   String uuid = Uuid().v1();
   String name;
   String? nutrientName;
+  List<Tag> tags = List.empty();
 
   Ingredient(this.name);
 
