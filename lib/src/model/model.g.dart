@@ -90,3 +90,21 @@ Map<String, dynamic> _$NutrientToJson(Nutrient instance) => <String, dynamic>{
       'mg': instance.mg,
       'customNutrient': instance.customNutrient,
     };
+
+Tags _$TagsFromJson(Map<String, dynamic> json) => Tags(
+      (json['tags'] as List<dynamic>)
+          .map((e) => Tag.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$TagsToJson(Tags instance) => <String, dynamic>{
+      'tags': instance.tags,
+    };
+
+Tag _$TagFromJson(Map<String, dynamic> json) => Tag(
+      json['tag'] as String?,
+    );
+
+Map<String, dynamic> _$TagToJson(Tag instance) => <String, dynamic>{
+      'tag': instance.tag,
+    };

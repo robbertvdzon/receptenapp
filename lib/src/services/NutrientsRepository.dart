@@ -2,8 +2,6 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:csv/csv.dart';
-import 'package:get_it/get_it.dart';
-import 'package:flutter/widgets.dart' show WidgetsFlutterBinding;
 import 'package:flutter/services.dart';
 
 import '../global.dart';

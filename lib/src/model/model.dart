@@ -32,6 +32,7 @@ class Recept {
   Map<String, dynamic> toJson() => _$ReceptToJson(this);
 }
 
+
 @JsonSerializable()
 class Ingredient {
   String uuid = Uuid().v1();
@@ -81,4 +82,27 @@ class Nutrient {
       _$NutrientFromJson(json);
 
   Map<String, dynamic> toJson() => _$NutrientToJson(this);
+}
+
+
+@JsonSerializable()
+class Tags {
+  List<Tag> tags;
+  Tags(this.tags);
+
+  factory Tags.fromJson(Map<String, dynamic> json) => _$TagsFromJson(json);
+
+  Map<String, dynamic> toJson() => _$TagsToJson(this);
+}
+
+@JsonSerializable()
+class Tag {
+  String? tag;
+
+  Tag(this.tag);
+
+  factory Tag.fromJson(Map<String, dynamic> json) =>
+      _$TagFromJson(json);
+
+  Map<String, dynamic> toJson() => _$TagToJson(this);
 }

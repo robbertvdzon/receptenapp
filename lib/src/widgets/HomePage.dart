@@ -32,7 +32,7 @@ class _HomePageState extends State<HomePage> {
         title: Text(widget.title),
         actions: [
           Text(
-            'user: ${userRepository.getUser()?.email}',
+            'user: ${userRepository.getUsersEmail()}',
             style: Theme.of(context).textTheme.labelLarge,
           ),
           IconButton(
