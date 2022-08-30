@@ -7,7 +7,7 @@ import '../global.dart';
 import '../model/model.dart';
 import '../services/TagsRepository.dart';
 import '../services/NutrientsRepository.dart';
-import '../services/ReceptenRepository.dart';
+import '../services/RecipesRepository.dart';
 import '../services/UserRepository.dart';
 
 class CategoriesPage extends StatefulWidget {

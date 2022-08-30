@@ -3,16 +3,16 @@ import '../global.dart';
 import '../model/model.dart';
 import '../services/NutrientsRepository.dart';
 
-class NutrientItemWidget extends StatefulWidget {
-  NutrientItemWidget({Key? key, required this.nutrient}) : super(key: key) {}
+class ProductItemWidget extends StatefulWidget {
+  ProductItemWidget({Key? key, required this.nutrient}) : super(key: key) {}
 
   final Product nutrient;
 
   @override
-  State<NutrientItemWidget> createState() => _WidgetState(nutrient);
+  State<ProductItemWidget> createState() => _WidgetState(nutrient);
 }
 
-class _WidgetState extends State<NutrientItemWidget> {
+class _WidgetState extends State<ProductItemWidget> {
   late Product nutrient;
   late Product newNutrient;
   var baseIngredientsRepository = getIt<ProductsRepository>();

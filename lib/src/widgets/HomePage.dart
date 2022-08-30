@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:receptenapp/src/widgets/CategoriesPage.dart';
+import 'package:receptenapp/src/widgets/RecipesPage.dart';
 import '../global.dart';
 import '../services/UserRepository.dart';
-import 'NutrientsPage.dart';
+import 'ProductsPage.dart';
 import 'IngredientsPage.dart';
 
 class HomePage extends StatefulWidget {
@@ -64,7 +65,7 @@ class _HomePageState extends State<HomePage> {
                   context,
                   MaterialPageRoute(
                       builder: (context) =>
-                          NutrientsPage(title: 'Producten')),
+                          ProductsPage(title: 'Producten')),
                 );
               },
             ),
@@ -77,6 +78,18 @@ class _HomePageState extends State<HomePage> {
                   MaterialPageRoute(
                       builder: (context) =>
                           IngredientsPage(title: 'Ingredienten')),
+                );
+              },
+            ),
+            Spacer(),
+            ElevatedButton(
+              child: Text('Recepten'),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          RecipesPage(title: 'Recepten')),
                 );
               },
             ),

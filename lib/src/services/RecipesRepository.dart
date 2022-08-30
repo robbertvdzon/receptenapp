@@ -53,7 +53,7 @@ class RecipesRepository {
     return Recipes(List.empty());
   }
 
-  void saveTags(Recipes recipes) {
+  void saveRecipes(Recipes recipes) {
     final email = _userRepository.getUsersEmail();
     final Map<String, dynamic> json = recipes.toJson();
     final receptenBoekJson = <String, String>{_KEY: jsonEncode(json)};
@@ -64,6 +64,17 @@ class RecipesRepository {
         .onError((e, _) => print("Error writing document: $e"));
     print("ingredientCategories saves");
 
+  }
+
+  Future<Recipes> addRecept(String name) async {
+    return loadRecipes().then((recipes) => _addRecept(recipes, name));
+  }
+
+  Future<Recipes> _addRecept(Recipes recipes, String name) async {
+    final recept = Recept(List.empty(),name);
+    recipes.recipes.add(recept);
+    saveRecipes(recipes);
+    return recipes;
   }
 
 

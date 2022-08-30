@@ -3,50 +3,40 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
-import 'package:receptenapp/src/services/IngredientsRepository.dart';
 import '../global.dart';
 import '../model/model.dart';
 import '../services/NutrientsRepository.dart';
 import '../services/RecipesRepository.dart';
 import '../services/UserRepository.dart';
-import 'IngredientItemWidget.dart';
 import 'ProductItemWidget.dart';
 
-class IngredientsPage extends StatefulWidget {
-  IngredientsPage({Key? key, required this.title}) : super(key: key) {}
+class ProductsPage extends StatefulWidget {
+  ProductsPage({Key? key, required this.title}) : super(key: key) {}
 
   final String title;
 
   @override
-  State<IngredientsPage> createState() => _IngredientsPageState();
+  State<ProductsPage> createState() => _ProductsPageState();
 }
 
-class _IngredientsPageState extends State<IngredientsPage> {
-  List<Ingredient> ingredients = List.empty();
-  List<Ingredient> filteredIngredients = List.empty();
-  List<String> nutricients = List.empty();
-
+class _ProductsPageState extends State<ProductsPage> {
+  Products nutrients = Products(List.empty());
+  List<Product> filteredNutrients = List.empty();
   TextEditingController _textFieldController = TextEditingController();
   TextEditingController _filterTextFieldController = TextEditingController();
-  var ingredientsRepository = getIt<IngredientsRepository>();
   var nutrientsRepository = getIt<ProductsRepository>();
   String _filter = "";
   String codeDialog ="";
   String valueText = "";
 
-  _IngredientsPageState() {
-    ingredientsRepository.loadIngredients().then((value) => {
-      setState(() {
-        ingredients = value.ingredients;
-        filteredIngredients = ingredients.where((element) => element.name!=null && element.name!.contains(_filter)).toList();
-      })
-    });
+  _ProductsPageState() {
     nutrientsRepository.loadProducts().then((value) => {
-      nutricients = value.products.map((e) => e.name ?? "").toList()
-    });
-
+          setState(() {
+            nutrients = value;
+            filteredNutrients = nutrients.products.where((element) => element.name!=null && element.name!.contains(_filter)).toList();
+          })
+        });
   }
-
 
   void _updateFilter(String filter) {
     setState(() {
@@ -56,17 +46,17 @@ class _IngredientsPageState extends State<IngredientsPage> {
   }
 
   void addNutrient(String name) {
-    ingredientsRepository.addIngredient(name).then((value) => {
+    nutrientsRepository.addProduct(name).then((value) => {
       setState(() {
-        ingredients = value.ingredients;
-        filteredIngredients = ingredients.where((element) => element.name!=null && element.name!.contains(_filter)).toList();
+        nutrients = value;
+        filteredNutrients = nutrients.products.where((element) => element.name!=null && element.name!.contains(_filter)).toList();
       })
     });
 
   }
 
   void _filterNutrients() {
-    filteredIngredients = ingredients.where((element) => element.name!=null && element.name!.toLowerCase().contains(_filter.toLowerCase())).toList();
+    filteredNutrients = nutrients.products.where((element) => element.name!=null && element.name!.toLowerCase().contains(_filter.toLowerCase())).toList();
   }
 
   Future<void> _displayTextInputDialog(BuildContext context) async {
@@ -119,33 +109,33 @@ class _IngredientsPageState extends State<IngredientsPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            TextFormField(key: Key(_filter.toString()),
-              decoration: InputDecoration(border: InputBorder.none, labelText: 'Filter: (${filteredIngredients.length} ingredienten)'),
-              autofocus: true,
-              controller: _filterTextFieldController..text = '$_filter',
-              onChanged: (text) => {_updateFilter(text)},
-            )
+          TextFormField(key: Key(_filter.toString()),
+            decoration: InputDecoration(border: InputBorder.none, labelText: 'Filter: (${filteredNutrients.length} ingredienten)'),
+            autofocus: true,
+            controller: _filterTextFieldController..text = '$_filter',
+            onChanged: (text) => {_updateFilter(text)},
+          )
             ,
             SizedBox(
               height: 750,
               child: ListView(
-                children: filteredIngredients.map((strone) {
+                children: filteredNutrients.map((strone) {
                   return Container(
                     child:
                     Column(
                       children: [
                         Container(
                           constraints: BoxConstraints.expand(
-                            height: 450.0,
+                            height: 750.0,
                           ),
                           color: Colors.white60,
                           alignment: Alignment.center,
                           child:
-                          IngredientItemWidget(ingredient: strone, categories: nutricients,),
+                        ProductItemWidget(nutrient: strone),
                         ),
                       ],
 
-                    ),
+                  ),
 
                     margin: EdgeInsets.all(5),
                     padding: EdgeInsets.all(15),

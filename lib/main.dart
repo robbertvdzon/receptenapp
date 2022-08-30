@@ -6,7 +6,7 @@ import 'package:receptenapp/src/model/model.dart';
 import 'package:receptenapp/src/services/IngredientsRepository.dart';
 import 'package:receptenapp/src/services/TagsRepository.dart';
 import 'package:receptenapp/src/services/NutrientsRepository.dart';
-import 'package:receptenapp/src/services/ReceptenRepository.dart';
+import 'package:receptenapp/src/services/RecipesRepository.dart';
 import 'package:receptenapp/src/services/UserRepository.dart';
 import 'package:receptenapp/src/widgets/ReceptenApp.dart';
 import 'firebase_options.dart';
