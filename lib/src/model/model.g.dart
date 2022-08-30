@@ -6,19 +6,14 @@ part of 'model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-ReceptenBoek _$ReceptenBoekFromJson(Map<String, dynamic> json) => ReceptenBoek(
-      (json['recepten'] as List<dynamic>)
+Recipes _$RecipesFromJson(Map<String, dynamic> json) => Recipes(
+      (json['recipes'] as List<dynamic>)
           .map((e) => Recept.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      (json['ingredienten'] as List<dynamic>)
-          .map((e) => Ingredient.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 
-Map<String, dynamic> _$ReceptenBoekToJson(ReceptenBoek instance) =>
-    <String, dynamic>{
-      'ingredienten': instance.ingredienten,
-      'recepten': instance.recepten,
+Map<String, dynamic> _$RecipesToJson(Recipes instance) => <String, dynamic>{
+      'recipes': instance.recipes,
     };
 
 Recept _$ReceptFromJson(Map<String, dynamic> json) => Recept(
@@ -34,30 +29,45 @@ Map<String, dynamic> _$ReceptToJson(Recept instance) => <String, dynamic>{
       'ingredienten': instance.ingredienten,
     };
 
+Ingredients _$IngredientsFromJson(Map<String, dynamic> json) => Ingredients(
+      (json['ingredients'] as List<dynamic>)
+          .map((e) => Ingredient.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$IngredientsToJson(Ingredients instance) =>
+    <String, dynamic>{
+      'ingredients': instance.ingredients,
+    };
+
 Ingredient _$IngredientFromJson(Map<String, dynamic> json) => Ingredient(
       json['name'] as String,
     )
       ..uuid = json['uuid'] as String
-      ..nutrientName = json['nutrientName'] as String?;
+      ..nutrientName = json['nutrientName'] as String?
+      ..tags = (json['tags'] as List<dynamic>)
+          .map((e) => Tag.fromJson(e as Map<String, dynamic>))
+          .toList();
 
 Map<String, dynamic> _$IngredientToJson(Ingredient instance) =>
     <String, dynamic>{
       'uuid': instance.uuid,
       'name': instance.name,
       'nutrientName': instance.nutrientName,
+      'tags': instance.tags,
     };
 
-Nutrients _$NutrientsFromJson(Map<String, dynamic> json) => Nutrients(
-      (json['nutrients'] as List<dynamic>)
-          .map((e) => Nutrient.fromJson(e as Map<String, dynamic>))
+Products _$ProductsFromJson(Map<String, dynamic> json) => Products(
+      (json['products'] as List<dynamic>)
+          .map((e) => Product.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 
-Map<String, dynamic> _$NutrientsToJson(Nutrients instance) => <String, dynamic>{
-      'nutrients': instance.nutrients,
+Map<String, dynamic> _$ProductsToJson(Products instance) => <String, dynamic>{
+      'products': instance.products,
     };
 
-Nutrient _$NutrientFromJson(Map<String, dynamic> json) => Nutrient(
+Product _$ProductFromJson(Map<String, dynamic> json) => Product(
       json['name'] as String?,
     )
       ..category = json['category'] as String?
@@ -74,7 +84,7 @@ Nutrient _$NutrientFromJson(Map<String, dynamic> json) => Nutrient(
       ..mg = json['mg'] as String?
       ..customNutrient = json['customNutrient'] as bool?;
 
-Map<String, dynamic> _$NutrientToJson(Nutrient instance) => <String, dynamic>{
+Map<String, dynamic> _$ProductToJson(Product instance) => <String, dynamic>{
       'name': instance.name,
       'category': instance.category,
       'nevoCode': instance.nevoCode,

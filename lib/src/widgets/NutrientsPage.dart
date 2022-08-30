@@ -20,20 +20,20 @@ class NutrientsPage extends StatefulWidget {
 }
 
 class _NutrientsPageState extends State<NutrientsPage> {
-  Nutrients nutrients = Nutrients(List.empty());
-  List<Nutrient> filteredNutrients = List.empty();
+  Products nutrients = Products(List.empty());
+  List<Product> filteredNutrients = List.empty();
   TextEditingController _textFieldController = TextEditingController();
   TextEditingController _filterTextFieldController = TextEditingController();
-  var nutrientsRepository = getIt<NutrientsRepository>();
+  var nutrientsRepository = getIt<ProductsRepository>();
   String _filter = "";
   String codeDialog ="";
   String valueText = "";
 
   _NutrientsPageState() {
-    nutrientsRepository.loadNutrients().then((value) => {
+    nutrientsRepository.loadProducts().then((value) => {
           setState(() {
             nutrients = value;
-            filteredNutrients = nutrients.nutrients.where((element) => element.name!=null && element.name!.contains(_filter)).toList();
+            filteredNutrients = nutrients.products.where((element) => element.name!=null && element.name!.contains(_filter)).toList();
           })
         });
   }
@@ -46,17 +46,17 @@ class _NutrientsPageState extends State<NutrientsPage> {
   }
 
   void addNutrient(String name) {
-    nutrientsRepository.addNutrient(name).then((value) => {
+    nutrientsRepository.addProduct(name).then((value) => {
       setState(() {
         nutrients = value;
-        filteredNutrients = nutrients.nutrients.where((element) => element.name!=null && element.name!.contains(_filter)).toList();
+        filteredNutrients = nutrients.products.where((element) => element.name!=null && element.name!.contains(_filter)).toList();
       })
     });
 
   }
 
   void _filterNutrients() {
-    filteredNutrients = nutrients.nutrients.where((element) => element.name!=null && element.name!.toLowerCase().contains(_filter.toLowerCase())).toList();
+    filteredNutrients = nutrients.products.where((element) => element.name!=null && element.name!.toLowerCase().contains(_filter.toLowerCase())).toList();
   }
 
   Future<void> _displayTextInputDialog(BuildContext context) async {

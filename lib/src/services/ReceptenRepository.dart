@@ -5,20 +5,27 @@ import 'package:get_it/get_it.dart';
 
 import '../global.dart';
 import '../model/model.dart';
+import 'UserRepository.dart';
 
-class ReceptenRepository {
+class RecipesRepository {
+
+  final String _DOCNAME = "recipes";
+  final String _KEY = "data";
+
   var _db = getIt<FirebaseFirestore>();
+  var _userRepository = getIt<UserRepository>();
 
   void addReceptenbookIfNeeded() {
-    _db.collection("data").doc("receptenboeken").get().then((event) {
+    final email = _userRepository.getUsersEmail();
+    _db.collection(email).doc(_DOCNAME).get().then((event) {
       var data = event.data();
       if (data == null) {
         final sample = createSample();
         final Map<String, dynamic> json = sample.toJson();
-        final receptenboeken = <String, String>{"robbert": jsonEncode(json)};
+        final receptenboeken = <String, String>{_KEY: jsonEncode(json)};
         _db
-            .collection("data")
-            .doc("receptenboeken")
+            .collection(email)
+            .doc(_DOCNAME)
             .set(receptenboeken)
             .onError((e, _) => print("Error writing document: $e"));
         print("sample book interted");
@@ -26,47 +33,41 @@ class ReceptenRepository {
     });
   }
 
-  void updateJson(String json) {
-    final receptenboeken = <String, String>{"robbert": json};
-    _db
-        .collection("data")
-        .doc("receptenboeken")
-        .set(receptenboeken)
-        .onError((e, _) => print("Error writing document: $e"));
-    print("sample book interted");
+  void printTags() {
+    loadRecipes().then((data) =>
+        print(data)
+    );
   }
 
-  void printReceptenbook() {
-    print("read boek");
-    _db.collection("data").doc("receptenboeken").get().then((event) {
-      print("read boek2");
-      print(event);
-      Map<String, dynamic>? data = event.data();
-      if (data != null) {
-        var robbert = data["robbert"];
-        var json = robbert as String;
-        var jsonObj = jsonDecode(json);
-        final receptenboek = ReceptenBoek.fromJson(jsonObj);
-        print(receptenboek);
-      }
-      print(data);
-    });
-  }
-
-  Future<ReceptenBoek> loadReceptenbook() async {
-    final event = await _db.collection("data").doc("receptenboeken").get();
+  Future<Recipes> loadRecipes() async {
+    final email = _userRepository.getUsersEmail();
+    final event = await _db.collection(email).doc(_DOCNAME).get();
     Map<String, dynamic>? data = event.data();
     if (data != null) {
-      var robbert = data["robbert"];
-      var json = robbert as String;
+      var jsonData = data[_KEY];
+      var json = jsonData as String;
       var jsonObj = jsonDecode(json);
-      final receptenboek = ReceptenBoek.fromJson(jsonObj);
-      return receptenboek;
+      final ingredientCategories = Recipes.fromJson(jsonObj);
+      return ingredientCategories;
     }
-    return ReceptenBoek(List.empty(), List.empty());
+    return Recipes(List.empty());
   }
 
-  ReceptenBoek createSample() {
+  void saveTags(Recipes recipes) {
+    final email = _userRepository.getUsersEmail();
+    final Map<String, dynamic> json = recipes.toJson();
+    final receptenBoekJson = <String, String>{_KEY: jsonEncode(json)};
+    _db
+        .collection(email)
+        .doc(_DOCNAME)
+        .set(receptenBoekJson)
+        .onError((e, _) => print("Error writing document: $e"));
+    print("ingredientCategories saves");
+
+  }
+
+
+  Recipes createSample() {
     final patat = Ingredient("patat");
     final hamburger = Ingredient("hamburger");
     final brood = Ingredient("brood");
@@ -74,37 +75,11 @@ class ReceptenRepository {
     final kaas = Ingredient("kaas");
     final hamburgermenu = Recept([patat, hamburger, brood], "hamburgermenu");
     final broodjeKaas = Recept([brood, boter, kaas], "broodje kaas");
-    final receptenboek = ReceptenBoek(
-        [hamburgermenu, broodjeKaas],
-        [
-          patat, hamburger, brood, boter, kaas,
-        ]
+    final receptenboek = Recipes(
+      [hamburgermenu, broodjeKaas],
     );
     return receptenboek;
   }
 
-  void saveReceptenBoek(ReceptenBoek receptenBoek) {
-    final Map<String, dynamic> json = receptenBoek.toJson();
-    final receptenBoekJson = <String, String>{"robbert": jsonEncode(json)};
-    _db
-        .collection("data")
-        .doc("receptenboeken")
-        .set(receptenBoekJson)
-        .onError((e, _) => print("Error writing document: $e"));
-    print("receptenboek saves");
-
-  }
-
-
-  Future<ReceptenBoek> addIngredient(String name) async {
-    return loadReceptenbook().then((receptenBook) => _addIngredient(receptenBook, name));
-  }
-
-  Future<ReceptenBoek> _addIngredient(ReceptenBoek receptenBoek, String name) async {
-    final ingredient = Ingredient(name);
-    receptenBoek.ingredienten.add(ingredient);
-    saveReceptenBoek(receptenBoek);
-    return receptenBoek;
-  }
-
 }
+

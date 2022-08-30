@@ -8,7 +8,7 @@ class UserRepository {
   }
 
   String getUsersEmail() {
-    return _user?.email??"none";
+    return _user?.email??"robbert@vdzon.com";
   }
 
   void setUser(User? user) {

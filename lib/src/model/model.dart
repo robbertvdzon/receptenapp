@@ -7,16 +7,15 @@ var uuid = Uuid();
 
 
 @JsonSerializable()
-class ReceptenBoek {
-  List<Ingredient> ingredienten;
-  List<Recept> recepten;
+class Recipes {
+  List<Recept> recipes;
 
-  ReceptenBoek(this.recepten, this.ingredienten);
+  Recipes(this.recipes);
 
-  factory ReceptenBoek.fromJson(Map<String, dynamic> json) =>
-      _$ReceptenBoekFromJson(json);
+  factory Recipes.fromJson(Map<String, dynamic> json) =>
+      _$RecipesFromJson(json);
 
-  Map<String, dynamic> toJson() => _$ReceptenBoekToJson(this);
+  Map<String, dynamic> toJson() => _$RecipesToJson(this);
 }
 
 @JsonSerializable()
@@ -34,6 +33,16 @@ class Recept {
 
 
 @JsonSerializable()
+class Ingredients {
+  List<Ingredient> ingredients;
+  Ingredients(this.ingredients);
+
+  factory Ingredients.fromJson(Map<String, dynamic> json) => _$IngredientsFromJson(json);
+
+  Map<String, dynamic> toJson() => _$IngredientsToJson(this);
+}
+
+@JsonSerializable()
 class Ingredient {
   String uuid = Uuid().v1();
   String name;
@@ -49,19 +58,19 @@ class Ingredient {
 }
 
 @JsonSerializable()
-class Nutrients {
-  List<Nutrient> nutrients;
-  Nutrients(this.nutrients);
+class Products {
+  List<Product> products;
+  Products(this.products);
 
-  factory Nutrients.fromJson(Map<String, dynamic> json) => _$NutrientsFromJson(json);
+  factory Products.fromJson(Map<String, dynamic> json) => _$ProductsFromJson(json);
 
-  Map<String, dynamic> toJson() => _$NutrientsToJson(this);
+  Map<String, dynamic> toJson() => _$ProductsToJson(this);
 
 }
 
 
 @JsonSerializable()
-class Nutrient {
+class Product {
   String? name;
   String? category;
   int? nevoCode;
@@ -77,12 +86,12 @@ class Nutrient {
   String? mg;
   bool? customNutrient = false;
 
-  Nutrient(this.name);
+  Product(this.name);
 
-  factory Nutrient.fromJson(Map<String, dynamic> json) =>
-      _$NutrientFromJson(json);
+  factory Product.fromJson(Map<String, dynamic> json) =>
+      _$ProductFromJson(json);
 
-  Map<String, dynamic> toJson() => _$NutrientToJson(this);
+  Map<String, dynamic> toJson() => _$ProductToJson(this);
 }
 
 

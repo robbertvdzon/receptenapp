@@ -1,5 +1,6 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
+import 'package:receptenapp/src/services/IngredientsRepository.dart';
 import 'package:receptenapp/src/services/ReceptenRepository.dart';
 import '../global.dart';
 import '../model/model.dart';
@@ -20,8 +21,8 @@ class _WidgetState extends State<IngredientItemWidget> {
   late Ingredient ingredient;
   late Ingredient newIngredient;
   late List<String> categories;
-  var receptenRepository = getIt<ReceptenRepository>();
-  var nutrientsRepository = getIt<NutrientsRepository>();
+  var ingredientsRepository = getIt<IngredientsRepository>();
+  var nutrientsRepository = getIt<ProductsRepository>();
 
   _WidgetState(Ingredient ingredient, List<String> categories) {
     this.ingredient = ingredient;
@@ -33,20 +34,20 @@ class _WidgetState extends State<IngredientItemWidget> {
 
 
   _saveForm() {
-    receptenRepository
-        .loadReceptenbook()
+    ingredientsRepository
+        .loadIngredients()
         .then((value) => saveIngredient(value, newIngredient));
   }
 
-  saveIngredient(ReceptenBoek receptenBoek, Ingredient newIngredient) {
+  saveIngredient(Ingredients ingredients, Ingredient newIngredient) {
     // receptenBoek.ingredienten.remove(ingredient);
-    receptenBoek.ingredienten
+    ingredients.ingredients
         .where((element) => element.uuid == ingredient.uuid)
         .forEach((element) {
       element.name = newIngredient.name;
       element.nutrientName = newIngredient.nutrientName;
     });
-    receptenRepository.saveReceptenBoek(receptenBoek);
+    ingredientsRepository.saveIngredients(ingredients);
   }
 
   @override

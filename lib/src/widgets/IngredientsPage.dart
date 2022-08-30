@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
+import 'package:receptenapp/src/services/IngredientsRepository.dart';
 import '../global.dart';
 import '../model/model.dart';
 import '../services/NutrientsRepository.dart';
@@ -27,21 +28,21 @@ class _IngredientsPageState extends State<IngredientsPage> {
 
   TextEditingController _textFieldController = TextEditingController();
   TextEditingController _filterTextFieldController = TextEditingController();
-  var receptenRepository = getIt<ReceptenRepository>();
-  var nutrientsRepository = getIt<NutrientsRepository>();
+  var ingredientsRepository = getIt<IngredientsRepository>();
+  var nutrientsRepository = getIt<ProductsRepository>();
   String _filter = "";
   String codeDialog ="";
   String valueText = "";
 
   _IngredientsPageState() {
-    receptenRepository.loadReceptenbook().then((value) => {
+    ingredientsRepository.loadIngredients().then((value) => {
       setState(() {
-        ingredients = value.ingredienten;
+        ingredients = value.ingredients;
         filteredIngredients = ingredients.where((element) => element.name!=null && element.name!.contains(_filter)).toList();
       })
     });
-    nutrientsRepository.loadNutrients().then((value) => {
-      nutricients = value.nutrients.map((e) => e.name ?? "").toList()
+    nutrientsRepository.loadProducts().then((value) => {
+      nutricients = value.products.map((e) => e.name ?? "").toList()
     });
 
   }
@@ -55,9 +56,9 @@ class _IngredientsPageState extends State<IngredientsPage> {
   }
 
   void addNutrient(String name) {
-    receptenRepository.addIngredient(name).then((value) => {
+    ingredientsRepository.addIngredient(name).then((value) => {
       setState(() {
-        ingredients = value.ingredienten;
+        ingredients = value.ingredients;
         filteredIngredients = ingredients.where((element) => element.name!=null && element.name!.contains(_filter)).toList();
       })
     });

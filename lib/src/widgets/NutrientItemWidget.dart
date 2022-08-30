@@ -6,30 +6,30 @@ import '../services/NutrientsRepository.dart';
 class NutrientItemWidget extends StatefulWidget {
   NutrientItemWidget({Key? key, required this.nutrient}) : super(key: key) {}
 
-  final Nutrient nutrient;
+  final Product nutrient;
 
   @override
   State<NutrientItemWidget> createState() => _WidgetState(nutrient);
 }
 
 class _WidgetState extends State<NutrientItemWidget> {
-  late Nutrient nutrient;
-  late Nutrient newNutrient;
-  var baseIngredientsRepository = getIt<NutrientsRepository>();
+  late Product nutrient;
+  late Product newNutrient;
+  var baseIngredientsRepository = getIt<ProductsRepository>();
 
 
-  _WidgetState(Nutrient ingredient) {
+  _WidgetState(Product ingredient) {
     this.nutrient = ingredient;
     this.newNutrient = ingredient;
   }
 
   _saveForm(){
-      baseIngredientsRepository.loadNutrients().then((value) => saveNutrient(value, newNutrient));
+      baseIngredientsRepository.loadProducts().then((value) => saveNutrient(value, newNutrient));
   }
 
-  saveNutrient(Nutrients baseIngredients, Nutrient newIngredient) {
+  saveNutrient(Products baseIngredients, Product newIngredient) {
     // baseIngredients.nutrients.remove(nutrient);
-    baseIngredients.nutrients.where((element) => element.name==nutrient.name).forEach((element) {
+    baseIngredients.products.where((element) => element.name==nutrient.name).forEach((element) {
       element.name = newIngredient.name;
       element.quantity = newIngredient.quantity;
       element.category = newIngredient.category;
@@ -45,7 +45,7 @@ class _WidgetState extends State<NutrientItemWidget> {
       element.mg = newIngredient.mg;
       element.customNutrient = newIngredient.customNutrient;
     });
-    baseIngredientsRepository.saveNutrients(baseIngredients);
+    baseIngredientsRepository.saveProducts(baseIngredients);
   }
 
 

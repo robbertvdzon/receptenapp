@@ -46,25 +46,25 @@ class _HomePageState extends State<HomePage> {
           children: <Widget>[
             Spacer(),
             ElevatedButton(
-              child: Text('Voedingsmiddelen categorieen'),
+              child: Text('Tags'),
               onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                       builder: (context) =>
-                          CategoriesPage(title: 'Voedingsmiddelen categorieen')),
+                          CategoriesPage(title: 'Tags')),
                 );
               },
             ),
             Spacer(),
             ElevatedButton(
-              child: Text('Voedingsmiddelen'),
+              child: Text('Producten'),
               onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                       builder: (context) =>
-                          NutrientsPage(title: 'Voedingsmiddelen')),
+                          NutrientsPage(title: 'Producten')),
                 );
               },
             ),
