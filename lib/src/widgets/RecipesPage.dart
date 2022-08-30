@@ -135,7 +135,7 @@ class _RecipesPageState extends State<RecipesPage> {
                       children: [
                         Container(
                           constraints: BoxConstraints.expand(
-                            height: 450.0,
+                            height: 30.0,
                           ),
                           color: Colors.white60,
                           alignment: Alignment.center,
@@ -146,9 +146,8 @@ class _RecipesPageState extends State<RecipesPage> {
 
                     ),
 
-                    margin: EdgeInsets.all(5),
-                    padding: EdgeInsets.all(15),
-                    // color: Colors.green[100],
+                    margin: EdgeInsets.all(0),
+                    padding: EdgeInsets.all(0),
                   );
                 }).toList(),
               ),

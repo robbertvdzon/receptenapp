@@ -48,8 +48,8 @@ class _PageState extends State<CategoriesPage> {
                 children: categories.map((strone) {
                   return Container(
                     child: Text(strone??""),
-                    margin: EdgeInsets.all(5),
-                    padding: EdgeInsets.all(15),
+                    margin: EdgeInsets.all(0),
+                    padding: EdgeInsets.all(0),
                     // color: Colors.green[100],
                   );
                 }).toList(),
