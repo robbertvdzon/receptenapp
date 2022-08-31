@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
+import 'package:receptenapp/src/services/IngredientsRepository.dart';
 
 import '../global.dart';
 import '../model/model.dart';
@@ -14,6 +15,7 @@ class IngredientTagsRepository {
   Tags? cachedTags = null;
 
   var _db = getIt<FirebaseFirestore>();
+  var _ingredientsRepository = getIt<IngredientsRepository>();
 
   Future<Tags> init(String email) {
     usersCollection = email;
@@ -22,7 +24,11 @@ class IngredientTagsRepository {
 
   Tags getTags() {
     if (cachedTags == null) throw Exception("Repository not initialized");
-    return cachedTags!;
+    Set<String> listTagStringsFromIngredients = _ingredientsRepository.getIngredients().ingredients.expand((e) => e.tags).toSet();
+    Set<String> listTagStringsFromDatabase = cachedTags!.tags.map((e) => e.tag!).toSet();
+    Set<String> allTagStrings = listTagStringsFromDatabase..addAll(listTagStringsFromIngredients);
+    List<Tag> allTags = allTagStrings.map((e) => new Tag(e)).toList();
+    return Tags(allTags);
   }
 
   Tag? getTagByTag (String tag) {

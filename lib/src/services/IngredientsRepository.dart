@@ -92,6 +92,6 @@ class IngredientsRepository {
     final gember = Ingredient("gember");
     gember.nutrientName = "Gemberwortel";
     gember.tags = ["houdbaar", "biologisch"];
-    return Ingredients([patat, hamburger, brood, gember]);
+    return Ingredients([patat, hamburger, brood, sojasaus, gember]);
   }
 }
