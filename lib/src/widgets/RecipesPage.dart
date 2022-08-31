@@ -27,19 +27,15 @@ class _RecipesPageState extends State<RecipesPage> {
 
   TextEditingController _textFieldController = TextEditingController();
   TextEditingController _filterTextFieldController = TextEditingController();
-  var ingredientsRepository = getIt<RecipesRepository>();
+  var recipesRepository = getIt<RecipesRepository>();
   var nutrientsRepository = getIt<ProductsRepository>();
   String _filter = "";
   String codeDialog ="";
   String valueText = "";
 
   _RecipesPageState() {
-    ingredientsRepository.loadRecipes().then((value) => {
-      setState(() {
-        recipes = value.recipes;
-        filteredRecipes = recipes.where((element) => element.name!=null && element.name!.contains(_filter)).toList();
-      })
-    });
+    recipes = recipesRepository.getRecipes().recipes;
+    filteredRecipes = recipes.where((element) => element.name!=null && element.name!.contains(_filter)).toList();
     products = nutrientsRepository.getProducts().products.map((e) => e.name ?? "").toList();
   }
 
@@ -52,9 +48,9 @@ class _RecipesPageState extends State<RecipesPage> {
   }
 
   void addNutrient(String name) {
-    ingredientsRepository.addRecept(name).then((value) => {
+    recipesRepository.createAndAddRecept(name).then((value) => {
       setState(() {
-        recipes = value.recipes;
+        recipes = recipesRepository.getRecipes().recipes;
         filteredRecipes = recipes.where((element) => element.name!=null && element.name!.contains(_filter)).toList();
       })
     });

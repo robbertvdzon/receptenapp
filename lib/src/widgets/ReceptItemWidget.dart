@@ -26,12 +26,6 @@ class _WidgetState extends State<ReceptItemWidget> {
     this.newRecept = recept;
   }
 
-  _saveForm() {
-    recipesRepository
-        .loadRecipes()
-        .then((value) => saveRecept(value, newRecept));
-  }
-
   _openForm() {
     Navigator.push(
       context,

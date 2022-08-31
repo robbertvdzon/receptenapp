@@ -26,9 +26,7 @@ class _WidgetState extends State<ReceptDetailsPage> {
   }
 
   _saveForm() {
-    recipesRepository
-        .loadRecipes()
-        .then((value) => saveRecept(value, newRecept));
+    recipesRepository.saveRecept(newRecept);
   }
 
   saveRecept(Recipes recipes, Recept newRecept) {

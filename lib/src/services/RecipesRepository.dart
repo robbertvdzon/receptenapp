@@ -1,83 +1,90 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:get_it/get_it.dart';
+import 'package:collection/collection.dart';
 
 import '../global.dart';
 import '../model/model.dart';
-import 'UserRepository.dart';
+
+
 
 class RecipesRepository {
-
   final String _DOCNAME = "recipes";
   final String _KEY = "data";
+  String? usersCollection = null;
+
+  Recipes? cachedRecipes = null;
 
   var _db = getIt<FirebaseFirestore>();
-  var _userRepository = getIt<UserRepository>();
 
-  void addReceptenbookIfNeeded() {
-    final email = _userRepository.getUsersEmail();
-    _db.collection(email).doc(_DOCNAME).get().then((event) {
-      var data = event.data();
-      if (data == null) {
-        final sample = createSample();
-        final Map<String, dynamic> json = sample.toJson();
-        final receptenboeken = <String, String>{_KEY: jsonEncode(json)};
-        _db
-            .collection(email)
-            .doc(_DOCNAME)
-            .set(receptenboeken)
-            .onError((e, _) => print("Error writing document: $e"));
-        print("sample book interted");
-      }
+  Future<Recipes> init(String email) {
+    usersCollection = email;
+    return _loadRecipes();
+  }
+
+  Recipes getRecipes() {
+    if (cachedRecipes == null) throw Exception("Repository not initialized");
+    return cachedRecipes!;
+  }
+
+  Recept? getReceptByName (String name) {
+    return getRecipes().recipes.firstWhereOrNull((element) => element.name==name);
+  }
+
+  Recept? getReceptByUuid (String uuid) {
+    return getRecipes().recipes.firstWhereOrNull((element) => element.uuid==uuid);
+  }
+
+  Future<void> saveRecept(Recept recept) async {
+    var recipes = getRecipes();
+    var oldRecept = recipes.recipes.firstWhereOrNull((element) => element.uuid==recept.uuid);
+    if (oldRecept!=null){
+      recipes.recipes.remove(oldRecept);
+    }
+    recipes.recipes.add(recept);
+    return saveRecipes(recipes);
+  }
+
+  Future<void> saveRecipes(Recipes recipes) async {
+    if (usersCollection == null) throw Exception("Repository not initialized");
+    final Map<String, dynamic> jsonMap = recipes.toJson();
+    final jsonKeyValue = <String, String>{_KEY: jsonEncode(jsonMap)};
+    return _db
+        .collection(usersCollection!)
+        .doc(_DOCNAME)
+        .set(jsonKeyValue)
+        .onError((e, _) => print("Error writing document: $e"))
+        .then((data) => cachedRecipes = recipes);
+  }
+
+  Future<Recept> createAndAddRecept(String name) async {
+    return _loadRecipes().then((recipes) {
+      final recept = Recept(List.empty(),name);
+      recipes.recipes.add(recept);
+      return saveRecipes(recipes).then((value) => recept);
     });
   }
 
-  void printTags() {
-    loadRecipes().then((data) =>
-        print(data)
-    );
-  }
-
-  Future<Recipes> loadRecipes() async {
-    final email = _userRepository.getUsersEmail();
-    final event = await _db.collection(email).doc(_DOCNAME).get();
+  Future<Recipes> _loadRecipes() async {
+    if (usersCollection == null) throw Exception("Repository not initialized");
+    final event = await _db.collection(usersCollection!).doc(_DOCNAME).get();
     Map<String, dynamic>? data = event.data();
     if (data != null) {
       var jsonData = data[_KEY];
       var json = jsonData as String;
       var jsonObj = jsonDecode(json);
-      final ingredientCategories = Recipes.fromJson(jsonObj);
-      return ingredientCategories;
+      final recipes = Recipes.fromJson(jsonObj);
+      cachedRecipes = recipes;
+      return recipes;
     }
     return Recipes(List.empty());
   }
 
-  void saveRecipes(Recipes recipes) {
-    final email = _userRepository.getUsersEmail();
-    final Map<String, dynamic> json = recipes.toJson();
-    final receptenBoekJson = <String, String>{_KEY: jsonEncode(json)};
-    _db
-        .collection(email)
-        .doc(_DOCNAME)
-        .set(receptenBoekJson)
-        .onError((e, _) => print("Error writing document: $e"));
-    print("ingredientCategories saves");
 
+  void addReceptenbookIfNeeded() {
+    saveRecipes(createSample());
   }
-
-  Future<Recipes> addRecept(String name) async {
-    return loadRecipes().then((recipes) => _addRecept(recipes, name));
-  }
-
-  Future<Recipes> _addRecept(Recipes recipes, String name) async {
-    final recept = Recept(List.empty(),name);
-    recipes.recipes.add(recept);
-    saveRecipes(recipes);
-    return recipes;
-  }
-
-
+  
   Recipes createSample() {
     final patat = Ingredient("patat");
     final hamburger = Ingredient("hamburger");
@@ -105,7 +112,9 @@ class RecipesRepository {
       [hamburgermenu, broodjeKaas],
     );
     return receptenboek;
-  }
-
+  }  
+  
 }
+
+
 
