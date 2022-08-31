@@ -4,7 +4,7 @@ import 'package:receptenapp/src/services/IngredientsRepository.dart';
 import 'package:receptenapp/src/services/RecipesRepository.dart';
 import '../global.dart';
 import '../model/model.dart';
-import '../services/NutrientsRepository.dart';
+import '../services/ProductsRepository.dart';
 
 class IngredientItemWidget extends StatefulWidget {
   IngredientItemWidget({Key? key, required this.ingredient, required this.categories})

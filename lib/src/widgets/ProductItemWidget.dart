@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../global.dart';
 import '../model/model.dart';
-import '../services/NutrientsRepository.dart';
+import '../services/ProductsRepository.dart';
 
 class ProductItemWidget extends StatefulWidget {
   ProductItemWidget({Key? key, required this.nutrient}) : super(key: key) {}
@@ -13,39 +13,36 @@ class ProductItemWidget extends StatefulWidget {
 }
 
 class _WidgetState extends State<ProductItemWidget> {
-  late Product nutrient;
-  late Product newNutrient;
-  var baseIngredientsRepository = getIt<ProductsRepository>();
+  late Product product;
+  late Product newProduct;
+  var productsRepository = getIt<ProductsRepository>();
 
 
-  _WidgetState(Product ingredient) {
-    this.nutrient = ingredient;
-    this.newNutrient = ingredient;
+  _WidgetState(Product product) {
+    this.product = product;
+    this.newProduct = product;
   }
 
   _saveForm(){
-      baseIngredientsRepository.loadProducts().then((value) => saveNutrient(value, newNutrient));
-  }
+    var baseIngredients = productsRepository.getProducts();
 
-  saveNutrient(Products baseIngredients, Product newIngredient) {
-    // baseIngredients.nutrients.remove(nutrient);
-    baseIngredients.products.where((element) => element.name==nutrient.name).forEach((element) {
-      element.name = newIngredient.name;
-      element.quantity = newIngredient.quantity;
-      element.category = newIngredient.category;
-      element.nevoCode = newIngredient.nevoCode;
-      element.kcal = newIngredient.kcal;
-      element.prot = newIngredient.prot;
-      element.nt = newIngredient.nt;
-      element.fat = newIngredient.fat;
-      element.sugar = newIngredient.sugar;
-      element.na = newIngredient.na;
-      element.k = newIngredient.k;
-      element.fe = newIngredient.fe;
-      element.mg = newIngredient.mg;
-      element.customNutrient = newIngredient.customNutrient;
+    baseIngredients.products.where((element) => element.name==product.name).forEach((element) {
+      element.name = newProduct.name;
+      element.quantity = newProduct.quantity;
+      element.category = newProduct.category;
+      element.nevoCode = newProduct.nevoCode;
+      element.kcal = newProduct.kcal;
+      element.prot = newProduct.prot;
+      element.nt = newProduct.nt;
+      element.fat = newProduct.fat;
+      element.sugar = newProduct.sugar;
+      element.na = newProduct.na;
+      element.k = newProduct.k;
+      element.fe = newProduct.fe;
+      element.mg = newProduct.mg;
+      element.customNutrient = newProduct.customNutrient;
     });
-    baseIngredientsRepository.saveProducts(baseIngredients);
+    productsRepository.saveProducts(baseIngredients);
   }
 
 
@@ -55,81 +52,81 @@ class _WidgetState extends State<ProductItemWidget> {
       children: <Widget>[
         TextFormField(
           decoration: InputDecoration(label:   Text('Name:')),
-          initialValue: "${nutrient.name}",
-          onChanged: (text) {newNutrient.name = text;},
+          initialValue: "${product.name}",
+          onChanged: (text) {newProduct.name = text;},
         ),
 
         TextFormField(
           decoration: InputDecoration(label:   Text('kcal:')),
-          initialValue: "${nutrient.kcal}",
-          onChanged: (text) {newNutrient.kcal = text;},
+          initialValue: "${product.kcal}",
+          onChanged: (text) {newProduct.kcal = text;},
         ),
 
         TextFormField(
           decoration: InputDecoration(label:   Text('Na:')),
-          initialValue: "${nutrient.na}",
-          onChanged: (text) {newNutrient.na = text;},
+          initialValue: "${product.na}",
+          onChanged: (text) {newProduct.na = text;},
         ),
 
         TextFormField(
           decoration: InputDecoration(label:   Text('k:')),
-          initialValue: "${nutrient.k}",
-          onChanged: (text) {newNutrient.k = text;},
+          initialValue: "${product.k}",
+          onChanged: (text) {newProduct.k = text;},
         ),
 
         TextFormField(
           decoration: InputDecoration(label:   Text('prot:')),
-          initialValue: "${nutrient.prot}",
-          onChanged: (text) {newNutrient.prot = text;},
+          initialValue: "${product.prot}",
+          onChanged: (text) {newProduct.prot = text;},
         ),
 
         TextFormField(
           decoration: InputDecoration(label:   Text('fat:')),
-          initialValue: "${nutrient.fat}",
-          onChanged: (text) {newNutrient.fat = text;},
+          initialValue: "${product.fat}",
+          onChanged: (text) {newProduct.fat = text;},
         ),
 
         TextFormField(
           decoration: InputDecoration(label:   Text('fe:')),
-          initialValue: "${nutrient.fe}",
-          onChanged: (text) {newNutrient.fe = text;},
+          initialValue: "${product.fe}",
+          onChanged: (text) {newProduct.fe = text;},
         ),
 
         TextFormField(
           decoration: InputDecoration(label:   Text('mg:')),
-          initialValue: "${nutrient.mg}",
-          onChanged: (text) {newNutrient.mg = text;},
+          initialValue: "${product.mg}",
+          onChanged: (text) {newProduct.mg = text;},
         ),
 
         TextFormField(
           decoration: InputDecoration(label:   Text('quantity:')),
-          initialValue: "${nutrient.quantity}",
-          onChanged: (text) {newNutrient.quantity = text;},
+          initialValue: "${product.quantity}",
+          onChanged: (text) {newProduct.quantity = text;},
         ),
 
         TextFormField(
           decoration: InputDecoration(label:   Text('nt:')),
-          initialValue: "${nutrient.nt}",
-          onChanged: (text) {newNutrient.nt = text;},
+          initialValue: "${product.nt}",
+          onChanged: (text) {newProduct.nt = text;},
         ),
 
         TextFormField(
           decoration: InputDecoration(label:   Text('Suiker:')),
-          initialValue: "${nutrient.sugar}",
-          onChanged: (text) {newNutrient.sugar = text;},
+          initialValue: "${product.sugar}",
+          onChanged: (text) {newProduct.sugar = text;},
         ),
         TextFormField(
           decoration: InputDecoration(label:   Text('Category:')),
-          initialValue: "${nutrient.category}",
-          onChanged: (text) {newNutrient.category = text;},
+          initialValue: "${product.category}",
+          onChanged: (text) {newProduct.category = text;},
         ),
         TextFormField(
           decoration: InputDecoration(label:   Text('nevo code:')),
-          initialValue: "${nutrient.nevoCode}",
+          initialValue: "${product.nevoCode}",
         ),
         TextFormField(
           decoration: InputDecoration(label:   Text('custom field:')),
-          initialValue: "${nutrient.customNutrient}",
+          initialValue: "${product.customNutrient}",
         ),
 
         ElevatedButton(

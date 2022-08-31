@@ -3,56 +3,65 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:csv/csv.dart';
 import 'package:flutter/services.dart';
+import 'package:collection/collection.dart';
 
 import '../global.dart';
 import '../model/model.dart';
-import 'UserRepository.dart';
+
+
 
 class ProductsRepository {
   final String _DOCNAME = "products";
   final String _KEY = "data";
+  String? usersCollection = null;
+
+  Products? cachedProducts = null;
 
   var _db = getIt<FirebaseFirestore>();
-  var _userRepository = getIt<UserRepository>();
 
-  void addProductsIfNeeded() {
-    final email = _userRepository.getUsersEmail();
-    _db.collection(email).doc(_DOCNAME).get().then((event) async {
-      print(event);
-      var data = event.data();
-      if (data == null) {
-        print("insert base nutrients");
-        final sample = await readPreloadedNutrients();
-        final Map<String, dynamic> json = sample.toJson();
-        final baseIngredients = <String, String>{_KEY: jsonEncode(json)};
-        print("start insert nutrients $baseIngredients");
-        _db
-            .collection(email)
-            .doc(_DOCNAME)
-            .set(baseIngredients)
-            .onError((e, _) => print("Error writing document: $e"));
-        print("sample nutrients inserted");
+  Future<Products> init(String email) {
+    usersCollection = email;
+    return _loadProducts();
+  }
 
-      }
+  Products getProducts() {
+    if (cachedProducts == null) throw Exception("Repository not initialized");
+    return cachedProducts!;
+  }
+
+  Product? getProductByName (String name) {
+    return getProducts().products.firstWhereOrNull((element) => element.name==name);
+  }
+
+  Future<void> saveProduct(Product product) async {
+    var products = getProducts();
+    var oldProduct = products.products.firstWhereOrNull((element) => element.name==product.name);
+    if (oldProduct!=null){
+      products.products.remove(oldProduct);
+    }
+    products.products.add(product);
+    return saveProducts(products);
+  }
+
+  Future<void> saveProducts(Products products) async {
+    if (usersCollection == null) throw Exception("Repository not initialized");
+    final Map<String, dynamic> jsonMap = products.toJson();
+    final jsonKeyValue = <String, String>{_KEY: jsonEncode(jsonMap)};
+    return _db
+        .collection(usersCollection!)
+        .doc(_DOCNAME)
+        .set(jsonKeyValue)
+        .onError((e, _) => print("Error writing document: $e"))
+        .then((data) => cachedProducts = products);
+  }
+
+  Future<Product> createAndAddProduct(String name) async {
+    return _loadProducts().then((products) {
+      final product = Product(name);
+      products.products.add(product);
+      return saveProducts(products).then((value) => product);
     });
   }
-
-  Future<Products> loadProducts() async {
-    final email = _userRepository.getUsersEmail();
-    final event = await _db.collection(email).doc(_DOCNAME).get();
-    Map<String, dynamic>? data = event.data();
-    if (data != null) {
-      var robbert = data[_KEY];
-      var json = robbert as String;
-      var jsonObj = jsonDecode(json);
-      final result =  Products.fromJson(jsonObj);
-      return result;
-    }
-    return Products(List.empty());
-  }
-
-
-
 
 
   Future<Products> readPreloadedNutrients() async {
@@ -80,34 +89,24 @@ class ProductsRepository {
     bi.customNutrient = false;
     return bi;
   }
+  
 
-  void saveProducts(Products baseIngredients) {
-    final email = _userRepository.getUsersEmail();
-    final Map<String, dynamic> json = baseIngredients.toJson();
-    final baseIngredientsJson = <String, String>{_KEY: jsonEncode(json)};
-
-    _db
-        .collection(email)
-        .doc(_DOCNAME)
-        .set(baseIngredientsJson)
-        .onError((e, _) => print("Error writing document: $e"));
-    print("sample baseIngredients inserted");
-
+  Future<Products> _loadProducts() async {
+    if (usersCollection == null) throw Exception("Repository not initialized");
+    final event = await _db.collection(usersCollection!).doc(_DOCNAME).get();
+    Map<String, dynamic>? data = event.data();
+    if (data != null) {
+      var jsonData = data[_KEY];
+      var json = jsonData as String;
+      var jsonObj = jsonDecode(json);
+      final products = Products.fromJson(jsonObj);
+      cachedProducts = products;
+      return products;
+    }
+    return Products(List.empty());
   }
-
-  Future<Products> addProduct(String name) async {
-    return loadProducts().then((products) => _addProduct(products, name));
-  }
-
-  Future<Products> _addProduct(Products products, String name) async {
-    final product = Product(name);
-    products.products.add(product);
-    saveProducts(products);
-    return products;
-  }
-
-
 }
+
 
 /*
 NEVO-versie/NEVO-version

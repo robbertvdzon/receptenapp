@@ -6,7 +6,7 @@ import 'package:get_it/get_it.dart';
 import 'package:receptenapp/src/services/IngredientsRepository.dart';
 import '../global.dart';
 import '../model/model.dart';
-import '../services/NutrientsRepository.dart';
+import '../services/ProductsRepository.dart';
 import '../services/RecipesRepository.dart';
 import '../services/UserRepository.dart';
 import 'IngredientItemWidget.dart';
@@ -29,7 +29,7 @@ class _IngredientsPageState extends State<IngredientsPage> {
   TextEditingController _textFieldController = TextEditingController();
   TextEditingController _filterTextFieldController = TextEditingController();
   var ingredientsRepository = getIt<IngredientsRepository>();
-  var nutrientsRepository = getIt<ProductsRepository>();
+  var productsRepository = getIt<ProductsRepository>();
   String _filter = "";
   String codeDialog ="";
   String valueText = "";
@@ -37,9 +37,7 @@ class _IngredientsPageState extends State<IngredientsPage> {
   _IngredientsPageState() {
       ingredients = ingredientsRepository.getIngredients().ingredients;
       filteredIngredients = ingredients.where((element) => element.name!=null && element.name!.contains(_filter)).toList();
-      nutrientsRepository.loadProducts().then((value) => {
-        nutricients = value.products.map((e) => e.name ?? "").toList()
-      });
+      nutricients = productsRepository.getProducts().products.map((e) => e.name ?? "").toList();
   }
 
 

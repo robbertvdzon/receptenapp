@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:receptenapp/src/services/RecipesRepository.dart';
 import '../global.dart';
 import '../model/model.dart';
-import '../services/NutrientsRepository.dart';
+import '../services/ProductsRepository.dart';
 
 class ReceptDetailsPage extends StatefulWidget {
   ReceptDetailsPage({Key? key, required this.title, required this.recept}) : super(key: key) {}

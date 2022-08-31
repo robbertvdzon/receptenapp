@@ -5,7 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
 import '../global.dart';
 import '../model/model.dart';
-import '../services/NutrientsRepository.dart';
+import '../services/ProductsRepository.dart';
 import '../services/RecipesRepository.dart';
 import '../services/UserRepository.dart';
 import 'ProductItemWidget.dart';
@@ -23,7 +23,7 @@ class RecipesPage extends StatefulWidget {
 class _RecipesPageState extends State<RecipesPage> {
   List<Recept> recipes = List.empty();
   List<Recept> filteredRecipes = List.empty();
-  List<String> nutricients = List.empty();
+  List<String> products = List.empty();
 
   TextEditingController _textFieldController = TextEditingController();
   TextEditingController _filterTextFieldController = TextEditingController();
@@ -40,10 +40,7 @@ class _RecipesPageState extends State<RecipesPage> {
         filteredRecipes = recipes.where((element) => element.name!=null && element.name!.contains(_filter)).toList();
       })
     });
-    nutrientsRepository.loadProducts().then((value) => {
-      nutricients = value.products.map((e) => e.name ?? "").toList()
-    });
-
+    products = nutrientsRepository.getProducts().products.map((e) => e.name ?? "").toList();
   }
 
 

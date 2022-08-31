@@ -6,7 +6,7 @@ import 'package:get_it/get_it.dart';
 import '../global.dart';
 import '../model/model.dart';
 import '../services/TagsRepository.dart';
-import '../services/NutrientsRepository.dart';
+import '../services/ProductsRepository.dart';
 import '../services/RecipesRepository.dart';
 import '../services/UserRepository.dart';
 
