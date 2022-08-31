@@ -5,7 +5,7 @@ import 'package:get_it/get_it.dart';
 import 'package:receptenapp/src/services/IngredientsRepository.dart';
 import 'package:receptenapp/src/services/ProductsRepository.dart';
 import 'package:receptenapp/src/services/RecipesRepository.dart';
-import 'package:receptenapp/src/services/TagsRepository.dart';
+import 'package:receptenapp/src/services/IngredientTagsRepository.dart';
 
 import '../global.dart';
 import '../model/model.dart';
@@ -15,7 +15,7 @@ class Repositories {
   var _ingredientsRepository = getIt<IngredientsRepository>();
   var _productsRepository = getIt<ProductsRepository>();
   var _recipesRepository = getIt<RecipesRepository>();
-  var _tagsRepository = getIt<TagsRepository>();
+  var _tagsRepository = getIt<IngredientTagsRepository>();
   var _userRepository = getIt<UserRepository>();
 
 

@@ -5,7 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
 import '../global.dart';
 import '../model/model.dart';
-import '../services/TagsRepository.dart';
+import '../services/IngredientTagsRepository.dart';
 import '../services/ProductsRepository.dart';
 import '../services/RecipesRepository.dart';
 import '../services/UserRepository.dart';
@@ -21,7 +21,7 @@ class CategoriesPage extends StatefulWidget {
 
 class _PageState extends State<CategoriesPage> {
   List<String?> categories = List.empty();
-  var tagsRepository = getIt<TagsRepository>();
+  var tagsRepository = getIt<IngredientTagsRepository>();
 
   _PageState() {
     categories = tagsRepository.getTags().tags.map((e)=>e.tag).toList();

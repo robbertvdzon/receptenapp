@@ -5,7 +5,7 @@ import 'package:receptenapp/src/global.dart';
 import 'package:receptenapp/src/model/model.dart';
 import 'package:receptenapp/src/services/IngredientsRepository.dart';
 import 'package:receptenapp/src/services/Repositories.dart';
-import 'package:receptenapp/src/services/TagsRepository.dart';
+import 'package:receptenapp/src/services/IngredientTagsRepository.dart';
 import 'package:receptenapp/src/services/ProductsRepository.dart';
 import 'package:receptenapp/src/services/RecipesRepository.dart';
 import 'package:receptenapp/src/services/UserRepository.dart';
@@ -28,7 +28,7 @@ Future<void> addSampleWhenNeeded() async {
   var recipesRepository = getIt<RecipesRepository>();
   var productsRepository = getIt<ProductsRepository>();
   var ingredientsRepository = getIt<IngredientsRepository>();
-  var tagsRepository = getIt<TagsRepository>();
+  var tagsRepository = getIt<IngredientTagsRepository>();
 
   // var cat1 = Tag("cat1");
   // var cat2 = Tag("cat2");
@@ -60,7 +60,7 @@ Future<void> setupDependencies() async {
   getIt.registerSingleton<IngredientsRepository>(IngredientsRepository());
   getIt.registerSingleton<RecipesRepository>(RecipesRepository());
   getIt.registerSingleton<ProductsRepository>(ProductsRepository());
-  getIt.registerSingleton<TagsRepository>(TagsRepository());
+  getIt.registerSingleton<IngredientTagsRepository>(IngredientTagsRepository());
   getIt.registerSingleton<Repositories>(Repositories());
 }
 

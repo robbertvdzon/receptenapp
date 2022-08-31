@@ -6,7 +6,7 @@ import 'package:collection/collection.dart';
 import '../global.dart';
 import '../model/model.dart';
 
-class TagsRepository {
+class IngredientTagsRepository {
   final String _DOCNAME = "tags";
   final String _KEY = "data";
   String? usersCollection = null;

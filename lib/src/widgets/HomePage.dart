@@ -47,13 +47,13 @@ class _HomePageState extends State<HomePage> {
           children: <Widget>[
             Spacer(),
             ElevatedButton(
-              child: Text('Tags'),
+              child: Text('Ingredient tags'),
               onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                       builder: (context) =>
-                          CategoriesPage(title: 'Tags')),
+                          CategoriesPage(title: 'Ingredient tags')),
                 );
               },
             ),
