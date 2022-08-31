@@ -27,8 +27,13 @@ class Repositories {
       _tagsRepository.init(email),
       _ingredientsRepository.init(email)
     ];
-    Future.wait(futures);
+    Future.wait(futures).then((value) {
+       _recipesRepository.setSampleRecipes();
+       _productsRepository.setSampleProducts();
+       _tagsRepository.setSampleTags();
+       _ingredientsRepository.setSampleIngredients();
+       return null;
+    });
   }
-
 
 }

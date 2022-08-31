@@ -59,6 +59,17 @@ class IngredientTagsRepository {
     });
   }
 
+  void setSampleTags() {
+    saveTags(_createSample());
+  }
+
+  Tags _createSample() {
+    var cat1 = Tag("cat1");
+    var cat2 = Tag("cat2");
+    return Tags([cat1, cat2]);
+  }
+
+
   Future<Tags> _loadTags() async {
     if (usersCollection == null) throw Exception("Repository not initialized");
     final event = await _db.collection(usersCollection!).doc(_DOCNAME).get();
@@ -73,4 +84,5 @@ class IngredientTagsRepository {
     }
     return Tags(List.empty());
   }
+
 }

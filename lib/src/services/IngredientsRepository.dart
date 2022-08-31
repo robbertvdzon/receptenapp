@@ -63,6 +63,10 @@ class IngredientsRepository {
     });
   }
 
+  void setSampleIngredients() {
+    saveIngredients(_createSample());
+  }
+
   Future<Ingredients> _loadIngredients() async {
     if (usersCollection == null) throw Exception("Repository not initialized");
     final event = await _db.collection(usersCollection!).doc(_DOCNAME).get();
@@ -76,5 +80,18 @@ class IngredientsRepository {
       return ingredients;
     }
     return Ingredients(List.empty());
+  }
+
+  Ingredients _createSample(){
+    final patat = Ingredient("patat");
+    final hamburger = Ingredient("hamburger");
+    final brood = Ingredient("brood");
+    final sojasaus = Ingredient("sojasaus");
+    sojasaus.nutrientName = "Ketjap zout";
+    sojasaus.tags = ["houdbaar","potje"];
+    final gember = Ingredient("gember");
+    gember.nutrientName = "Gemberwortel";
+    gember.tags = ["houdbaar", "biologisch"];
+    return Ingredients([patat, hamburger, brood, gember]);
   }
 }

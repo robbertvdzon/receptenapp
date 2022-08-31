@@ -63,6 +63,10 @@ class ProductsRepository {
     });
   }
 
+  void setSampleProducts() async {
+    final sample = await readPreloadedNutrients();
+    saveProducts(sample);
+  }
 
   Future<Products> readPreloadedNutrients() async {
     final String response = await rootBundle.loadString('NEVO2021.csv');

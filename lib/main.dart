@@ -19,35 +19,7 @@ Future<void> main() async {
 
   await setupDependencies();
 
-  addSampleWhenNeeded();
-
   runApp(ReceptenApp());
-}
-
-Future<void> addSampleWhenNeeded() async {
-  var recipesRepository = getIt<RecipesRepository>();
-  var productsRepository = getIt<ProductsRepository>();
-  var ingredientsRepository = getIt<IngredientsRepository>();
-  var tagsRepository = getIt<IngredientTagsRepository>();
-
-  // var cat1 = Tag("cat1");
-  // var cat2 = Tag("cat2");
-  // var tags = Tags([cat1, cat2]);
-  // tagsRepository.saveTags(tags);
-  //
-  // final patat = Ingredient("patat");
-  // final hamburger = Ingredient("hamburger");
-  // final brood = Ingredient("brood");
-  // final sojasaus = Ingredient("sojasaus");
-  // sojasaus.nutrientName = "Ketjap zout";
-  // final gember = Ingredient("gember");
-  // gember.nutrientName = "Gemberwortel";
-  // final ingredients = Ingredients([patat, hamburger, brood, gember]);
-  // ingredientsRepository.saveIngredients(ingredients);
-  //
-  //
-  // recipesRepository.addReceptenbookIfNeeded();
-  // productsRepository.addProductsIfNeeded();
 }
 
 Future<void> setupDependencies() async {

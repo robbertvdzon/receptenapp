@@ -80,19 +80,20 @@ class RecipesRepository {
     return Recipes(List.empty());
   }
 
-
-  void addReceptenbookIfNeeded() {
-    saveRecipes(createSample());
+  void setSampleRecipes() {
+    saveRecipes(_createSample());
   }
   
-  Recipes createSample() {
+  Recipes _createSample() {
     final patat = Ingredient("patat");
     final hamburger = Ingredient("hamburger");
     final brood = Ingredient("brood");
     final boter = Ingredient("boter");
     final kaas = Ingredient("kaas");
-    final hamburgermenu = Recept([patat, hamburger, brood], "hamburgermenu");
-    final broodjeKaas = Recept([brood, boter, kaas], "broodje kaas");
+    final hamburgermenu = Recept([patat, hamburger, brood], "hamburger");
+    hamburgermenu.tags = ["zuivel","vlees"];
+    final broodjeKaas = Recept([brood, boter, kaas], "kaas broodje");
+    broodjeKaas.tags = ["zuivel","vegatarisch"];
 
     final noedelsoep = Recept([
       Ingredient("gember"),
@@ -108,8 +109,9 @@ class RecipesRepository {
       Ingredient("sesamzaad"),
     ], "Noedelsoep met shiitake en paksoi");
     noedelsoep.directions = "Snijd de gember in dunne plakjes.\nSnijd de knoflook.\nKook de noedels..................";
+    noedelsoep.tags = ["vlees","soep"];
     final receptenboek = Recipes(
-      [hamburgermenu, broodjeKaas],
+      [hamburgermenu, broodjeKaas, noedelsoep],
     );
     return receptenboek;
   }  

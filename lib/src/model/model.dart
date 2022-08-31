@@ -24,6 +24,7 @@ class Recept {
   String name;
   String directions = "";
   List<Ingredient> ingredienten;
+  List<String> tags = List.empty();
 
   Recept(this.ingredienten, this.name);
 
@@ -48,7 +49,7 @@ class Ingredient {
   String uuid = Uuid().v1();
   String name;
   String? nutrientName;
-  List<Tag> tags = List.empty();
+  List<String> tags = List.empty();
 
   Ingredient(this.name);
 
