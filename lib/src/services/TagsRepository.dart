@@ -1,52 +1,76 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:get_it/get_it.dart';
+import 'package:collection/collection.dart';
 
 import '../global.dart';
 import '../model/model.dart';
-import 'UserRepository.dart';
 
 class TagsRepository {
-
   final String _DOCNAME = "tags";
   final String _KEY = "data";
+  String? usersCollection = null;
+
+  Tags? cachedTags = null;
 
   var _db = getIt<FirebaseFirestore>();
-  var _userRepository = getIt<UserRepository>();
 
-  void printTags() {
-    loadTags().then((data) =>
-      print(data)
-    );
+  Future<Tags> init(String email) {
+    usersCollection = email;
+    return _loadTags();
+  }
+
+  Tags getTags() {
+    if (cachedTags == null) throw Exception("Repository not initialized");
+    return cachedTags!;
+  }
+
+  Tag? getTagByTag (String tag) {
+    return getTags().tags.firstWhereOrNull((element) => element.tag==tag);
+  }
+
+  Future<void> saveTag(Tag tag) async {
+    var tags = getTags();
+    var oldTag = tags.tags.firstWhereOrNull((element) => element.tag==tag.tag);
+    if (oldTag!=null){
+      tags.tags.remove(oldTag);
     }
+    tags.tags.add(tag);
+    return saveTags(tags);
+  }
 
-  Future<Tags> loadTags() async {
-    final email = _userRepository.getUsersEmail();
-    final event = await _db.collection(email).doc(_DOCNAME).get();
+  Future<void> saveTags(Tags tags) async {
+    if (usersCollection == null) throw Exception("Repository not initialized");
+    final Map<String, dynamic> jsonMap = tags.toJson();
+    final jsonKeyValue = <String, String>{_KEY: jsonEncode(jsonMap)};
+    return _db
+        .collection(usersCollection!)
+        .doc(_DOCNAME)
+        .set(jsonKeyValue)
+        .onError((e, _) => print("Error writing document: $e"))
+        .then((data) => cachedTags = tags);
+  }
+
+  Future<Tag> createAndAddTag(String name) async {
+    return _loadTags().then((tags) {
+      final tag = Tag(name);
+      tags.tags.add(tag);
+      return saveTags(tags).then((value) => tag);
+    });
+  }
+
+  Future<Tags> _loadTags() async {
+    if (usersCollection == null) throw Exception("Repository not initialized");
+    final event = await _db.collection(usersCollection!).doc(_DOCNAME).get();
     Map<String, dynamic>? data = event.data();
     if (data != null) {
       var jsonData = data[_KEY];
       var json = jsonData as String;
       var jsonObj = jsonDecode(json);
-      final ingredientCategories = Tags.fromJson(jsonObj);
-      return ingredientCategories;
+      final tags = Tags.fromJson(jsonObj);
+      cachedTags = tags;
+      return tags;
     }
     return Tags(List.empty());
   }
-
-  void saveTags(Tags tags) {
-    final email = _userRepository.getUsersEmail();
-    final Map<String, dynamic> json = tags.toJson();
-    final receptenBoekJson = <String, String>{_KEY: jsonEncode(json)};
-    _db
-        .collection(email)
-        .doc(_DOCNAME)
-        .set(receptenBoekJson)
-        .onError((e, _) => print("Error writing document: $e"));
-    print("ingredientCategories saves");
-
-  }
-
-
 }

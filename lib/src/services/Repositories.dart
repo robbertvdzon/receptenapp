@@ -24,7 +24,7 @@ class Repositories {
     List<Future<void>> futures = [
        _productsRepository.init(email),
       _recipesRepository.init(email),
-      // _tagsRepository.init(email),
+      _tagsRepository.init(email),
       _ingredientsRepository.init(email)
     ];
     Future.wait(futures);

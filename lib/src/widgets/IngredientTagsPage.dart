@@ -21,15 +21,10 @@ class CategoriesPage extends StatefulWidget {
 
 class _PageState extends State<CategoriesPage> {
   List<String?> categories = List.empty();
-  var ingredientCategoryRepository = getIt<TagsRepository>();
+  var tagsRepository = getIt<TagsRepository>();
 
   _PageState() {
-    ingredientCategoryRepository.loadTags().then((value) => {
-          setState(() {
-            categories = value.tags.map((e)=>e.tag).toList();
-                // value.categories.map((e) => e.category).toSet().toList();
-          })
-        });
+    categories = tagsRepository.getTags().tags.map((e)=>e.tag).toList();
   }
 
   @override

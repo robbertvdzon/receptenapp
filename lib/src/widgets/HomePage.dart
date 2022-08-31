@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:receptenapp/src/widgets/CategoriesPage.dart';
+import 'package:receptenapp/src/widgets/IngredientTagsPage.dart';
 import 'package:receptenapp/src/widgets/RecipesPage.dart';
 import '../global.dart';
 import '../services/UserRepository.dart';
