@@ -22,6 +22,7 @@ class Recipes {
 class Recept {
   String uuid = Uuid().v1();
   String name;
+  String directions = "";
   List<Ingredient> ingredienten;
 
   Recept(this.ingredienten, this.name);

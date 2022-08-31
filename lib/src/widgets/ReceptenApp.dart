@@ -6,6 +6,7 @@ import 'package:flutterfire_ui/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
 import '../global.dart';
+import '../services/Repositories.dart';
 import '../services/UserRepository.dart';
 import 'HomePage.dart';
 
@@ -21,6 +22,7 @@ class ReceptenApp extends StatefulWidget {
 class _MyAppState extends State<ReceptenApp> {
   late StreamSubscription<User?> user;
   var userRepository = getIt<UserRepository>();
+  var repositories = getIt<Repositories>();
 
   void initState() {
     super.initState();
@@ -44,7 +46,9 @@ class _MyAppState extends State<ReceptenApp> {
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
           if (snapshot.hasData || DISABLE_AUTH) {
+            print("START AFTER AUTH");
             userRepository.setUser(snapshot.data);
+            repositories.initRepositories();
             return MaterialApp(
               title: 'Flutter Demo',
               theme: ThemeData(

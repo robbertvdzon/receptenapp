@@ -1,64 +1,80 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:get_it/get_it.dart';
+import 'package:collection/collection.dart';
 
 import '../global.dart';
 import '../model/model.dart';
-import 'UserRepository.dart';
-
 
 class IngredientsRepository {
-
   final String _DOCNAME = "ingredients";
   final String _KEY = "data";
+  String? usersCollection = null;
+
+  Ingredients? cachedIngredients = null;
 
   var _db = getIt<FirebaseFirestore>();
-  var _userRepository = getIt<UserRepository>();
 
-  void printIngredients() {
-    loadIngredients().then((data) =>
-        print(data)
-    );
+  Future<Ingredients> init(String email) {
+    usersCollection = email;
+    return _loadIngredients();
   }
 
-  Future<Ingredients> loadIngredients() async {
-    final email = _userRepository.getUsersEmail();
-    final event = await _db.collection(email).doc(_DOCNAME).get();
+  Ingredients getIngredients() {
+    if (cachedIngredients == null) throw Exception("Repository not initialized");
+    return cachedIngredients!;
+  }
+
+  Ingredient? getIngredientByName (String name) {
+    return getIngredients().ingredients.firstWhereOrNull((element) => element.name==name);
+  }
+
+  Ingredient? getIngredientByUuid (String uuid) {
+    return getIngredients().ingredients.firstWhereOrNull((element) => element.uuid==uuid);
+  }
+
+  Future<void> saveIngredient(Ingredient ingredient) async {
+    var ingredients = getIngredients();
+    var oldIngredient = ingredients.ingredients.firstWhereOrNull((element) => element.uuid==ingredient.uuid);
+    if (oldIngredient!=null){
+      ingredients.ingredients.remove(oldIngredient);
+    }
+    ingredients.ingredients.add(ingredient);
+    return saveIngredients(ingredients);
+  }
+
+  Future<void> saveIngredients(Ingredients ingredients) async {
+    if (usersCollection == null) throw Exception("Repository not initialized");
+    final Map<String, dynamic> jsonMap = ingredients.toJson();
+    final jsonKeyValue = <String, String>{_KEY: jsonEncode(jsonMap)};
+    return _db
+        .collection(usersCollection!)
+        .doc(_DOCNAME)
+        .set(jsonKeyValue)
+        .onError((e, _) => print("Error writing document: $e"))
+        .then((data) => cachedIngredients = ingredients);
+  }
+
+  Future<Ingredient> createAndAddIngredient(String name) async {
+    return _loadIngredients().then((ingredients) {
+      final ingredient = Ingredient(name);
+      ingredients.ingredients.add(ingredient);
+      return saveIngredients(ingredients).then((value) => ingredient);
+    });
+  }
+
+  Future<Ingredients> _loadIngredients() async {
+    if (usersCollection == null) throw Exception("Repository not initialized");
+    final event = await _db.collection(usersCollection!).doc(_DOCNAME).get();
     Map<String, dynamic>? data = event.data();
     if (data != null) {
       var jsonData = data[_KEY];
       var json = jsonData as String;
       var jsonObj = jsonDecode(json);
-      final ingredientCategories = Ingredients.fromJson(jsonObj);
-      return ingredientCategories;
+      final ingredients = Ingredients.fromJson(jsonObj);
+      cachedIngredients = ingredients;
+      return ingredients;
     }
     return Ingredients(List.empty());
   }
-
-  void saveIngredients(Ingredients ingredients) {
-    final email = _userRepository.getUsersEmail();
-    final Map<String, dynamic> json = ingredients.toJson();
-    final receptenBoekJson = <String, String>{_KEY: jsonEncode(json)};
-    _db
-        .collection(email)
-        .doc(_DOCNAME)
-        .set(receptenBoekJson)
-        .onError((e, _) => print("Error writing document: $e"));
-    print("ingredientCategories saves");
-
-  }
-
-  Future<Ingredients> addIngredient(String name) async {
-    return loadIngredients().then((ingredients) => _addIngredient(ingredients, name));
-  }
-
-  Future<Ingredients> _addIngredient(Ingredients ingredients, String name) async {
-    final ingredient = Ingredient(name);
-    ingredients.ingredients.add(ingredient);
-    saveIngredients(ingredients);
-    return ingredients;
-  }
-
-
 }

@@ -35,16 +35,11 @@ class _IngredientsPageState extends State<IngredientsPage> {
   String valueText = "";
 
   _IngredientsPageState() {
-    ingredientsRepository.loadIngredients().then((value) => {
-      setState(() {
-        ingredients = value.ingredients;
-        filteredIngredients = ingredients.where((element) => element.name!=null && element.name!.contains(_filter)).toList();
-      })
-    });
-    nutrientsRepository.loadProducts().then((value) => {
-      nutricients = value.products.map((e) => e.name ?? "").toList()
-    });
-
+      ingredients = ingredientsRepository.getIngredients().ingredients;
+      filteredIngredients = ingredients.where((element) => element.name!=null && element.name!.contains(_filter)).toList();
+      nutrientsRepository.loadProducts().then((value) => {
+        nutricients = value.products.map((e) => e.name ?? "").toList()
+      });
   }
 
 
@@ -56,9 +51,9 @@ class _IngredientsPageState extends State<IngredientsPage> {
   }
 
   void addNutrient(String name) {
-    ingredientsRepository.addIngredient(name).then((value) => {
+    ingredientsRepository.createAndAddIngredient(name).then((value) => {
       setState(() {
-        ingredients = value.ingredients;
+        ingredients = ingredientsRepository.getIngredients().ingredients;
         filteredIngredients = ingredients.where((element) => element.name!=null && element.name!.contains(_filter)).toList();
       })
     });

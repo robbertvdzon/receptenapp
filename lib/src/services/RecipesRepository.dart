@@ -86,6 +86,21 @@ class RecipesRepository {
     final kaas = Ingredient("kaas");
     final hamburgermenu = Recept([patat, hamburger, brood], "hamburgermenu");
     final broodjeKaas = Recept([brood, boter, kaas], "broodje kaas");
+
+    final noedelsoep = Recept([
+      Ingredient("gember"),
+      Ingredient("knoflook"),
+      Ingredient("eiernoedels"),
+      Ingredient("zonnebloemolie"),
+      Ingredient("water"),
+      Ingredient("groentebouillontabletten"),
+      Ingredient("sojasaus"),
+      Ingredient("rijstazijn"),
+      Ingredient("shitakes"),
+      Ingredient("paksoi"),
+      Ingredient("sesamzaad"),
+    ], "Noedelsoep met shiitake en paksoi");
+    noedelsoep.directions = "Snijd de gember in dunne plakjes.\nSnijd de knoflook.\nKook de noedels..................";
     final receptenboek = Recipes(
       [hamburgermenu, broodjeKaas],
     );

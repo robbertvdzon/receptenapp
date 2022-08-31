@@ -31,23 +31,8 @@ class _WidgetState extends State<IngredientItemWidget> {
 
   }
 
-
-
   _saveForm() {
-    ingredientsRepository
-        .loadIngredients()
-        .then((value) => saveIngredient(value, newIngredient));
-  }
-
-  saveIngredient(Ingredients ingredients, Ingredient newIngredient) {
-    // receptenBoek.ingredienten.remove(ingredient);
-    ingredients.ingredients
-        .where((element) => element.uuid == ingredient.uuid)
-        .forEach((element) {
-      element.name = newIngredient.name;
-      element.nutrientName = newIngredient.nutrientName;
-    });
-    ingredientsRepository.saveIngredients(ingredients);
+    ingredientsRepository.saveIngredient(newIngredient);
   }
 
   @override
@@ -65,30 +50,6 @@ class _WidgetState extends State<IngredientItemWidget> {
             newIngredient.name = text;
           },
         ),
-        // TextFormField(
-        //   decoration: InputDecoration(label: Text('Voedingsmiddel:')),
-        //   initialValue: "${ingredient.nutrientName}",
-        //   onChanged: (text) {
-        //     newIngredient.nutrientName = text;
-        //   },
-        // ),
-        // DropdownButton<String>(
-        //   value: "${ingredient.nutrientName??''}",
-        //   icon: const Icon(Icons.arrow_downward),
-        //   elevation: 16,
-        //   // style: const TextStyle(color: Colors.deepPurple),
-        //   underline: Container(
-        //     height: 2,
-        //     // color: Colors.deepPurpleAccent,
-        //   ),
-        //   onChanged: (String? newValue) {
-        //     setState(() {
-        //       newIngredient.nutrientName = newValue;
-        //     });
-        //   },
-        //   items: buildList(),
-        // ),
-
 
         DropdownSearch<String>(
           popupProps: PopupProps.menu(
