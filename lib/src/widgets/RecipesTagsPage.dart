@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
+import 'package:receptenapp/src/services/RecipesTagsRepository.dart';
 import '../global.dart';
 import '../model/model.dart';
 import '../services/IngredientTagsRepository.dart';
@@ -10,21 +11,21 @@ import '../services/ProductsRepository.dart';
 import '../services/RecipesRepository.dart';
 import '../services/UserRepository.dart';
 
-class IngredientsTagsPage extends StatefulWidget {
-  IngredientsTagsPage({Key? key, required this.title}) : super(key: key) {}
+class RecipesTagsPage extends StatefulWidget {
+  RecipesTagsPage({Key? key, required this.title}) : super(key: key) {}
 
   final String title;
 
   @override
-  State<IngredientsTagsPage> createState() => _PageState();
+  State<RecipesTagsPage> createState() => _PageState();
 }
 
-class _PageState extends State<IngredientsTagsPage> {
-  List<String?> categories = List.empty();
-  var tagsRepository = getIt<IngredientTagsRepository>();
+class _PageState extends State<RecipesTagsPage> {
+  List<String?> tags = List.empty();
+  var tagsRepository = getIt<RecipesTagsRepository>();
 
   _PageState() {
-    categories = tagsRepository.getTags().tags.map((e)=>e.tag).toList();
+    tags = tagsRepository.getTags().tags.map((e)=>e.tag).toList();
   }
 
   @override
@@ -40,7 +41,7 @@ class _PageState extends State<IngredientsTagsPage> {
             SizedBox(
               height: 400,
               child: ListView(
-                children: categories.map((strone) {
+                children: tags.map((strone) {
                   return Container(
                     child: Text(strone??""),
                     margin: EdgeInsets.all(0),

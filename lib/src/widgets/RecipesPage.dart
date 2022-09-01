@@ -130,7 +130,6 @@ class _RecipesPageState extends State<RecipesPage> {
                           constraints: BoxConstraints.expand(
                             height: 30.0,
                           ),
-                          color: Colors.white60,
                           alignment: Alignment.center,
                           child:
                           ReceptItemWidget(recept: strone),

@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:receptenapp/src/global.dart';
 import 'package:receptenapp/src/model/model.dart';
 import 'package:receptenapp/src/services/IngredientsRepository.dart';
+import 'package:receptenapp/src/services/RecipesTagsRepository.dart';
 import 'package:receptenapp/src/services/Repositories.dart';
 import 'package:receptenapp/src/services/IngredientTagsRepository.dart';
 import 'package:receptenapp/src/services/ProductsRepository.dart';
@@ -33,6 +34,7 @@ Future<void> setupDependencies() async {
   getIt.registerSingleton<RecipesRepository>(RecipesRepository());
   getIt.registerSingleton<ProductsRepository>(ProductsRepository());
   getIt.registerSingleton<IngredientTagsRepository>(IngredientTagsRepository());
+  getIt.registerSingleton<RecipesTagsRepository>(RecipesTagsRepository());
   getIt.registerSingleton<Repositories>(Repositories());
 }
 

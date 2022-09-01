@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:receptenapp/src/widgets/IngredientTagsPage.dart';
 import 'package:receptenapp/src/widgets/RecipesPage.dart';
+import 'package:receptenapp/src/widgets/RecipesTagsPage.dart';
 import '../global.dart';
 import '../services/UserRepository.dart';
 import 'ProductsPage.dart';
@@ -53,7 +54,19 @@ class _HomePageState extends State<HomePage> {
                   context,
                   MaterialPageRoute(
                       builder: (context) =>
-                          CategoriesPage(title: 'Ingredient tags')),
+                          IngredientsTagsPage(title: 'Ingredient tags')),
+                );
+              },
+            ),
+            Spacer(),
+            ElevatedButton(
+              child: Text('Recipes tags'),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          RecipesTagsPage(title: 'Recipes tags')),
                 );
               },
             ),

@@ -2,20 +2,20 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
-import 'package:receptenapp/src/services/IngredientsRepository.dart';
+import 'package:receptenapp/src/services/RecipesRepository.dart';
 
 import '../global.dart';
 import '../model/model.dart';
 
-class IngredientTagsRepository {
-  final String _DOCNAME = "ingredienttags";
+class RecipesTagsRepository {
+  final String _DOCNAME = "recipestags";
   final String _KEY = "data";
   String? usersCollection = null;
 
   Tags? cachedTags = null;
 
   var _db = getIt<FirebaseFirestore>();
-  var _ingredientsRepository = getIt<IngredientsRepository>();
+  var _recipesRepository = getIt<RecipesRepository>();
 
   Future<Tags> init(String email) {
     usersCollection = email;
@@ -24,9 +24,9 @@ class IngredientTagsRepository {
 
   Tags getTags() {
     if (cachedTags == null) throw Exception("Repository not initialized");
-    Set<String> listTagStringsFromIngredients = _ingredientsRepository.getIngredients().ingredients.expand((e) => e.tags).toSet();
+    Set<String> listTagStringsFromRecipes = _recipesRepository.getRecipes().recipes.expand((e) => e.tags).toSet();
     Set<String> listTagStringsFromDatabase = cachedTags!.tags.map((e) => e.tag!).toSet();
-    Set<String> allTagStrings = listTagStringsFromDatabase..addAll(listTagStringsFromIngredients);
+    Set<String> allTagStrings = listTagStringsFromDatabase..addAll(listTagStringsFromRecipes);
     List<Tag> allTags = allTagStrings.map((e) => new Tag(e)).toList();
     return Tags(allTags);
   }
@@ -70,9 +70,12 @@ class IngredientTagsRepository {
   }
 
   Tags _createSample() {
-    var cat1 = Tag("cat1");
-    var cat2 = Tag("cat2");
-    return Tags([cat1, cat2]);
+    return Tags([
+      Tag("ontbijt"),
+      Tag("smoothie"),
+      Tag("lunch"),
+      Tag("avondeten")
+    ]);
   }
 
 
