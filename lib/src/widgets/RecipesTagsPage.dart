@@ -41,9 +41,9 @@ class _PageState extends State<RecipesTagsPage> {
             SizedBox(
               height: 400,
               child: ListView(
-                children: tags.map((strone) {
+                children: tags.map((item) {
                   return Container(
-                    child: Text(strone??""),
+                    child: Text(item??""),
                     margin: EdgeInsets.all(0),
                     padding: EdgeInsets.all(0),
                     // color: Colors.green[100],

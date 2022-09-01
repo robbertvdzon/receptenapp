@@ -121,7 +121,7 @@ class _RecipesPageState extends State<RecipesPage> {
             SizedBox(
               height: 750,
               child: ListView(
-                children: filteredRecipes.map((strone) {
+                children: filteredRecipes.map((item) {
                   return Container(
                     child:
                     Column(
@@ -132,10 +132,9 @@ class _RecipesPageState extends State<RecipesPage> {
                           ),
                           alignment: Alignment.center,
                           child:
-                          ReceptItemWidget(recept: strone),
+                          ReceptItemWidget(recept: item),
                         ),
                       ],
-
                     ),
 
                     margin: EdgeInsets.all(0),

@@ -115,7 +115,7 @@ class _ProductsPageState extends State<ProductsPage> {
             SizedBox(
               height: 750,
               child: ListView(
-                children: filteredProducts.map((strone) {
+                children: filteredProducts.map((item) {
                   return Container(
                     child:
                     Column(
@@ -127,7 +127,7 @@ class _ProductsPageState extends State<ProductsPage> {
                           color: Colors.white60,
                           alignment: Alignment.center,
                           child:
-                        ProductItemWidget(nutrient: strone),
+                        ProductItemWidget(nutrient: item),
                         ),
                       ],
 

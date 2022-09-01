@@ -122,7 +122,7 @@ class _IngredientsPageState extends State<IngredientsPage> {
             SizedBox(
               height: 750,
               child: ListView(
-                children: filteredIngredients.map((strone) {
+                children: filteredIngredients.map((item) {
                   return Container(
                     child:
                     Column(
@@ -134,7 +134,7 @@ class _IngredientsPageState extends State<IngredientsPage> {
                           color: Colors.white60,
                           alignment: Alignment.center,
                           child:
-                          IngredientItemWidget(ingredient: strone, categories: nutricients,),
+                          IngredientItemWidget(ingredient: item, categories: nutricients,),
                         ),
                       ],
 
