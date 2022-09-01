@@ -17,7 +17,7 @@ class EnrichedIngredient {
   String name;
   String? nutrientName;
   NutritionalValues nutritionalValues;
-  List<Tag> tags;
+  List<IngredientTag> tags;
 
   EnrichedIngredient(this.uuid, this.name, this.nutrientName, this.nutritionalValues, this.tags);
 }

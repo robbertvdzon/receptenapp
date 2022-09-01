@@ -12,30 +12,30 @@ class IngredientTagsRepository {
   final String _KEY = "data";
   String? usersCollection = null;
 
-  Tags? cachedTags = null;
+  IngredientTags? cachedTags = null;
 
   var _db = getIt<FirebaseFirestore>();
   var _ingredientsRepository = getIt<IngredientsRepository>();
 
-  Future<Tags> init(String email) {
+  Future<IngredientTags> init(String email) {
     usersCollection = email;
     return _loadTags();
   }
 
-  Tags getTags() {
+  IngredientTags getTags() {
     if (cachedTags == null) throw Exception("Repository not initialized");
     Set<String> listTagStringsFromIngredients = _ingredientsRepository.getIngredients().ingredients.expand((e) => e.tags).toSet();
     Set<String> listTagStringsFromDatabase = cachedTags!.tags.map((e) => e.tag!).toSet();
     Set<String> allTagStrings = listTagStringsFromDatabase..addAll(listTagStringsFromIngredients);
-    List<Tag> allTags = allTagStrings.map((e) => new Tag(e)).toList();
-    return Tags(allTags);
+    List<IngredientTag> allTags = allTagStrings.map((e) => new IngredientTag(e)).toList();
+    return IngredientTags(allTags);
   }
 
-  Tag? getTagByTag (String tag) {
+  IngredientTag? getTagByTag (String tag) {
     return getTags().tags.firstWhereOrNull((element) => element.tag==tag);
   }
 
-  Future<void> saveTag(Tag tag) async {
+  Future<void> saveTag(IngredientTag tag) async {
     var tags = getTags();
     var oldTag = tags.tags.firstWhereOrNull((element) => element.tag==tag.tag);
     if (oldTag!=null){
@@ -45,7 +45,7 @@ class IngredientTagsRepository {
     return saveTags(tags);
   }
 
-  Future<void> saveTags(Tags tags) async {
+  Future<void> saveTags(IngredientTags tags) async {
     if (usersCollection == null) throw Exception("Repository not initialized");
     final Map<String, dynamic> jsonMap = tags.toJson();
     final jsonKeyValue = <String, String>{_KEY: jsonEncode(jsonMap)};
@@ -57,9 +57,9 @@ class IngredientTagsRepository {
         .then((data) => cachedTags = tags);
   }
 
-  Future<Tag> createAndAddTag(String name) async {
+  Future<IngredientTag> createAndAddTag(String name) async {
     return _loadTags().then((tags) {
-      final tag = Tag(name);
+      final tag = IngredientTag(name);
       tags.tags.add(tag);
       return saveTags(tags).then((value) => tag);
     });
@@ -69,14 +69,14 @@ class IngredientTagsRepository {
     saveTags(_createSample());
   }
 
-  Tags _createSample() {
-    var cat1 = Tag("cat1");
-    var cat2 = Tag("cat2");
-    return Tags([cat1, cat2]);
+  IngredientTags _createSample() {
+    var cat1 = IngredientTag("cat1");
+    var cat2 = IngredientTag("cat2");
+    return IngredientTags([cat1, cat2]);
   }
 
 
-  Future<Tags> _loadTags() async {
+  Future<IngredientTags> _loadTags() async {
     if (usersCollection == null) throw Exception("Repository not initialized");
     final event = await _db.collection(usersCollection!).doc(_DOCNAME).get();
     Map<String, dynamic>? data = event.data();
@@ -84,11 +84,11 @@ class IngredientTagsRepository {
       var jsonData = data[_KEY];
       var json = jsonData as String;
       var jsonObj = jsonDecode(json);
-      final tags = Tags.fromJson(jsonObj);
+      final tags = IngredientTags.fromJson(jsonObj);
       cachedTags = tags;
       return tags;
     }
-    return Tags(List.empty());
+    return IngredientTags(List.empty());
   }
 
 }

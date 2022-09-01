@@ -104,20 +104,43 @@ Map<String, dynamic> _$ProductToJson(Product instance) => <String, dynamic>{
       'customNutrient': instance.customNutrient,
     };
 
-Tags _$TagsFromJson(Map<String, dynamic> json) => Tags(
+IngredientTags _$IngredientTagsFromJson(Map<String, dynamic> json) =>
+    IngredientTags(
       (json['tags'] as List<dynamic>)
-          .map((e) => Tag.fromJson(e as Map<String, dynamic>))
+          .map((e) => IngredientTag.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 
-Map<String, dynamic> _$TagsToJson(Tags instance) => <String, dynamic>{
+Map<String, dynamic> _$IngredientTagsToJson(IngredientTags instance) =>
+    <String, dynamic>{
       'tags': instance.tags,
     };
 
-Tag _$TagFromJson(Map<String, dynamic> json) => Tag(
+IngredientTag _$IngredientTagFromJson(Map<String, dynamic> json) =>
+    IngredientTag(
       json['tag'] as String?,
     );
 
-Map<String, dynamic> _$TagToJson(Tag instance) => <String, dynamic>{
+Map<String, dynamic> _$IngredientTagToJson(IngredientTag instance) =>
+    <String, dynamic>{
+      'tag': instance.tag,
+    };
+
+ReceptTags _$ReceptTagsFromJson(Map<String, dynamic> json) => ReceptTags(
+      (json['tags'] as List<dynamic>)
+          .map((e) => ReceptTag.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$ReceptTagsToJson(ReceptTags instance) =>
+    <String, dynamic>{
+      'tags': instance.tags,
+    };
+
+ReceptTag _$ReceptTagFromJson(Map<String, dynamic> json) => ReceptTag(
+      json['tag'] as String?,
+    );
+
+Map<String, dynamic> _$ReceptTagToJson(ReceptTag instance) => <String, dynamic>{
       'tag': instance.tag,
     };

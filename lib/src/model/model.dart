@@ -98,23 +98,45 @@ class Product {
 
 
 @JsonSerializable()
-class Tags {
-  List<Tag> tags;
-  Tags(this.tags);
+class IngredientTags {
+  List<IngredientTag> tags;
+  IngredientTags(this.tags);
 
-  factory Tags.fromJson(Map<String, dynamic> json) => _$TagsFromJson(json);
+  factory IngredientTags.fromJson(Map<String, dynamic> json) => _$IngredientTagsFromJson(json);
 
-  Map<String, dynamic> toJson() => _$TagsToJson(this);
+  Map<String, dynamic> toJson() => _$IngredientTagsToJson(this);
 }
 
 @JsonSerializable()
-class Tag {
+class IngredientTag {
   String? tag;
 
-  Tag(this.tag);
+  IngredientTag(this.tag);
 
-  factory Tag.fromJson(Map<String, dynamic> json) =>
-      _$TagFromJson(json);
+  factory IngredientTag.fromJson(Map<String, dynamic> json) =>
+      _$IngredientTagFromJson(json);
 
-  Map<String, dynamic> toJson() => _$TagToJson(this);
+  Map<String, dynamic> toJson() => _$IngredientTagToJson(this);
+}
+
+@JsonSerializable()
+class ReceptTags {
+  List<ReceptTag> tags;
+  ReceptTags(this.tags);
+
+  factory ReceptTags.fromJson(Map<String, dynamic> json) => _$ReceptTagsFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ReceptTagsToJson(this);
+}
+
+@JsonSerializable()
+class ReceptTag {
+  String? tag;
+
+  ReceptTag(this.tag);
+
+  factory ReceptTag.fromJson(Map<String, dynamic> json) =>
+      _$ReceptTagFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ReceptTagToJson(this);
 }
