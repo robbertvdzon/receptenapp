@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:receptenapp/src/ui/receptenapp/ingredients/IngredientTagsPage.dart';
+import 'package:receptenapp/src/ui/receptenapp/ingredienttags/IngredientTagsPage.dart';
 import 'package:receptenapp/src/ui/receptenapp/recepts/RecipesPage.dart';
-import 'package:receptenapp/src/ui/receptenapp/recepts/RecipesTagsPage.dart';
+import 'package:receptenapp/src/ui/receptenapp/recepttags/RecipesTagsPage.dart';
 import '../../../global.dart';
 import '../../../services/repositories/UserRepository.dart';
 import '../products/ProductsPage.dart';
