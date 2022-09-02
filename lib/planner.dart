@@ -10,16 +10,17 @@ import 'package:receptenapp/src/services/repositories/ProductsRepository.dart';
 import 'package:receptenapp/src/services/repositories/RecipesRepository.dart';
 import 'package:receptenapp/src/services/repositories/UserRepository.dart';
 import 'package:receptenapp/src/ui/ReceptenApp.dart';
+import 'package:receptenapp/src/ui/planner/PlannerApp.dart';
 import 'firebase_options.dart';
 import 'dart:async';
 
 Future<void> main() async {
-  print("STARTING");
+  print("STARTING PLANNER");
   WidgetsFlutterBinding.ensureInitialized();
 
   await setupDependencies();
 
-  runApp(ReceptenApp());
+  runApp(PlannerApp());
 }
 
 Future<void> setupDependencies() async {
