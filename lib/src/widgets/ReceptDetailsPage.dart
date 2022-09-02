@@ -1,9 +1,7 @@
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:receptenapp/src/services/RecipesRepository.dart';
 import '../global.dart';
-import '../model/model.dart';
-import '../services/ProductsRepository.dart';
+import '../model/recept.dart';
 
 class ReceptDetailsPage extends StatefulWidget {
   ReceptDetailsPage({Key? key, required this.title, required this.recept}) : super(key: key) {}

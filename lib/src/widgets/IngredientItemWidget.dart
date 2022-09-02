@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:receptenapp/src/services/IngredientsRepository.dart';
 import 'package:receptenapp/src/services/RecipesRepository.dart';
 import '../global.dart';
-import '../model/model.dart';
+import '../model/ingredients.dart';
 import '../services/ProductsRepository.dart';
 
 class IngredientItemWidget extends StatefulWidget {

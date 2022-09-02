@@ -1,14 +1,9 @@
-import 'dart:convert';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:get_it/get_it.dart';
 import 'package:receptenapp/src/services/IngredientsRepository.dart';
 import 'package:receptenapp/src/services/ProductsRepository.dart';
 import 'package:receptenapp/src/services/RecipesRepository.dart';
 import 'package:receptenapp/src/services/IngredientTagsRepository.dart';
 
 import '../global.dart';
-import '../model/model.dart';
 import 'RecipesTagsRepository.dart';
 import 'UserRepository.dart';
 

@@ -1,15 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'dart:async';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:get_it/get_it.dart';
 import 'package:receptenapp/src/services/RecipesTagsRepository.dart';
 import '../global.dart';
-import '../model/model.dart';
-import '../services/IngredientTagsRepository.dart';
-import '../services/ProductsRepository.dart';
-import '../services/RecipesRepository.dart';
-import '../services/UserRepository.dart';
 
 class RecipesTagsPage extends StatefulWidget {
   RecipesTagsPage({Key? key, required this.title}) : super(key: key) {}

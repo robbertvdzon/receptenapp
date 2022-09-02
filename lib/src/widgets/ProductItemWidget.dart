@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../global.dart';
-import '../model/model.dart';
+import '../model/products.dart';
 import '../services/ProductsRepository.dart';
 
 class ProductItemWidget extends StatefulWidget {

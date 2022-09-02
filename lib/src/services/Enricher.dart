@@ -1,14 +1,12 @@
 import 'dart:convert';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:get_it/get_it.dart';
 import 'package:receptenapp/src/services/IngredientsRepository.dart';
 import 'package:receptenapp/src/services/ProductsRepository.dart';
 
 import '../global.dart';
 import '../model/enrichedmodels.dart';
-import '../model/model.dart';
-import 'UserRepository.dart';
+import '../model/ingredients.dart';
+import '../model/recept.dart';
 
 class Enricher {
 

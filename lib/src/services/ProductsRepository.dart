@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:collection/collection.dart';
 
 import '../global.dart';
-import '../model/model.dart';
+import '../model/products.dart';
 
 
 

@@ -1,7 +1,5 @@
-import 'package:uuid/uuid.dart';
-import 'package:json_annotation/json_annotation.dart';
 
-import 'model.dart';
+import 'ingredientTags.dart';
 
 class EnrichedRecept {
   String uuid;
