@@ -117,9 +117,8 @@ class _ProductsPageState extends State<ProductsPage> {
                       children: [
                         Container(
                           constraints: BoxConstraints.expand(
-                            height: 750.0,
+                            height: 30.0,
                           ),
-                          color: Colors.white60,
                           alignment: Alignment.center,
                           child:
                         ProductItemWidget(nutrient: item),
@@ -128,8 +127,8 @@ class _ProductsPageState extends State<ProductsPage> {
 
                   ),
 
-                    margin: EdgeInsets.all(5),
-                    padding: EdgeInsets.all(15),
+                    margin: EdgeInsets.all(0),
+                    padding: EdgeInsets.all(0),
                     // color: Colors.green[100],
                   );
                 }).toList(),
