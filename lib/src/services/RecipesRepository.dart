@@ -85,28 +85,28 @@ class RecipesRepository {
   }
   
   Recipes _createSample() {
-    final patat = Ingredient("patat");
-    final hamburger = Ingredient("hamburger");
-    final brood = Ingredient("brood");
-    final boter = Ingredient("boter");
-    final kaas = Ingredient("kaas");
+    final patat = ReceptIngredient("patat");
+    final hamburger = ReceptIngredient("hamburger");
+    final brood = ReceptIngredient("brood");
+    final boter = ReceptIngredient("boter");
+    final kaas = ReceptIngredient("kaas");
     final hamburgermenu = Recept([patat, hamburger, brood], "hamburger");
     hamburgermenu.tags = ["zuivel","vlees"];
     final broodjeKaas = Recept([brood, boter, kaas], "kaas broodje");
     broodjeKaas.tags = ["zuivel","vegatarisch"];
 
     final noedelsoep = Recept([
-      Ingredient("gember"),
-      Ingredient("knoflook"),
-      Ingredient("eiernoedels"),
-      Ingredient("zonnebloemolie"),
-      Ingredient("water"),
-      Ingredient("groentebouillontabletten"),
-      Ingredient("sojasaus"),
-      Ingredient("rijstazijn"),
-      Ingredient("shitakes"),
-      Ingredient("paksoi"),
-      Ingredient("sesamzaad"),
+      ReceptIngredient("gember", amountItems: ReceptIngredientAmountItems(0.1)),
+      ReceptIngredient("knoflook", amountItems: ReceptIngredientAmountItems(1)),
+      ReceptIngredient("eiernoedels", amountGrams: ReceptIngredientAmountGrams(100)),
+      ReceptIngredient("zonnebloemolie", amountGrams: ReceptIngredientAmountGrams(100)),
+      ReceptIngredient("water", amountGrams: ReceptIngredientAmountGrams(100)),
+      ReceptIngredient("groentebouillontabletten", amountGrams: ReceptIngredientAmountGrams(100)),
+      ReceptIngredient("sojasaus", amountGrams: ReceptIngredientAmountGrams(100)),
+      ReceptIngredient("rijstazijn", amountGrams: ReceptIngredientAmountGrams(100)),
+      ReceptIngredient("shitakes", amountGrams: ReceptIngredientAmountGrams(100)),
+      ReceptIngredient("paksoi", amountItems:  ReceptIngredientAmountItems(1)),
+      ReceptIngredient("sesamzaad", amountGrams: ReceptIngredientAmountGrams(100))
     ], "Noedelsoep met shiitake en paksoi");
     noedelsoep.directions = "Snijd de gember in dunne plakjes.\nSnijd de knoflook.\nKook de noedels..................";
     noedelsoep.tags = ["vlees","soep"];
