@@ -34,24 +34,24 @@ Map<String, dynamic> _$IngredientToJson(Ingredient instance) =>
       'tags': instance.tags,
     };
 
-IngredientTags _$IngredientTagsFromJson(Map<String, dynamic> json) =>
-    IngredientTags(
+InternalIngredientTags _$IngredientTagsFromJson(Map<String, dynamic> json) =>
+    InternalIngredientTags(
       (json['tags'] as List<dynamic>)
-          .map((e) => IngredientTag.fromJson(e as Map<String, dynamic>))
+          .map((e) => InternalIngredientTag.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 
-Map<String, dynamic> _$IngredientTagsToJson(IngredientTags instance) =>
+Map<String, dynamic> _$IngredientTagsToJson(InternalIngredientTags instance) =>
     <String, dynamic>{
       'tags': instance.tags,
     };
 
-IngredientTag _$IngredientTagFromJson(Map<String, dynamic> json) =>
-    IngredientTag(
+InternalIngredientTag _$IngredientTagFromJson(Map<String, dynamic> json) =>
+    InternalIngredientTag(
       json['tag'] as String?,
     );
 
-Map<String, dynamic> _$IngredientTagToJson(IngredientTag instance) =>
+Map<String, dynamic> _$IngredientTagToJson(InternalIngredientTag instance) =>
     <String, dynamic>{
       'tag': instance.tag,
     };

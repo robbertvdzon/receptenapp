@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import '../../../global.dart';
+import '../../../model/ingredients/v1/ingredientTags.dart';
 import '../../../services/repositories/IngredientTagsRepository.dart';
+import 'IngredientTagItemWidget.dart';
 
 class IngredientsTagsPage extends StatefulWidget {
   IngredientsTagsPage({Key? key, required this.title}) : super(key: key) {}
@@ -12,11 +14,11 @@ class IngredientsTagsPage extends StatefulWidget {
 }
 
 class _PageState extends State<IngredientsTagsPage> {
-  List<String?> categories = List.empty();
+  List<IngredientTag> tags = List.empty();
   var tagsRepository = getIt<IngredientTagsRepository>();
 
   _PageState() {
-    categories = tagsRepository.getTags().tags.map((e)=>e.tag).toList();
+    tags = tagsRepository.getTags().tags;
   }
 
   @override
@@ -30,11 +32,25 @@ class _PageState extends State<IngredientsTagsPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             SizedBox(
-              height: 400,
+              height: 750,
               child: ListView(
-                children: categories.map((item) {
+                children: tags.map((item) {
                   return Container(
-                    child: Text(item??""),
+                    child:
+                    Column(
+                      children: [
+                        Container(
+                          constraints: BoxConstraints.expand(
+                            height: 30.0,
+                          ),
+                          alignment: Alignment.center,
+                          child:
+                          IngredientTagItemWidget(ingredientTag: item),
+                        ),
+                      ],
+
+                    ),
+
                     margin: EdgeInsets.all(0),
                     padding: EdgeInsets.all(0),
                     // color: Colors.green[100],

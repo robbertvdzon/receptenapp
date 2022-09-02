@@ -17,7 +17,7 @@ class IngredientTags {
 class IngredientTag {
   String? tag;
 
-  IngredientTag(this.tag);
+  IngredientTag(this.tag); //2
 
   factory IngredientTag.fromJson(Map<String, dynamic> json) =>
       _$IngredientTagFromJson(json);

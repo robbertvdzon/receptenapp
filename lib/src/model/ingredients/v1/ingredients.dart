@@ -32,22 +32,22 @@ class Ingredient {
 }
 
 @JsonSerializable()
-class IngredientTags {
-  List<IngredientTag> tags;
-  IngredientTags(this.tags);
+class InternalIngredientTags {
+  List<InternalIngredientTag> tags;
+  InternalIngredientTags(this.tags);
 
-  factory IngredientTags.fromJson(Map<String, dynamic> json) => _$IngredientTagsFromJson(json);
+  factory InternalIngredientTags.fromJson(Map<String, dynamic> json) => _$IngredientTagsFromJson(json);
 
   Map<String, dynamic> toJson() => _$IngredientTagsToJson(this);
 }
 
 @JsonSerializable()
-class IngredientTag {
+class InternalIngredientTag {
   String? tag;
 
-  IngredientTag(this.tag);
+  InternalIngredientTag(this.tag);
 
-  factory IngredientTag.fromJson(Map<String, dynamic> json) =>
+  factory InternalIngredientTag.fromJson(Map<String, dynamic> json) =>
       _$IngredientTagFromJson(json);
 
   Map<String, dynamic> toJson() => _$IngredientTagToJson(this);
