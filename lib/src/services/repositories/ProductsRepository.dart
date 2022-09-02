@@ -12,7 +12,7 @@ import '../../model/products/v1/products.dart';
 
 class ProductsRepository {
   final String _DOCNAME = "products";
-  final String _KEY = "data";
+  final String _KEY = "v1";
   String? usersCollection = null;
 
   Products? cachedProducts = null;

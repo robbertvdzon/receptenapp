@@ -8,7 +8,7 @@ import '../../model/ingredients/v1/ingredients.dart';
 
 class IngredientsRepository {
   final String _DOCNAME = "ingredients";
-  final String _KEY = "data";
+  final String _KEY = "v1";
   String? usersCollection = null;
 
   Ingredients? cachedIngredients = null;

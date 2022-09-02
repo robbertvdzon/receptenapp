@@ -9,7 +9,7 @@ import '../../model/ingredients/v1/ingredientTags.dart';
 
 class IngredientTagsRepository {
   final String _DOCNAME = "ingredienttags";
-  final String _KEY = "data";
+  final String _KEY = "v1";
   String? usersCollection = null;
 
   IngredientTags? cachedTags = null;

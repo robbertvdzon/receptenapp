@@ -8,7 +8,7 @@ import '../../model/recipes/v1/recept.dart';
 
 class RecipesRepository {
   final String _DOCNAME = "recipes";
-  final String _KEY = "data";
+  final String _KEY = "v1";
   String? usersCollection = null;
 
   Recipes? cachedRecipes = null;
