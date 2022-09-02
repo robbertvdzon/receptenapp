@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
+import 'package:receptenapp/src/model/recipes/v1/recept.dart';
+import 'package:receptenapp/src/services/repositories/RecipesRepository.dart';
 
 import '../../global.dart';
 import '../../model/ingredients/v1/ingredients.dart';
@@ -14,6 +16,7 @@ class IngredientsRepository {
   Ingredients? cachedIngredients = null;
 
   var _db = getIt<FirebaseFirestore>();
+  var _recipesRepository = getIt<RecipesRepository>();
 
   Future<Ingredients> init(String email) {
     usersCollection = email;
@@ -22,7 +25,14 @@ class IngredientsRepository {
 
   Ingredients getIngredients() {
     if (cachedIngredients == null) throw Exception("Repository not initialized");
-    return cachedIngredients!;
+    Set<String> allIngredientsFromRecepts = _recipesRepository.getRecipes().recipes.expand((e) => e.ingredients).map((e) => e.name).toSet();
+    var combinedIngredients = cachedIngredients!.ingredients;
+    allIngredientsFromRecepts.forEach((ingredient) {
+      if (combinedIngredients.where((element) => element.name==ingredient).isEmpty){
+        combinedIngredients.add(Ingredient(ingredient));
+      }
+    });
+    return Ingredients(combinedIngredients);
   }
 
   Ingredient? getIngredientByName (String name) {

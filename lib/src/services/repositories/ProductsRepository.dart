@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:csv/csv.dart';
 import 'package:flutter/services.dart';
 import 'package:collection/collection.dart';
+import 'package:receptenapp/src/services/repositories/IngredientsRepository.dart';
 
 import '../../global.dart';
 import '../../model/products/v1/products.dart';
@@ -18,6 +19,7 @@ class ProductsRepository {
   Products? cachedProducts = null;
 
   var _db = getIt<FirebaseFirestore>();
+  var _ingredientsRepository = getIt<IngredientsRepository>();
 
   Future<Products> init(String email) {
     usersCollection = email;
@@ -26,7 +28,15 @@ class ProductsRepository {
 
   Products getProducts() {
     if (cachedProducts == null) throw Exception("Repository not initialized");
-    return cachedProducts!;
+    Set<String?> allProductsFromIngredients = _ingredientsRepository.getIngredients().ingredients.map((e) => e.nutrientName).toSet();
+    var combinedProducts = cachedProducts!.products;
+    allProductsFromIngredients.forEach((product) {
+      if (combinedProducts.where((element) => element.name==product).isEmpty){
+        combinedProducts.add(Product(product));
+      }
+    });
+    return Products(combinedProducts);
+
   }
 
   Product? getProductByName (String name) {

@@ -1,12 +1,12 @@
 import 'dart:convert';
 
 import 'package:receptenapp/src/services/repositories/IngredientsRepository.dart';
-import '../services/repositories/ProductsRepository.dart';
+import '../repositories/ProductsRepository.dart';
 
-import '../global.dart';
-import '../model/enriched/enrichedmodels.dart';
-import '../model/ingredients/v1/ingredients.dart';
-import '../model/recipes/v1/recept.dart';
+import '../../global.dart';
+import '../../model/enriched/enrichedmodels.dart';
+import '../../model/ingredients/v1/ingredients.dart';
+import '../../model/recipes/v1/recept.dart';
 
 class Enricher {
 

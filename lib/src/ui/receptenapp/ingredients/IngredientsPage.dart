@@ -123,9 +123,8 @@ class _IngredientsPageState extends State<IngredientsPage> {
                       children: [
                         Container(
                           constraints: BoxConstraints.expand(
-                            height: 450.0,
+                            height: 150.0,
                           ),
-                          color: Colors.white60,
                           alignment: Alignment.center,
                           child:
                           IngredientItemWidget(ingredient: item, categories: nutricients,),

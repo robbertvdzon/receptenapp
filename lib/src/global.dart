@@ -17,11 +17,10 @@ Future<void> setupDependencies() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-
   getIt.registerSingleton<FirebaseFirestore>(FirebaseFirestore.instance);
   getIt.registerSingleton<UserRepository>(UserRepository());
-  getIt.registerSingleton<IngredientsRepository>(IngredientsRepository());
   getIt.registerSingleton<RecipesRepository>(RecipesRepository());
+  getIt.registerSingleton<IngredientsRepository>(IngredientsRepository());
   getIt.registerSingleton<ProductsRepository>(ProductsRepository());
   getIt.registerSingleton<IngredientTagsRepository>(IngredientTagsRepository());
   getIt.registerSingleton<RecipesTagsRepository>(RecipesTagsRepository());
