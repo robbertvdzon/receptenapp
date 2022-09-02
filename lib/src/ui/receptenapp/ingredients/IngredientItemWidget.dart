@@ -4,6 +4,7 @@ import 'package:receptenapp/src/services/repositories/IngredientsRepository.dart
 import '../../../global.dart';
 import '../../../model/ingredients/v1/ingredients.dart';
 import '../../../services/repositories/ProductsRepository.dart';
+import 'IngredientDetailsPage.dart';
 
 class IngredientItemWidget extends StatefulWidget {
   IngredientItemWidget({Key? key, required this.ingredient, required this.categories})
@@ -27,8 +28,17 @@ class _WidgetState extends State<IngredientItemWidget> {
     this.ingredient = ingredient;
     this.newIngredient = ingredient;
     this.categories= categories;
-
   }
+
+  _openForm() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) =>
+              IngredientDetailsPage(title: 'Ingredient', ingredient: ingredient, categories: categories,)),
+    );
+  }
+
 
   _saveForm() {
     ingredientsRepository.saveIngredient(newIngredient);
@@ -38,46 +48,11 @@ class _WidgetState extends State<IngredientItemWidget> {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        TextFormField(
-          decoration: InputDecoration(label: Text('uuid:')),
-          initialValue: "${ingredient.uuid}",
-        ),
-        TextFormField(
-          decoration: InputDecoration(label: Text('Name:')),
-          initialValue: "${ingredient.name}",
-          onChanged: (text) {
-            newIngredient.name = text;
-          },
-        ),
-
-        DropdownSearch<String>(
-          popupProps: PopupProps.menu(
-            showSelectedItems: true,
-          ),
-          items: categories,
-          // items: ["Brazil", "Italia (Disabled)", "Tunisia", 'Canada'],
-          // dropdownSearchDecoration: InputDecoration(
-          //   labelText: "Menu mode",
-          //   hintText: "country in menu mode",
-          // ),
-          // onChanged: print,
-
-            onChanged: (String? newValue) {
-              setState(() {
-                newIngredient.nutrientName = newValue;
-              });
-            },
-
-
-
-          selectedItem: "${ingredient.nutrientName??''}",
-        ),
-
-        ElevatedButton(
-          child: Text('SAVE'),
+        new TextButton(
           onPressed: () {
-            _saveForm();
+            _openForm();
           },
+          child: new Text(ingredient.name+" ("+(ingredient.nutrientName??"")+")"),
         )
       ],
     );

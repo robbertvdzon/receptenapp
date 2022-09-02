@@ -123,7 +123,7 @@ class _IngredientsPageState extends State<IngredientsPage> {
                       children: [
                         Container(
                           constraints: BoxConstraints.expand(
-                            height: 150.0,
+                            height: 30.0,
                           ),
                           alignment: Alignment.center,
                           child:
@@ -133,8 +133,8 @@ class _IngredientsPageState extends State<IngredientsPage> {
 
                     ),
 
-                    margin: EdgeInsets.all(5),
-                    padding: EdgeInsets.all(15),
+                    margin: EdgeInsets.all(0),
+                    padding: EdgeInsets.all(0),
                     // color: Colors.green[100],
                   );
                 }).toList(),
