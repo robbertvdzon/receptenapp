@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:receptenapp/src/services/IngredientsRepository.dart';
-import 'package:receptenapp/src/services/ProductsRepository.dart';
+import 'package:receptenapp/src/services/repositories/IngredientsRepository.dart';
+import '../services/repositories/ProductsRepository.dart';
 
 import '../global.dart';
 import '../model/enriched/enrichedmodels.dart';

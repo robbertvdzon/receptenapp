@@ -4,7 +4,7 @@ import 'package:receptenapp/src/widgets/IngredientTagsPage.dart';
 import 'package:receptenapp/src/widgets/RecipesPage.dart';
 import 'package:receptenapp/src/widgets/RecipesTagsPage.dart';
 import '../global.dart';
-import '../services/UserRepository.dart';
+import '../services/repositories/UserRepository.dart';
 import 'ProductsPage.dart';
 import 'IngredientsPage.dart';
 

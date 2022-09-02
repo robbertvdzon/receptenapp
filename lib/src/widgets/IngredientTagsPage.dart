@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../global.dart';
-import '../services/IngredientTagsRepository.dart';
+import '../services/repositories/IngredientTagsRepository.dart';
 
 class IngredientsTagsPage extends StatefulWidget {
   IngredientsTagsPage({Key? key, required this.title}) : super(key: key) {}

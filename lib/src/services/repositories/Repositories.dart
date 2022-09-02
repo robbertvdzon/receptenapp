@@ -1,9 +1,9 @@
-import 'package:receptenapp/src/services/IngredientsRepository.dart';
-import 'package:receptenapp/src/services/ProductsRepository.dart';
-import 'package:receptenapp/src/services/RecipesRepository.dart';
-import 'package:receptenapp/src/services/IngredientTagsRepository.dart';
+import 'package:receptenapp/src/services/repositories/IngredientsRepository.dart';
+import 'package:receptenapp/src/services/repositories/ProductsRepository.dart';
+import 'package:receptenapp/src/services/repositories/RecipesRepository.dart';
+import 'package:receptenapp/src/services/repositories/IngredientTagsRepository.dart';
 
-import '../global.dart';
+import '../../global.dart';
 import 'RecipesTagsRepository.dart';
 import 'UserRepository.dart';
 

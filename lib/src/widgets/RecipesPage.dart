@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import '../global.dart';
 import '../model/recipes/v1/recept.dart';
-import '../services/ProductsRepository.dart';
-import '../services/RecipesRepository.dart';
+import '../services/repositories/ProductsRepository.dart';
+import '../services/repositories/RecipesRepository.dart';
 import 'ReceptItemWidget.dart';
 
 class RecipesPage extends StatefulWidget {

@@ -6,8 +6,8 @@ import 'package:flutterfire_ui/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
 import '../global.dart';
-import '../services/Repositories.dart';
-import '../services/UserRepository.dart';
+import '../services/repositories/Repositories.dart';
+import '../services/repositories/UserRepository.dart';
 import 'HomePage.dart';
 
 const DISABLE_AUTH = true;

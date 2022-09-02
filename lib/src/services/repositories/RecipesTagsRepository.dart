@@ -2,40 +2,40 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
-import 'package:receptenapp/src/services/IngredientsRepository.dart';
+import 'package:receptenapp/src/services/repositories/RecipesRepository.dart';
 
-import '../global.dart';
-import '../model/ingredients/v1/ingredientTags.dart';
+import '../../global.dart';
+import '../../model/recipes/v1/receptTags.dart';
 
-class IngredientTagsRepository {
-  final String _DOCNAME = "ingredienttags";
+class RecipesTagsRepository {
+  final String _DOCNAME = "recipestags";
   final String _KEY = "data";
   String? usersCollection = null;
 
-  IngredientTags? cachedTags = null;
+  ReceptTags? cachedTags = null;
 
   var _db = getIt<FirebaseFirestore>();
-  var _ingredientsRepository = getIt<IngredientsRepository>();
+  var _recipesRepository = getIt<RecipesRepository>();
 
-  Future<IngredientTags> init(String email) {
+  Future<ReceptTags> init(String email) {
     usersCollection = email;
     return _loadTags();
   }
 
-  IngredientTags getTags() {
+  ReceptTags getTags() {
     if (cachedTags == null) throw Exception("Repository not initialized");
-    Set<String> listTagStringsFromIngredients = _ingredientsRepository.getIngredients().ingredients.expand((e) => e.tags).toSet();
+    Set<String> listTagStringsFromRecipes = _recipesRepository.getRecipes().recipes.expand((e) => e.tags).toSet();
     Set<String> listTagStringsFromDatabase = cachedTags!.tags.map((e) => e.tag!).toSet();
-    Set<String> allTagStrings = listTagStringsFromDatabase..addAll(listTagStringsFromIngredients);
-    List<IngredientTag> allTags = allTagStrings.map((e) => new IngredientTag(e)).toList();
-    return IngredientTags(allTags);
+    Set<String> allTagStrings = listTagStringsFromDatabase..addAll(listTagStringsFromRecipes);
+    List<ReceptTag> allTags = allTagStrings.map((e) => new ReceptTag(e)).toList();
+    return ReceptTags(allTags);
   }
 
-  IngredientTag? getTagByTag (String tag) {
+  ReceptTag? getTagByTag (String tag) {
     return getTags().tags.firstWhereOrNull((element) => element.tag==tag);
   }
 
-  Future<void> saveTag(IngredientTag tag) async {
+  Future<void> saveTag(ReceptTag tag) async {
     var tags = getTags();
     var oldTag = tags.tags.firstWhereOrNull((element) => element.tag==tag.tag);
     if (oldTag!=null){
@@ -45,7 +45,7 @@ class IngredientTagsRepository {
     return saveTags(tags);
   }
 
-  Future<void> saveTags(IngredientTags tags) async {
+  Future<void> saveTags(ReceptTags tags) async {
     if (usersCollection == null) throw Exception("Repository not initialized");
     final Map<String, dynamic> jsonMap = tags.toJson();
     final jsonKeyValue = <String, String>{_KEY: jsonEncode(jsonMap)};
@@ -57,9 +57,9 @@ class IngredientTagsRepository {
         .then((data) => cachedTags = tags);
   }
 
-  Future<IngredientTag> createAndAddTag(String name) async {
+  Future<ReceptTag> createAndAddTag(String name) async {
     return _loadTags().then((tags) {
-      final tag = IngredientTag(name);
+      final tag = ReceptTag(name);
       tags.tags.add(tag);
       return saveTags(tags).then((value) => tag);
     });
@@ -69,14 +69,17 @@ class IngredientTagsRepository {
     saveTags(_createSample());
   }
 
-  IngredientTags _createSample() {
-    var cat1 = IngredientTag("cat1");
-    var cat2 = IngredientTag("cat2");
-    return IngredientTags([cat1, cat2]);
+  ReceptTags _createSample() {
+    return ReceptTags([
+      ReceptTag("ontbijt"),
+      ReceptTag("smoothie"),
+      ReceptTag("lunch"),
+      ReceptTag("avondeten")
+    ]);
   }
 
 
-  Future<IngredientTags> _loadTags() async {
+  Future<ReceptTags> _loadTags() async {
     if (usersCollection == null) throw Exception("Repository not initialized");
     final event = await _db.collection(usersCollection!).doc(_DOCNAME).get();
     Map<String, dynamic>? data = event.data();
@@ -84,11 +87,11 @@ class IngredientTagsRepository {
       var jsonData = data[_KEY];
       var json = jsonData as String;
       var jsonObj = jsonDecode(json);
-      final tags = IngredientTags.fromJson(jsonObj);
+      final tags = ReceptTags.fromJson(jsonObj);
       cachedTags = tags;
       return tags;
     }
-    return IngredientTags(List.empty());
+    return ReceptTags(List.empty());
   }
 
 }
