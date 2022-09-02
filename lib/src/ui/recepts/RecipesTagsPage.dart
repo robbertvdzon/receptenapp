@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:receptenapp/src/services/repositories/RecipesTagsRepository.dart';
-import '../global.dart';
+import '../../global.dart';
 
 class RecipesTagsPage extends StatefulWidget {
   RecipesTagsPage({Key? key, required this.title}) : super(key: key) {}

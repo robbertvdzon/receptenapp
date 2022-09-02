@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../global.dart';
-import '../model/products/v1/products.dart';
-import '../services/repositories/ProductsRepository.dart';
+import '../../global.dart';
+import '../../model/products/v1/products.dart';
+import '../../services/repositories/ProductsRepository.dart';
 
 class ProductItemWidget extends StatefulWidget {
   ProductItemWidget({Key? key, required this.nutrient}) : super(key: key) {}

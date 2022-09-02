@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:receptenapp/src/widgets/IngredientTagsPage.dart';
-import 'package:receptenapp/src/widgets/RecipesPage.dart';
-import 'package:receptenapp/src/widgets/RecipesTagsPage.dart';
-import '../global.dart';
-import '../services/repositories/UserRepository.dart';
-import 'ProductsPage.dart';
-import 'IngredientsPage.dart';
+import 'package:receptenapp/src/ui/ingredients/IngredientTagsPage.dart';
+import 'package:receptenapp/src/ui/recepts/RecipesPage.dart';
+import 'package:receptenapp/src/ui/recepts/RecipesTagsPage.dart';
+import '../../global.dart';
+import '../../services/repositories/UserRepository.dart';
+import '../products/ProductsPage.dart';
+import '../ingredients/IngredientsPage.dart';
 
 class HomePage extends StatefulWidget {
 
