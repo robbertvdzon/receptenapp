@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import '../global.dart';
-import '../model/products.dart';
+import '../model/products/v1/products.dart';
 import '../services/ProductsRepository.dart';
 import 'ProductItemWidget.dart';
 

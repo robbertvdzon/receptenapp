@@ -5,7 +5,7 @@ import 'package:collection/collection.dart';
 import 'package:receptenapp/src/services/IngredientsRepository.dart';
 
 import '../global.dart';
-import '../model/ingredientTags.dart';
+import '../model/ingredients/v1/ingredientTags.dart';
 
 class IngredientTagsRepository {
   final String _DOCNAME = "ingredienttags";

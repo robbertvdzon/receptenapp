@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import '../global.dart';
-import '../model/recept.dart';
+import '../model/recipes/v1/recept.dart';
 import '../services/ProductsRepository.dart';
 import '../services/RecipesRepository.dart';
 import 'ReceptItemWidget.dart';

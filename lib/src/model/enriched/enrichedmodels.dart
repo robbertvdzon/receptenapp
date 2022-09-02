@@ -1,5 +1,5 @@
 
-import 'ingredientTags.dart';
+import '../ingredients/v1/ingredientTags.dart';
 
 class EnrichedRecept {
   String uuid;

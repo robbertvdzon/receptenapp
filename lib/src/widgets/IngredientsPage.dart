@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:async';
 import 'package:receptenapp/src/services/IngredientsRepository.dart';
 import '../global.dart';
-import '../model/ingredients.dart';
+import '../model/ingredients/v1/ingredients.dart';
 import '../services/ProductsRepository.dart';
 import 'IngredientItemWidget.dart';
 

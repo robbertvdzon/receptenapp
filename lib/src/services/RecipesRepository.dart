@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
 
 import '../global.dart';
-import '../model/recept.dart';
+import '../model/recipes/v1/recept.dart';
 
 class RecipesRepository {
   final String _DOCNAME = "recipes";

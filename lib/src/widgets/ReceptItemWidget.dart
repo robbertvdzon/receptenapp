@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:receptenapp/src/services/RecipesRepository.dart';
 import '../global.dart';
-import '../model/recept.dart';
+import '../model/recipes/v1/recept.dart';
 import 'ReceptDetailsPage.dart';
 
 class ReceptItemWidget extends StatefulWidget {
