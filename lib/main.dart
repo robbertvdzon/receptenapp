@@ -9,7 +9,7 @@ import 'package:receptenapp/src/services/repositories/IngredientTagsRepository.d
 import 'package:receptenapp/src/services/repositories/ProductsRepository.dart';
 import 'package:receptenapp/src/services/repositories/RecipesRepository.dart';
 import 'package:receptenapp/src/services/repositories/UserRepository.dart';
-import 'package:receptenapp/src/ui/ReceptenApp.dart';
+import 'package:receptenapp/src/ui/receptenapp/ReceptenApp.dart';
 import 'firebase_options.dart';
 import 'dart:async';
 

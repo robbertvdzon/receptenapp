@@ -1,10 +1,9 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:receptenapp/src/services/repositories/IngredientsRepository.dart';
-import 'package:receptenapp/src/services/repositories/RecipesRepository.dart';
-import '../../global.dart';
-import '../../model/ingredients/v1/ingredients.dart';
-import '../../services/repositories/ProductsRepository.dart';
+import '../../../global.dart';
+import '../../../model/ingredients/v1/ingredients.dart';
+import '../../../services/repositories/ProductsRepository.dart';
 
 class IngredientItemWidget extends StatefulWidget {
   IngredientItemWidget({Key? key, required this.ingredient, required this.categories})

@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:async';
 import 'package:receptenapp/src/services/repositories/IngredientsRepository.dart';
-import '../../global.dart';
-import '../../model/ingredients/v1/ingredients.dart';
-import '../../services/repositories/ProductsRepository.dart';
+import '../../../global.dart';
+import '../../../model/ingredients/v1/ingredients.dart';
+import '../../../services/repositories/ProductsRepository.dart';
 import 'IngredientItemWidget.dart';
 
 class IngredientsPage extends StatefulWidget {

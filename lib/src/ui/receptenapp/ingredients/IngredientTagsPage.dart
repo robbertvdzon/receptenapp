@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:receptenapp/src/services/repositories/RecipesTagsRepository.dart';
-import '../../global.dart';
+import '../../../global.dart';
+import '../../../services/repositories/IngredientTagsRepository.dart';
 
-class RecipesTagsPage extends StatefulWidget {
-  RecipesTagsPage({Key? key, required this.title}) : super(key: key) {}
+class IngredientsTagsPage extends StatefulWidget {
+  IngredientsTagsPage({Key? key, required this.title}) : super(key: key) {}
 
   final String title;
 
   @override
-  State<RecipesTagsPage> createState() => _PageState();
+  State<IngredientsTagsPage> createState() => _PageState();
 }
 
-class _PageState extends State<RecipesTagsPage> {
-  List<String?> tags = List.empty();
-  var tagsRepository = getIt<RecipesTagsRepository>();
+class _PageState extends State<IngredientsTagsPage> {
+  List<String?> categories = List.empty();
+  var tagsRepository = getIt<IngredientTagsRepository>();
 
   _PageState() {
-    tags = tagsRepository.getTags().tags.map((e)=>e.tag).toList();
+    categories = tagsRepository.getTags().tags.map((e)=>e.tag).toList();
   }
 
   @override
@@ -32,7 +32,7 @@ class _PageState extends State<RecipesTagsPage> {
             SizedBox(
               height: 400,
               child: ListView(
-                children: tags.map((item) {
+                children: categories.map((item) {
                   return Container(
                     child: Text(item??""),
                     margin: EdgeInsets.all(0),
