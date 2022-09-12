@@ -27,7 +27,7 @@ class Enricher {
         nutritionalValues);
   }
 
-  EnrichedRecept? enrichRecipe(Recept recept) {
+  EnrichedRecept enrichRecipe(Recept recept) {
     var nutritionalValues = NutritionalValues();
     recept.ingredients.forEach((receptIngredient) {
       var ingredient = _ingredientsRepository.getIngredientByName(receptIngredient.name);

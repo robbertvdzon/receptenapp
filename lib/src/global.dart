@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get_it/get_it.dart';
+import 'package:receptenapp/src/services/enricher/Enricher.dart';
 import 'package:receptenapp/src/services/repositories/IngredientTagsRepository.dart';
 import 'package:receptenapp/src/services/repositories/IngredientsRepository.dart';
 import 'package:receptenapp/src/services/repositories/ProductsRepository.dart';
@@ -25,4 +26,5 @@ Future<void> setupDependencies() async {
   getIt.registerSingleton<IngredientTagsRepository>(IngredientTagsRepository());
   getIt.registerSingleton<RecipesTagsRepository>(RecipesTagsRepository());
   getIt.registerSingleton<Repositories>(Repositories());
+  getIt.registerSingleton<Enricher>(Enricher());
 }

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:receptenapp/src/services/repositories/RecipesRepository.dart';
 import '../../../global.dart';
+import '../../../model/enriched/enrichedmodels.dart';
 import '../../../model/recipes/v1/recept.dart';
+import '../../../services/enricher/Enricher.dart';
 
 class ReceptDetailsPage extends StatefulWidget {
   ReceptDetailsPage({Key? key, required this.title, required this.recept}) : super(key: key) {}
@@ -14,12 +16,13 @@ class ReceptDetailsPage extends StatefulWidget {
 }
 
 class _WidgetState extends State<ReceptDetailsPage> {
-  late Recept recept;
+  late EnrichedRecept recept;
   late Recept newRecept;
   var recipesRepository = getIt<RecipesRepository>();
+  var enricher = getIt<Enricher>();
 
   _WidgetState(Recept recept) {
-    this.recept = recept;
+    this.recept = enricher.enrichRecipe(recept);
     this.newRecept = recept;
   }
 
@@ -64,6 +67,27 @@ class _WidgetState extends State<ReceptDetailsPage> {
                   TextFormField(
                     decoration: InputDecoration(label: Text('Name:')),
                     initialValue: "${recept.name}",
+                    onChanged: (text) {
+                      newRecept.name = text;
+                    },
+                  ),
+                  TextFormField(
+                    decoration: InputDecoration(label: Text('Nt:')),
+                    initialValue: "${recept.nutritionalValues.nt}",
+                    onChanged: (text) {
+                      newRecept.name = text;
+                    },
+                  ),
+                  TextFormField(
+                    decoration: InputDecoration(label: Text('Kcal:')),
+                    initialValue: "${recept.nutritionalValues.kcal}",
+                    onChanged: (text) {
+                      newRecept.name = text;
+                    },
+                  ),
+                  TextFormField(
+                    decoration: InputDecoration(label: Text('Fat:')),
+                    initialValue: "${recept.nutritionalValues.fat}",
                     onChanged: (text) {
                       newRecept.name = text;
                     },
