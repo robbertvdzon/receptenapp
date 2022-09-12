@@ -36,9 +36,9 @@ class InternalIngredientTags {
   List<InternalIngredientTag> tags;
   InternalIngredientTags(this.tags);
 
-  factory InternalIngredientTags.fromJson(Map<String, dynamic> json) => _$IngredientTagsFromJson(json);
+  factory InternalIngredientTags.fromJson(Map<String, dynamic> json) => _$InternalIngredientTagsFromJson(json);
 
-  Map<String, dynamic> toJson() => _$IngredientTagsToJson(this);
+  Map<String, dynamic> toJson() => _$InternalIngredientTagsToJson(this);
 }
 
 @JsonSerializable()
@@ -48,8 +48,8 @@ class InternalIngredientTag {
   InternalIngredientTag(this.tag);
 
   factory InternalIngredientTag.fromJson(Map<String, dynamic> json) =>
-      _$IngredientTagFromJson(json);
+      _$InternalIngredientTagFromJson(json);
 
-  Map<String, dynamic> toJson() => _$IngredientTagToJson(this);
+  Map<String, dynamic> toJson() => _$InternalIngredientTagToJson(this);
 }
 

@@ -25,11 +25,11 @@ class Repositories {
       _ingredientsRepository.init(email)
     ];
     Future.wait(futures).then((value) {
-      // _recipesRepository.setSampleRecipes();
-      // _productsRepository.setSampleProducts();
-      // _ingredientTagsRepository.setSampleTags();
-      // _recipesTagsRepository.setSampleTags();
-      // _ingredientsRepository.setSampleIngredients();
+      _recipesRepository.setSampleRecipes();
+      _productsRepository.setSampleProducts();
+      _ingredientTagsRepository.setSampleTags();
+      _recipesTagsRepository.setSampleTags();
+      _ingredientsRepository.setSampleIngredients();
       return null;
     });
   }

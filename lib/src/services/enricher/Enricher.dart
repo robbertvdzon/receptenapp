@@ -35,6 +35,18 @@ class Enricher {
         var productName = ingredient.nutrientName;
         if (productName!=null) {
           var product = _productsRepository.getProductByName(productName);
+          /*
+          TODO: niet zomaar de waardes optellen, maar afhankelijk van de hoeveelheid van het product in dit recept!
+           */
+          nutritionalValues.kcal += product?.kcal??0;
+          nutritionalValues.prot += product?.prot??0;
+          nutritionalValues.nt += product?.nt??0;
+          nutritionalValues.fat += product?.fat??0;
+          nutritionalValues.sugar += product?.sugar??0;
+          nutritionalValues.na += product?.na??0;
+          nutritionalValues.k += product?.k??0;
+          nutritionalValues.fe += product?.fe??0;
+          nutritionalValues.mg += product?.mg??0;
         }
       }
     });

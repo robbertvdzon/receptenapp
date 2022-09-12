@@ -87,19 +87,23 @@ class ProductsRepository {
   }
 
   Product parseToProducts(List<dynamic> element) {
+
+
     final bi = Product(element[4]);
+    bi.kcal = double.parse("2,3".replaceAll(",", "."));
+
     bi.category = element[1];
     bi.nevoCode = element[3];
-    bi.quantity = element[7];
-    bi.kcal = element[12];
-    bi.prot = element[14];
-    bi.nt = element[17];
-    bi.fat = element[18];
-    bi.sugar = element[27];
-    bi.na = element[35];
-    bi.k = element[36];
-    bi.fe = element[40];
-    bi.mg = element[39];
+    bi.quantity = double.tryParse(element[7].replaceAll(",", "."));
+    bi.kcal = double.tryParse(element[12].replaceAll(",", "."));
+    bi.prot = double.tryParse(element[14].replaceAll(",", "."));
+    bi.nt = double.tryParse(element[17].replaceAll(",", "."));
+    bi.fat = double.tryParse(element[18].replaceAll(",", "."));
+    bi.sugar = double.tryParse(element[27].replaceAll(",", "."));
+    bi.na = double.tryParse(element[35].replaceAll(",", "."));
+    bi.k = double.tryParse(element[36].replaceAll(",", "."));
+    bi.fe = double.tryParse(element[40].replaceAll(",", "."));
+    bi.mg = double.tryParse(element[39].replaceAll(",", "."));
     bi.customNutrient = false;
     return bi;
   }

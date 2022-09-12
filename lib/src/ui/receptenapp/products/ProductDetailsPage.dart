@@ -89,61 +89,61 @@ class _WidgetState extends State<ProductDetailsPage> {
                   TextFormField(
                     decoration: InputDecoration(label:   Text('kcal:')),
                     initialValue: "${product.kcal}",
-                    onChanged: (text) {newProduct.kcal = text;},
+                    onChanged: (text) {newProduct.kcal = double.parse(text);},
                   ),
 
                   TextFormField(
                     decoration: InputDecoration(label:   Text('Na:')),
                     initialValue: "${product.na}",
-                    onChanged: (text) {newProduct.na = text;},
+                    onChanged: (text) {newProduct.na = double.parse(text);},
                   ),
 
                   TextFormField(
                     decoration: InputDecoration(label:   Text('k:')),
                     initialValue: "${product.k}",
-                    onChanged: (text) {newProduct.k = text;},
+                    onChanged: (text) {newProduct.k = double.parse(text);},
                   ),
 
                   TextFormField(
                     decoration: InputDecoration(label:   Text('prot:')),
                     initialValue: "${product.prot}",
-                    onChanged: (text) {newProduct.prot = text;},
+                    onChanged: (text) {newProduct.prot = double.parse(text);},
                   ),
 
                   TextFormField(
                     decoration: InputDecoration(label:   Text('fat:')),
                     initialValue: "${product.fat}",
-                    onChanged: (text) {newProduct.fat = text;},
+                    onChanged: (text) {newProduct.fat = double.parse(text);},
                   ),
 
                   TextFormField(
                     decoration: InputDecoration(label:   Text('fe:')),
                     initialValue: "${product.fe}",
-                    onChanged: (text) {newProduct.fe = text;},
+                    onChanged: (text) {newProduct.fe = double.parse(text);},
                   ),
 
                   TextFormField(
                     decoration: InputDecoration(label:   Text('mg:')),
                     initialValue: "${product.mg}",
-                    onChanged: (text) {newProduct.mg = text;},
+                    onChanged: (text) {newProduct.mg = double.parse(text);},
                   ),
 
                   TextFormField(
                     decoration: InputDecoration(label:   Text('quantity:')),
                     initialValue: "${product.quantity}",
-                    onChanged: (text) {newProduct.quantity = text;},
+                    onChanged: (text) {newProduct.quantity = double.parse(text);},
                   ),
 
                   TextFormField(
                     decoration: InputDecoration(label:   Text('nt:')),
                     initialValue: "${product.nt}",
-                    onChanged: (text) {newProduct.nt = text;},
+                    onChanged: (text) {newProduct.nt = double.parse(text);},
                   ),
 
                   TextFormField(
                     decoration: InputDecoration(label:   Text('Suiker:')),
                     initialValue: "${product.sugar}",
-                    onChanged: (text) {newProduct.sugar = text;},
+                    onChanged: (text) {newProduct.sugar = double.parse(text);},
                   ),
                   TextFormField(
                     decoration: InputDecoration(label:   Text('Category:')),

@@ -22,16 +22,16 @@ class Product {
   String? name;
   String? category;
   int? nevoCode;
-  String? quantity;
-  String? kcal;
-  String? prot;
-  String? nt;
-  String? fat;
-  String? sugar;
-  String? na;
-  String? k;
-  String? fe;
-  String? mg;
+  double? quantity;
+  double? kcal;
+  double? prot;
+  double? nt;
+  double? fat;
+  double? sugar;
+  double? na;
+  double? k;
+  double? fe;
+  double? mg;
   bool? customNutrient = false;
 
   Product(this.name);

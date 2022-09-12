@@ -21,16 +21,16 @@ Product _$ProductFromJson(Map<String, dynamic> json) => Product(
     )
       ..category = json['category'] as String?
       ..nevoCode = json['nevoCode'] as int?
-      ..quantity = json['quantity'] as String?
-      ..kcal = json['kcal'] as String?
-      ..prot = json['prot'] as String?
-      ..nt = json['nt'] as String?
-      ..fat = json['fat'] as String?
-      ..sugar = json['sugar'] as String?
-      ..na = json['na'] as String?
-      ..k = json['k'] as String?
-      ..fe = json['fe'] as String?
-      ..mg = json['mg'] as String?
+      ..quantity = (json['quantity'] as num?)?.toDouble()
+      ..kcal = (json['kcal'] as num?)?.toDouble()
+      ..prot = (json['prot'] as num?)?.toDouble()
+      ..nt = (json['nt'] as num?)?.toDouble()
+      ..fat = (json['fat'] as num?)?.toDouble()
+      ..sugar = (json['sugar'] as num?)?.toDouble()
+      ..na = (json['na'] as num?)?.toDouble()
+      ..k = (json['k'] as num?)?.toDouble()
+      ..fe = (json['fe'] as num?)?.toDouble()
+      ..mg = (json['mg'] as num?)?.toDouble()
       ..customNutrient = json['customNutrient'] as bool?;
 
 Map<String, dynamic> _$ProductToJson(Product instance) => <String, dynamic>{
