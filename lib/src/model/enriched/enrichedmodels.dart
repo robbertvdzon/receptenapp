@@ -1,13 +1,23 @@
 
 import '../ingredients/v1/ingredientTags.dart';
+import '../recipes/v1/recept.dart';
 
 class EnrichedRecept {
   String uuid;
   String name;
   String directions = "";
   NutritionalValues nutritionalValues;
-  List<EnrichedIngredient> ingredienten;
+  List<EnrichedReceptIngredient> ingredienten;
   EnrichedRecept(this.uuid, this.name, this.directions, this.nutritionalValues, this.ingredienten);
+}
+
+class EnrichedReceptIngredient {
+  String name;
+  ReceptIngredientAmountGrams? amountGrams = null;
+  var amountItems = null;
+  NutritionalValues nutritionalValues;
+
+  EnrichedReceptIngredient(this.name, this.amountGrams, this.amountItems, this.nutritionalValues);
 }
 
 class EnrichedIngredient {
@@ -15,30 +25,19 @@ class EnrichedIngredient {
   String name;
   String? nutrientName;
   NutritionalValues nutritionalValues;
-  List<IngredientTag> tags;
+  List<IngredientTag?> tags;
 
   EnrichedIngredient(this.uuid, this.name, this.nutrientName, this.nutritionalValues, this.tags);
 }
 
 class NutritionalValues {
-  String? kcal;
-  String? prot;
-  String? nt;
-  String? fat;
-  String? sugar;
-  String? na;
-  String? k;
-  String? fe;
-  String? mg;
-  NutritionalValues(
-    this.kcal,
-    this.prot,
-    this.nt,
-    this.fat,
-    this.sugar,
-    this.na,
-    this.k,
-    this.fe,
-    this.mg,
-  );
+  double kcal = 0;
+  double prot = 0;
+  double nt = 0;
+  double fat = 0;
+  double sugar = 0;
+  double na = 0;
+  double k = 0;
+  double fe = 0;
+  double mg = 0;
 }
