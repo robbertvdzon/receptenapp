@@ -9,11 +9,13 @@ import '../../global.dart';
 import '../../model/enriched/enrichedmodels.dart';
 import '../../model/ingredients/v1/ingredients.dart';
 import '../../model/recipes/v1/recept.dart';
+import '../repositories/RecipesTagsRepository.dart';
 
 class Enricher {
   var _ingredientsRepository = getIt<IngredientsRepository>();
   var _productsRepository = getIt<ProductsRepository>();
   var _ingredientTagsRepository = getIt<IngredientTagsRepository>();
+  var _recipesTagsRepository = getIt<RecipesTagsRepository>();
 
   EnrichedReceptIngredient enrichtReceptIngredient(
       ReceptIngredient receptIngredient) {
@@ -37,10 +39,15 @@ class Enricher {
       }
     });
 
+    var tags = recept.tags
+        .map((e) => _recipesTagsRepository.getTagByTag(e))
+        .toList();
+
+
     var enrichedIngredients =
         recept.ingredients.map((e) => enrichtReceptIngredient(e)).toList();
     var result = EnrichedRecept(recept.uuid, recept.name, recept.directions,
-        nutritionalValues, enrichedIngredients);
+        nutritionalValues, enrichedIngredients, tags);
     return result;
   }
 
