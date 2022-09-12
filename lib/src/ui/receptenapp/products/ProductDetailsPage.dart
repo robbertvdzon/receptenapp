@@ -67,6 +67,19 @@ class _WidgetState extends State<ProductDetailsPage> {
 
               child:Column(
                 children: <Widget>[
+
+                  Container(
+                  alignment: Alignment.center,// use aligment
+                    color: Color.fromRGBO(0, 96, 91, 1),
+                    child: Image.asset('recept1.jpeg',
+                        height: 150,
+                        width: 150,
+                        fit: BoxFit.cover),
+                  ),
+
+                  // Image.network('https://www.francescakookt.nl/wp-content/uploads/2022/05/balsamico-kip-met-aardappeltjes-en-broccoli-1.jpg'),
+                  // Image.asset('recept1.jpeg'),
+
                   TextFormField(
                     decoration: InputDecoration(label:   Text('Name:')),
                     initialValue: "${product.name}",
