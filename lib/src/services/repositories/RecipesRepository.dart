@@ -89,9 +89,9 @@ class RecipesRepository {
     final boter = ReceptIngredient("boter");
     final kaas = ReceptIngredient("kaas");
     final hamburgermenu = Recept([patat, hamburger, brood], "hamburger");
-    hamburgermenu.tags = ["zuivel","vlees"];
+    hamburgermenu.tags = ["zuivel","vlees","avondeten"];
     final broodjeKaas = Recept([brood, boter, kaas], "kaas broodje");
-    broodjeKaas.tags = ["zuivel","vegatarisch"];
+    broodjeKaas.tags = ["zuivel","vegatarisch","avondeten"];
 
     final noedelsoep = Recept([
       ReceptIngredient("gember", amountItems: ReceptIngredientAmountItems(0.1)),
@@ -107,7 +107,7 @@ class RecipesRepository {
       ReceptIngredient("sesamzaad", amountGrams: ReceptIngredientAmountGrams(15))
     ], "Noedelsoep met shiitake en paksoi");
     noedelsoep.directions = "Snijd de gember in dunne plakjes.\nSnijd de knoflook.\nKook de noedels..................";
-    noedelsoep.tags = ["vlees","soep"];
+    noedelsoep.tags = ["vlees","soep","avondeten"];
     final receptenboek = Recipes(
       [hamburgermenu, broodjeKaas, noedelsoep],
     );

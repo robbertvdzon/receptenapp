@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
+import '../../../global.dart';
+import '../../../model/enriched/enrichedmodels.dart';
 import '../../../model/recipes/v1/receptTags.dart';
+import '../../../services/enricher/Enricher.dart';
 
 class ReceptTagDetailsPage extends StatefulWidget {
   ReceptTagDetailsPage({Key? key, required this.title, required this.receptTag}) : super(key: key) {}
@@ -13,10 +16,11 @@ class ReceptTagDetailsPage extends StatefulWidget {
 }
 
 class _WidgetState extends State<ReceptTagDetailsPage> {
-  late ReceptTag receptTag;
+  late EnrichedRecipeTag receptTag;
+  var enricher = getIt<Enricher>();
 
   _WidgetState(ReceptTag receptTag) {
-    this.receptTag = receptTag;
+    this.receptTag = enricher.enrichtRecipeTag(receptTag);
   }
   @override
   Widget build(BuildContext context) {
@@ -33,6 +37,10 @@ class _WidgetState extends State<ReceptTagDetailsPage> {
                   TextFormField(
                     decoration: InputDecoration(label: Text('tag:')),
                     initialValue: "${receptTag.tag}",
+                  ),
+                  TextFormField(
+                    decoration: InputDecoration(label: Text('recipes:')),
+                    initialValue: "${receptTag.recipes.map((e) => e?.name).join(",")}",
                   ),
 
                 ],

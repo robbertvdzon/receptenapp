@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import '../../../global.dart';
+import '../../../model/enriched/enrichedmodels.dart';
 import '../../../model/ingredients/v1/ingredientTags.dart';
+import '../../../services/enricher/Enricher.dart';
 
 class IngredientTagDetailsPage extends StatefulWidget {
   IngredientTagDetailsPage({Key? key, required this.title, required this.ingredientTag}) : super(key: key) {}
@@ -12,10 +15,11 @@ class IngredientTagDetailsPage extends StatefulWidget {
 }
 
 class _WidgetState extends State<IngredientTagDetailsPage> {
-  late IngredientTag ingredientTag;
+  late EnrichedIngredientTag ingredientTag;
+  var enricher = getIt<Enricher>();
 
   _WidgetState(IngredientTag ingredientTag) {
-    this.ingredientTag = ingredientTag;
+    this.ingredientTag = enricher.enrichtIngredientTag(ingredientTag);
   }
   @override
   Widget build(BuildContext context) {
@@ -32,6 +36,14 @@ class _WidgetState extends State<IngredientTagDetailsPage> {
                   TextFormField(
                     decoration: InputDecoration(label: Text('tag:')),
                     initialValue: "${ingredientTag.tag}",
+                  ),
+                  TextFormField(
+                    decoration: InputDecoration(label: Text('ingredients:')),
+                    initialValue: "${ingredientTag.ingredients.map((e) => e?.name).join(",")}",
+                  ),
+                  TextFormField(
+                    decoration: InputDecoration(label: Text('recipes:')),
+                    initialValue: "${ingredientTag.recipes.map((e) => e?.name).join(",")}",
                   ),
 
                 ],
