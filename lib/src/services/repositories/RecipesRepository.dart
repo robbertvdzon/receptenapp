@@ -96,15 +96,15 @@ class RecipesRepository {
     final noedelsoep = Recept([
       ReceptIngredient("gember", amountItems: ReceptIngredientAmountItems(0.1)),
       ReceptIngredient("knoflook", amountItems: ReceptIngredientAmountItems(1)),
-      ReceptIngredient("eiernoedels", amountGrams: ReceptIngredientAmountGrams(100)),
-      ReceptIngredient("zonnebloemolie", amountGrams: ReceptIngredientAmountGrams(100)),
-      ReceptIngredient("water", amountGrams: ReceptIngredientAmountGrams(100)),
-      ReceptIngredient("groentebouillontabletten", amountGrams: ReceptIngredientAmountGrams(100)),
-      ReceptIngredient("sojasaus", amountGrams: ReceptIngredientAmountGrams(100)),
+      ReceptIngredient("eiernoedels", amountGrams: ReceptIngredientAmountGrams(200)),
+      ReceptIngredient("zonnebloemolie", amountGrams: ReceptIngredientAmountGrams(50)),
+      ReceptIngredient("water", amountGrams: ReceptIngredientAmountGrams(200)),
+      ReceptIngredient("groentebouillontabletten", amountGrams: ReceptIngredientAmountGrams(30)),
+      ReceptIngredient("sojasaus", amountGrams: ReceptIngredientAmountGrams(20)),
       ReceptIngredient("rijstazijn", amountGrams: ReceptIngredientAmountGrams(100)),
-      ReceptIngredient("shitakes", amountGrams: ReceptIngredientAmountGrams(100)),
-      ReceptIngredient("paksoi", amountItems:  ReceptIngredientAmountItems(1)),
-      ReceptIngredient("sesamzaad", amountGrams: ReceptIngredientAmountGrams(100))
+      ReceptIngredient("shitakes", amountGrams: ReceptIngredientAmountGrams(200)),
+      ReceptIngredient("paksoi", amountItems:  ReceptIngredientAmountItems(1.5)),
+      ReceptIngredient("sesamzaad", amountGrams: ReceptIngredientAmountGrams(15))
     ], "Noedelsoep met shiitake en paksoi");
     noedelsoep.directions = "Snijd de gember in dunne plakjes.\nSnijd de knoflook.\nKook de noedels..................";
     noedelsoep.tags = ["vlees","soep"];

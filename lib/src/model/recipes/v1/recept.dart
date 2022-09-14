@@ -30,7 +30,16 @@ class Recept {
   factory Recept.fromJson(Map<String, dynamic> json) => _$ReceptFromJson(json);
 
   Map<String, dynamic> toJson() => _$ReceptToJson(this);
+
+  bool containsIngredient(String name) {
+    return this.ingredients.where((element) => element.name==name).isNotEmpty;
+  }
+
+  bool containsTag(String? tag) {
+    return this.tags.contains(tag);
+  }
 }
+
 
 @JsonSerializable()
 class ReceptIngredient {
@@ -55,7 +64,7 @@ abstract class ReceptIngredientAmount {}
 
 @JsonSerializable()
 class ReceptIngredientAmountGrams implements ReceptIngredientAmount{
-  int grams = 0;
+  double grams = 0;
 
   ReceptIngredientAmountGrams(this.grams);
 

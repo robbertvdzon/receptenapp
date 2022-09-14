@@ -92,6 +92,14 @@ class _WidgetState extends State<ReceptDetailsPage> {
                       newRecept.name = text;
                     },
                   ),
+                  TextFormField(
+                    decoration: InputDecoration(label: Text('Ingredients:')),
+                    initialValue: "${recept.ingredienten.map((e) => e?.toTextString()).join(",")}",
+                  ),
+                  TextFormField(
+                    decoration: InputDecoration(label: Text('Tags:')),
+                    initialValue: "${recept.tags.map((e) => e?.tag).join(",")}",
+                  ),
                   // TextFormField(
                   //   decoration: InputDecoration(label: Text('Voedingsmiddel:')),
                   //   initialValue: "${recept.nutrientName}",

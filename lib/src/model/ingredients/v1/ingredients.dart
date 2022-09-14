@@ -20,7 +20,7 @@ class Ingredient {
   String uuid = Uuid().v1();
   String name;
   String? nutrientName;
-  int gramsPerPiece = 0;
+  double gramsPerPiece = 0;
   List<String> tags = List.empty();
 
   Ingredient(this.name);
@@ -29,6 +29,10 @@ class Ingredient {
       _$IngredientFromJson(json);
 
   Map<String, dynamic> toJson() => _$IngredientToJson(this);
+
+  bool containsTag(String? tag) {
+    return this.tags.contains(tag);
+  }
 }
 
 @JsonSerializable()

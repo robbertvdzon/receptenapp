@@ -57,7 +57,7 @@ Map<String, dynamic> _$ReceptIngredientToJson(ReceptIngredient instance) =>
 ReceptIngredientAmountGrams _$ReceptIngredientAmountGramsFromJson(
         Map<String, dynamic> json) =>
     ReceptIngredientAmountGrams(
-      json['grams'] as int,
+      (json['grams'] as num).toDouble(),
     );
 
 Map<String, dynamic> _$ReceptIngredientAmountGramsToJson(
