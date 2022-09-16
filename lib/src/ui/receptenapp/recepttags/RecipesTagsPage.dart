@@ -45,7 +45,7 @@ class _PageState extends State<RecipesTagsPage> {
                           ),
                           alignment: Alignment.center,
                           child:
-                          ReceptTagItemWidget(receptTag: item),
+                          ReceptTagItemWidget(receptTag: item, key: ObjectKey(item)),
                         ),
                       ],
 

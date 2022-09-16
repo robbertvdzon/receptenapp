@@ -49,7 +49,6 @@ class _IngredientsPageState extends State<IngredientsPage> {
         filteredIngredients = ingredients.where((element) => element.name!=null && element.name!.contains(_filter)).toList();
       })
     });
-
   }
 
   void _filterNutrients() {
@@ -127,7 +126,7 @@ class _IngredientsPageState extends State<IngredientsPage> {
                           ),
                           alignment: Alignment.center,
                           child:
-                          IngredientItemWidget(ingredient: item, categories: nutricients,),
+                          IngredientItemWidget(ingredient: item, categories: nutricients, key: ObjectKey(item)),
                         ),
                       ],
 

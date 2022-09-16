@@ -121,7 +121,7 @@ class _ProductsPageState extends State<ProductsPage> {
                           ),
                           alignment: Alignment.center,
                           child:
-                        ProductItemWidget(nutrient: item),
+                        ProductItemWidget(nutrient: item, key: ObjectKey(item)),
                         ),
                       ],
 

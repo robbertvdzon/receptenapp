@@ -25,15 +25,23 @@ class _RecipesPageState extends State<RecipesPage> {
   var recipesRepository = getIt<RecipesRepository>();
   var nutrientsRepository = getIt<ProductsRepository>();
   String _filter = "";
-  String codeDialog ="";
+  String codeDialog = "";
   String valueText = "";
 
-  _RecipesPageState() {
+  @override
+  void initState() {
+    super.initState();
     recipes = recipesRepository.getRecipes().recipes;
-    filteredRecipes = recipes.where((element) => element.name!=null && element.name!.contains(_filter)).toList();
-    products = nutrientsRepository.getProducts().products.map((e) => e.name ?? "").toList();
+    filteredRecipes = recipes
+        .where((element) =>
+            element.name != null && element.name!.contains(_filter))
+        .toList();
+    products = nutrientsRepository
+        .getProducts()
+        .products
+        .map((e) => e.name ?? "")
+        .toList();
   }
-
 
   void _updateFilter(String filter) {
     setState(() {
@@ -44,16 +52,22 @@ class _RecipesPageState extends State<RecipesPage> {
 
   void addNutrient(String name) {
     recipesRepository.createAndAddRecept(name).then((value) => {
-      setState(() {
-        recipes = recipesRepository.getRecipes().recipes;
-        filteredRecipes = recipes.where((element) => element.name!=null && element.name!.contains(_filter)).toList();
-      })
-    });
-
+          setState(() {
+            recipes = recipesRepository.getRecipes().recipes;
+            filteredRecipes = recipes
+                .where((element) =>
+                    element.name != null && element.name!.contains(_filter))
+                .toList();
+          })
+        });
   }
 
   void _filterNutrients() {
-    filteredRecipes = recipes.where((element) => element.name!=null && element.name!.toLowerCase().contains(_filter.toLowerCase())).toList();
+    filteredRecipes = recipes
+        .where((element) =>
+            element.name != null &&
+            element.name!.toLowerCase().contains(_filter.toLowerCase()))
+        .toList();
   }
 
   Future<void> _displayTextInputDialog(BuildContext context) async {
@@ -96,6 +110,7 @@ class _RecipesPageState extends State<RecipesPage> {
           );
         });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -105,42 +120,41 @@ class _RecipesPageState extends State<RecipesPage> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            TextFormField(key: Key(_filter.toString()),
-              decoration: InputDecoration(border: InputBorder.none, labelText: 'Filter: (${filteredRecipes.length} ingredienten)'),
-              autofocus: true,
-              controller: _filterTextFieldController..text = '$_filter',
-              onChanged: (text) => {_updateFilter(text)},
-            )
-            ,
-            SizedBox(
-              height: 750,
-              width: 500,
-              child: ListView(
-                children: filteredRecipes.map((item) {
-                  return Container(
-                    child:
-                    Column(
-                      children: [
-                        Container(
-                          constraints: BoxConstraints.expand(
-                            height: 150.0,
-                          ),
-                          alignment: Alignment.center,
-                          child:
-                          ReceptItemWidget(recept: item),
+        children: <Widget>[
+          TextFormField(
+            key: Key(_filter.toString()),
+            decoration: InputDecoration(
+                border: InputBorder.none,
+                labelText: 'Filter: (${filteredRecipes.length} recepten)'),
+            autofocus: true,
+            controller: _filterTextFieldController..text = '$_filter',
+            onChanged: (text) => {_updateFilter(text)},
+          ),
+          SizedBox(
+            height: 750,
+            width: 500,
+            child: ListView(
+              children: filteredRecipes.map((item) {
+                return Container(
+                  child: Column(
+                    children: [
+                      Container(
+                        constraints: BoxConstraints.expand(
+                          height: 150.0,
                         ),
-                      ],
-                    ),
-
-                    margin: EdgeInsets.all(0),
-                    padding: EdgeInsets.all(0),
-                  );
-                }).toList(),
-              ),
+                        alignment: Alignment.center,
+                        child: ReceptItemWidget(recept: item, key: ObjectKey(item)),
+                      ),
+                    ],
+                  ),
+                  margin: EdgeInsets.all(0),
+                  padding: EdgeInsets.all(0),
+                );
+              }).toList(),
             ),
-          ],
-        ),
+          ),
+        ],
+      ),
 
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -153,6 +167,4 @@ class _RecipesPageState extends State<RecipesPage> {
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
-
-
 }
