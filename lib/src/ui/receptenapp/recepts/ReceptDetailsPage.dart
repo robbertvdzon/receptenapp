@@ -72,25 +72,37 @@ class _WidgetState extends State<ReceptDetailsPage> {
                     },
                   ),
                   TextFormField(
+                    decoration: InputDecoration(label: Text('Opmerking:')),
+                    initialValue: "${recept.remarks}",
+                    onChanged: (text) {
+                      newRecept.remark = text;
+                    },
+                  ),
+                  TextFormField(
+                    decoration: InputDecoration(label: Text('Voorbereidingstijd:')),
+                    initialValue: "${recept.preparingTime}",
+                    onChanged: (text) {
+                      newRecept.preparingTime = int.parse(text);
+                    },
+                  ),
+                  TextFormField(
+                    decoration: InputDecoration(label: Text('Totale kooktijd:')),
+                    initialValue: "${recept.totalCookingTime}",
+                    onChanged: (text) {
+                      newRecept.totalCookingTime = int.parse(text);
+                    },
+                  ),
+                  TextFormField(
                     decoration: InputDecoration(label: Text('Nt:')),
                     initialValue: "${recept.nutritionalValues.nt}",
-                    onChanged: (text) {
-                      newRecept.name = text;
-                    },
                   ),
                   TextFormField(
                     decoration: InputDecoration(label: Text('Kcal:')),
                     initialValue: "${recept.nutritionalValues.kcal}",
-                    onChanged: (text) {
-                      newRecept.name = text;
-                    },
                   ),
                   TextFormField(
                     decoration: InputDecoration(label: Text('Fat:')),
                     initialValue: "${recept.nutritionalValues.fat}",
-                    onChanged: (text) {
-                      newRecept.name = text;
-                    },
                   ),
                   TextFormField(
                     decoration: InputDecoration(label: Text('Ingredients:')),

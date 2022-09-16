@@ -9,10 +9,13 @@ class EnrichedRecept {
   String uuid;
   String name;
   String directions = "";
+  String remarks = "";
+  int totalCookingTime = 0;
+  int preparingTime = 0;
   NutritionalValues nutritionalValues;
   List<EnrichedReceptIngredient> ingredienten;
   List<ReceptTag?> tags;
-  EnrichedRecept(this.uuid, this.name, this.directions, this.nutritionalValues, this.ingredienten, this.tags);
+  EnrichedRecept(this.uuid, this.name, this.directions, this.nutritionalValues, this.ingredienten, this.tags, this.remarks, this.totalCookingTime, this.preparingTime);
 }
 
 class EnrichedReceptIngredient {

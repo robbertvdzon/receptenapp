@@ -45,16 +45,47 @@ class _WidgetState extends State<ReceptItemWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        new TextButton(
-          onPressed: () {
-            _openForm();
-          },
-          child: new Text(recept.name),
-        )
-      ],
+
+    return InkWell(
+      onTap: () {_openForm();}, // Handle your callback
+      child:
+      Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          new Text(
+              recept.name,
+            style: TextStyle(fontSize: 20),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                alignment: Alignment.topLeft, // use aligment
+                padding: EdgeInsets.only(left:0, bottom: 0, right: 20, top:0),
+                child: Image.asset('recept1.jpeg',
+                    height: 100, width: 100, fit: BoxFit.cover),
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(recept.preparingTime.toString() +
+                      "/" +
+                      recept.totalCookingTime.toString() +
+                      " minuten"),
+                  Text(recept.remark),
+                ],
+              )
+            ],
+          )
+        ],
+      )
     );
+
+
+
   }
 
 }

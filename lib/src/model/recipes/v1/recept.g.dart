@@ -24,12 +24,18 @@ Recept _$ReceptFromJson(Map<String, dynamic> json) => Recept(
     )
       ..uuid = json['uuid'] as String
       ..directions = json['directions'] as String
+      ..remark = json['remark'] as String
+      ..totalCookingTime = json['totalCookingTime'] as int
+      ..preparingTime = json['preparingTime'] as int
       ..tags = (json['tags'] as List<dynamic>).map((e) => e as String).toList();
 
 Map<String, dynamic> _$ReceptToJson(Recept instance) => <String, dynamic>{
       'uuid': instance.uuid,
       'name': instance.name,
       'directions': instance.directions,
+      'remark': instance.remark,
+      'totalCookingTime': instance.totalCookingTime,
+      'preparingTime': instance.preparingTime,
       'ingredients': instance.ingredients,
       'tags': instance.tags,
     };

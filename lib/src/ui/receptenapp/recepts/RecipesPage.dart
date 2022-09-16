@@ -102,9 +102,9 @@ class _RecipesPageState extends State<RecipesPage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             TextFormField(key: Key(_filter.toString()),
               decoration: InputDecoration(border: InputBorder.none, labelText: 'Filter: (${filteredRecipes.length} ingredienten)'),
@@ -115,6 +115,7 @@ class _RecipesPageState extends State<RecipesPage> {
             ,
             SizedBox(
               height: 750,
+              width: 500,
               child: ListView(
                 children: filteredRecipes.map((item) {
                   return Container(
@@ -123,7 +124,7 @@ class _RecipesPageState extends State<RecipesPage> {
                       children: [
                         Container(
                           constraints: BoxConstraints.expand(
-                            height: 30.0,
+                            height: 150.0,
                           ),
                           alignment: Alignment.center,
                           child:
@@ -140,7 +141,7 @@ class _RecipesPageState extends State<RecipesPage> {
             ),
           ],
         ),
-      ),
+
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           // _filterTextFieldController.text ="bla";

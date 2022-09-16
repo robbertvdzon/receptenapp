@@ -22,6 +22,10 @@ class Recept {
   String uuid = Uuid().v1();
   String name;
   String directions = "";
+  String remark = "";
+  int totalCookingTime = 0;
+  int preparingTime = 0;
+
   List<ReceptIngredient> ingredients;
   List<String> tags = List.empty();
 

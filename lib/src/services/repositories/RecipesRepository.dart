@@ -108,12 +108,14 @@ class RecipesRepository {
     ], "Noedelsoep met shiitake en paksoi");
     noedelsoep.directions = "Snijd de gember in dunne plakjes.\nSnijd de knoflook.\nKook de noedels..................";
     noedelsoep.tags = ["vlees","soep","avondeten"];
+    noedelsoep.remark = "Was erg lekker en makkelijk!";
+    noedelsoep.preparingTime = 10;
+    noedelsoep.totalCookingTime = 45;
     final receptenboek = Recipes(
       [hamburgermenu, broodjeKaas, noedelsoep],
     );
     return receptenboek;
-  }  
-  
+  }
 }
 
 

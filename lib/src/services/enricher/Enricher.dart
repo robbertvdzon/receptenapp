@@ -67,7 +67,7 @@ class Enricher {
     var enrichedIngredients =
         recept.ingredients.map((e) => enrichtReceptIngredient(e)).toList();
     var result = EnrichedRecept(recept.uuid, recept.name, recept.directions,
-        nutritionalValues, enrichedIngredients, tags);
+        nutritionalValues, enrichedIngredients, tags, recept.remark, recept.totalCookingTime, recept.preparingTime);
     return result;
   }
 
