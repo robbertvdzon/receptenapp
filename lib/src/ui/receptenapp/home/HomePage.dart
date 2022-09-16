@@ -46,6 +46,14 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            Container(
+              alignment: Alignment.center,// use aligment
+              child: Image.asset('recipes.png',
+                  height: 150,
+                  width: 150,
+                  fit: BoxFit.cover),
+            ),
+
             Spacer(),
             ElevatedButton(
               child: Text('Ingredient tags'),
