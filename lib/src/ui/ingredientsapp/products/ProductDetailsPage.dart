@@ -71,7 +71,7 @@ class _WidgetState extends State<ProductDetailsPage> {
                   Container(
                   alignment: Alignment.center,// use aligment
                     color: Color.fromRGBO(0, 96, 91, 1),
-                    child: Image.asset('recept1.jpeg',
+                    child: Image.asset('assets/images/recept1.jpeg',
                         height: 150,
                         width: 150,
                         fit: BoxFit.cover),

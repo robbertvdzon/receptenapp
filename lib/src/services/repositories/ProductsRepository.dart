@@ -79,10 +79,11 @@ class ProductsRepository {
   }
 
   Future<Products> readPreloadedNutrients() async {
-    final String response = await rootBundle.loadString('NEVO2021.csv');
+    final String response = await rootBundle.loadString('assets/NEVO2021.csv');
     List<List<dynamic>> rowsAsListOfValues = const CsvToListConverter(fieldDelimiter: "|").convert(response);
 
     final List<Product> list = rowsAsListOfValues.skip(1).map((element) => parseToProducts(element)).toList();
+    print("added:"+list.length.toString());
     return Products(list);
   }
 

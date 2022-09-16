@@ -88,7 +88,7 @@ class RecipesRepository {
     final brood = ReceptIngredient("brood");
     final boter = ReceptIngredient("boter");
     final kaas = ReceptIngredient("kaas");
-    final hamburgermenu = Recept([patat, hamburger, brood], "hamburger");
+    final hamburgermenu = Recept([patat, hamburger, brood], "Broodje hamburger");
     hamburgermenu.tags = ["zuivel","vlees","avondeten"];
     final broodjeKaas = Recept([brood, boter, kaas], "kaas broodje");
     broodjeKaas.tags = ["zuivel","vegatarisch","avondeten"];
@@ -112,10 +112,27 @@ class RecipesRepository {
     noedelsoep.preparingTime = 10;
     noedelsoep.totalCookingTime = 45;
     final receptenboek = Recipes(
-      [hamburgermenu, broodjeKaas, noedelsoep],
+      [hamburgermenu,
+        broodjeKaas,
+        noedelsoep,
+        createDummyRecept("recept 01"),
+        createDummyRecept("recept 02"),
+        createDummyRecept("recept 03"),
+        createDummyRecept("recept 04"),
+        createDummyRecept("recept 05"),
+        createDummyRecept("recept 06"),
+        createDummyRecept("recept 07"),
+        createDummyRecept("recept 08"),
+        createDummyRecept("recept 09"),
+        createDummyRecept("recept 10"),
+      ],
     );
     return receptenboek;
   }
+
+  Recept createDummyRecept(String naam) => Recept([ReceptIngredient("hamburger"), ReceptIngredient("brood")], naam);
+
+
 }
 
 

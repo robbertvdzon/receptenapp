@@ -47,22 +47,22 @@ class _AllAppHomePageState extends State<AllAppHomePage> {
             Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  buildElevatedButton(context, RecipesPage(title: 'Recepten'), "recipes.png"),
-                  buildElevatedButton(context, IngredientsPage(title: 'Ingredienten'), "ingredients.png"),
+                  buildElevatedButton(context, RecipesPage(title: 'Recepten'), "assets/images/recipes.png"),
+                  buildElevatedButton(context, IngredientsPage(title: 'Ingredienten'), "assets/images/ingredients.png"),
                 ]
             ),
             Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  buildElevatedButton(context, RecipesPage(title: 'planner'), "planner.png"),
-                  buildElevatedButton(context, IngredientsPage(title: 'Boodschappen'), "shopping.png"),
+                  buildElevatedButton(context, RecipesPage(title: 'planner'), "assets/images/planner.png"),
+                  buildElevatedButton(context, IngredientsPage(title: 'Boodschappen'), "assets/images/shopping.png"),
                 ]
             ),
             Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  buildElevatedButton(context, IngredientsPage(title: 'Dagbook'), "diary.png"),
-                  buildElevatedButton(context, RecipesPage(title: 'Statistieken'), "statistics.png"),
+                  buildElevatedButton(context, IngredientsPage(title: 'Dagbook'), "assets/images/diary.png"),
+                  buildElevatedButton(context, RecipesPage(title: 'Statistieken'), "assets/images/statistics.png"),
                 ]
             ),
           ],

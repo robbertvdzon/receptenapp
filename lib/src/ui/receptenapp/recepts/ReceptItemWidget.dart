@@ -64,7 +64,7 @@ class _WidgetState extends State<ReceptItemWidget> {
               Container(
                 alignment: Alignment.topLeft, // use aligment
                 padding: EdgeInsets.only(left:0, bottom: 0, right: 20, top:0),
-                child: Image.asset('recept1.jpeg',
+                child: Image.asset('assets/images/recept1.jpeg',
                     height: 100, width: 100, fit: BoxFit.cover),
               ),
               Column(
