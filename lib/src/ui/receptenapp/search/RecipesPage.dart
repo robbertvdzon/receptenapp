@@ -120,6 +120,18 @@ class _RecipesPageState extends State<RecipesPage> {
         title: Text(widget.title),
         actions: [
           ElevatedButton(
+            child: Text('Zoek'),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        RecipesTagsPage(title: 'Zoek')),
+              );
+            },
+          ),
+          SizedBox(width: 10),
+          ElevatedButton(
             child: Text('Recipes tags'),
             onPressed: () {
               Navigator.push(
@@ -130,63 +142,56 @@ class _RecipesPageState extends State<RecipesPage> {
               );
             },
           ),
+          SizedBox(width: 10),
           IconButton(
               onPressed: () => FirebaseAuth.instance.signOut(),
               icon: Icon(Icons.logout))
         ],
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          SizedBox(
-              height: 50,
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            SizedBox(
+                height: 50,
+                width: 500,
+                child: TextFormField(
+                  key: Key(_filter.toString()),
+                  decoration: InputDecoration(
+                      border: InputBorder.none,
+                      labelText:
+                          'Quickfilter: (${filteredRecipes.length} recepten)'),
+                  autofocus: true,
+                  controller: _filterTextFieldController..text = '$_filter',
+                  onChanged: (text) => {_updateFilter(text)},
+                )),
+            SizedBox(
+              height: 750,
               width: 500,
-              child: TextFormField(
-                key: Key(_filter.toString()),
-                decoration: InputDecoration(
-                    border: InputBorder.none,
-                    labelText:
-                        'Quickfilter: (${filteredRecipes.length} recepten)'),
-                autofocus: true,
-                controller: _filterTextFieldController..text = '$_filter',
-                onChanged: (text) => {_updateFilter(text)},
-              )
-          ),
-          TextFormField(
-            key: Key(_filter.toString()),
-            decoration: InputDecoration(
-                border: InputBorder.none,
-                labelText: 'Quickfilter: (${filteredRecipes.length} recepten)'),
-            autofocus: true,
-            controller: _filterTextFieldController..text = '$_filter',
-            onChanged: (text) => {_updateFilter(text)},
-          ),
-          SizedBox(
-            height: 750,
-            width: 500,
-            child: ListView(
-              children: filteredRecipes.map((item) {
-                return Container(
-                  child: Column(
-                    children: [
-                      Container(
-                        constraints: BoxConstraints.expand(
-                          height: 150.0,
+              child: ListView(
+                children: filteredRecipes.map((item) {
+                  return Container(
+                    child: Column(
+                      children: [
+                        Container(
+                          constraints: BoxConstraints.expand(
+                            height: 150.0,
+                          ),
+                          alignment: Alignment.center,
+                          child: ReceptItemWidget(
+                              recept: item, key: ObjectKey(item)),
                         ),
-                        alignment: Alignment.center,
-                        child: ReceptItemWidget(
-                            recept: item, key: ObjectKey(item)),
-                      ),
-                    ],
-                  ),
-                  margin: EdgeInsets.all(0),
-                  padding: EdgeInsets.all(0),
-                );
-              }).toList(),
+                      ],
+                    ),
+                    margin: EdgeInsets.all(0),
+                    padding: EdgeInsets.all(0),
+                  );
+                }).toList(),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
 
       floatingActionButton: FloatingActionButton(

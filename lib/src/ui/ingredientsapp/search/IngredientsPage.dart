@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:receptenapp/src/services/repositories/IngredientsRepository.dart';
@@ -116,6 +117,36 @@ class _IngredientsPageState extends State<IngredientsPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+        actions: [
+          ElevatedButton(
+            child: Text('Producten'),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        ProductsPage(title: 'Producten')),
+              );
+            },
+          ),
+          SizedBox(width: 10),
+          ElevatedButton(
+            child: Text('Tags'),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        IngredientsTagsPage(title: 'Ingredient tags')),
+              );
+            },
+          ),
+          SizedBox(width: 10),
+          IconButton(
+              onPressed: () => FirebaseAuth.instance.signOut(),
+              icon: Icon(Icons.logout))
+        ],
+
       ),
       body: Center(
         child: Column(
@@ -130,28 +161,6 @@ class _IngredientsPageState extends State<IngredientsPage> {
               autofocus: true,
               controller: _filterTextFieldController..text = '$_filter',
               onChanged: (text) => {_updateFilter(text)},
-            ),
-            ElevatedButton(
-              child: Text('Ingredient tags'),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          IngredientsTagsPage(title: 'Ingredient tags')),
-                );
-              },
-            ),
-            Spacer(),
-            ElevatedButton(
-              child: Text('Producten'),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => ProductsPage(title: 'Producten')),
-                );
-              },
             ),
             SizedBox(
               height: 750,
