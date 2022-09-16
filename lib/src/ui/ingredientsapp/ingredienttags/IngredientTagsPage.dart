@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../global.dart';
 import '../../../model/ingredients/v1/ingredientTags.dart';
 import '../../../services/repositories/IngredientTagsRepository.dart';
-import 'IngredientTagItemWidget.dart';
+import '../../ingredientsapp/ingredienttags/IngredientTagItemWidget.dart';
 
 class IngredientsTagsPage extends StatefulWidget {
   IngredientsTagsPage({Key? key, required this.title}) : super(key: key) {}

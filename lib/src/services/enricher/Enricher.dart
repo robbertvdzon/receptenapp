@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:receptenapp/src/model/ingredients/v1/ingredientTags.dart';
 import 'package:receptenapp/src/services/repositories/IngredientTagsRepository.dart';
 import 'package:receptenapp/src/services/repositories/IngredientsRepository.dart';
-import 'package:receptenapp/src/ui/receptenapp/ingredienttags/IngredientTagsPage.dart';
 import '../../model/recipes/v1/receptTags.dart';
 import '../repositories/ProductsRepository.dart';
 

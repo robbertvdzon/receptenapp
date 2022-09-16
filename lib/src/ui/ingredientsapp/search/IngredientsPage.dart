@@ -4,7 +4,9 @@ import 'package:receptenapp/src/services/repositories/IngredientsRepository.dart
 import '../../../global.dart';
 import '../../../model/ingredients/v1/ingredients.dart';
 import '../../../services/repositories/ProductsRepository.dart';
-import 'IngredientItemWidget.dart';
+import '../ingredienttags/IngredientTagsPage.dart';
+import '../products/ProductsPage.dart';
+import '../ingredients/IngredientItemWidget.dart';
 
 class IngredientsPage extends StatefulWidget {
   IngredientsPage({Key? key, required this.title}) : super(key: key) {}
@@ -25,15 +27,21 @@ class _IngredientsPageState extends State<IngredientsPage> {
   var ingredientsRepository = getIt<IngredientsRepository>();
   var productsRepository = getIt<ProductsRepository>();
   String _filter = "";
-  String codeDialog ="";
+  String codeDialog = "";
   String valueText = "";
 
   _IngredientsPageState() {
-      ingredients = ingredientsRepository.getIngredients().ingredients;
-      filteredIngredients = ingredients.where((element) => element.name!=null && element.name!.contains(_filter)).toList();
-      nutricients = productsRepository.getProducts().products.map((e) => e.name ?? "").toList();
+    ingredients = ingredientsRepository.getIngredients().ingredients;
+    filteredIngredients = ingredients
+        .where((element) =>
+            element.name != null && element.name!.contains(_filter))
+        .toList();
+    nutricients = productsRepository
+        .getProducts()
+        .products
+        .map((e) => e.name ?? "")
+        .toList();
   }
-
 
   void _updateFilter(String filter) {
     setState(() {
@@ -44,15 +52,22 @@ class _IngredientsPageState extends State<IngredientsPage> {
 
   void addNutrient(String name) {
     ingredientsRepository.createAndAddIngredient(name).then((value) => {
-      setState(() {
-        ingredients = ingredientsRepository.getIngredients().ingredients;
-        filteredIngredients = ingredients.where((element) => element.name!=null && element.name!.contains(_filter)).toList();
-      })
-    });
+          setState(() {
+            ingredients = ingredientsRepository.getIngredients().ingredients;
+            filteredIngredients = ingredients
+                .where((element) =>
+                    element.name != null && element.name!.contains(_filter))
+                .toList();
+          })
+        });
   }
 
   void _filterNutrients() {
-    filteredIngredients = ingredients.where((element) => element.name!=null && element.name!.toLowerCase().contains(_filter.toLowerCase())).toList();
+    filteredIngredients = ingredients
+        .where((element) =>
+            element.name != null &&
+            element.name!.toLowerCase().contains(_filter.toLowerCase()))
+        .toList();
   }
 
   Future<void> _displayTextInputDialog(BuildContext context) async {
@@ -95,6 +110,7 @@ class _IngredientsPageState extends State<IngredientsPage> {
           );
         });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -105,31 +121,56 @@ class _IngredientsPageState extends State<IngredientsPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            TextFormField(key: Key(_filter.toString()),
-              decoration: InputDecoration(border: InputBorder.none, labelText: 'Filter: (${filteredIngredients.length} ingredienten)'),
+            TextFormField(
+              key: Key(_filter.toString()),
+              decoration: InputDecoration(
+                  border: InputBorder.none,
+                  labelText:
+                      'Filter: (${filteredIngredients.length} ingredienten)'),
               autofocus: true,
               controller: _filterTextFieldController..text = '$_filter',
               onChanged: (text) => {_updateFilter(text)},
-            )
-            ,
+            ),
+            ElevatedButton(
+              child: Text('Ingredient tags'),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          IngredientsTagsPage(title: 'Ingredient tags')),
+                );
+              },
+            ),
+            Spacer(),
+            ElevatedButton(
+              child: Text('Producten'),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ProductsPage(title: 'Producten')),
+                );
+              },
+            ),
             SizedBox(
               height: 750,
               child: ListView(
                 children: filteredIngredients.map((item) {
                   return Container(
-                    child:
-                    Column(
+                    child: Column(
                       children: [
                         Container(
                           constraints: BoxConstraints.expand(
                             height: 30.0,
                           ),
                           alignment: Alignment.center,
-                          child:
-                          IngredientItemWidget(ingredient: item, categories: nutricients, key: ObjectKey(item)),
+                          child: IngredientItemWidget(
+                              ingredient: item,
+                              categories: nutricients,
+                              key: ObjectKey(item)),
                         ),
                       ],
-
                     ),
 
                     margin: EdgeInsets.all(0),
@@ -153,6 +194,4 @@ class _IngredientsPageState extends State<IngredientsPage> {
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
-
-
 }

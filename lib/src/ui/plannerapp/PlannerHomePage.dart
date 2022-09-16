@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:receptenapp/src/ui/receptenapp/ingredienttags/IngredientTagsPage.dart';
 import '../../global.dart';
 import '../../services/repositories/UserRepository.dart';
+import '../ingredientsapp/ingredienttags/IngredientTagsPage.dart';
 
 class PlannerHomePage extends StatefulWidget {
 

@@ -3,10 +3,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutterfire_ui/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:receptenapp/src/ui/receptenapp/search/RecipesPage.dart';
 import '../../global.dart';
 import '../../services/repositories/Repositories.dart';
 import '../../services/repositories/UserRepository.dart';
-import 'home/HomePage.dart';
 
 const DISABLE_AUTH = true;
 
@@ -53,7 +53,7 @@ class _MyAppState extends State<ReceptenApp> {
                 brightness: Brightness.dark,
                 primarySwatch: Colors.blue,
               ),
-              home: HomePage(title: 'Recepten App'),
+              home: RecipesPage(title: 'Recepten'),
             );
           }
           return MaterialApp(

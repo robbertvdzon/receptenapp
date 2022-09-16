@@ -1,10 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import '../../../global.dart';
 import '../../../model/recipes/v1/recept.dart';
 import '../../../services/repositories/ProductsRepository.dart';
 import '../../../services/repositories/RecipesRepository.dart';
-import 'ReceptItemWidget.dart';
+import '../recepts/ReceptItemWidget.dart';
+import '../recepttags/RecipesTagsPage.dart';
 
 class RecipesPage extends StatefulWidget {
   RecipesPage({Key? key, required this.title}) : super(key: key) {}
@@ -116,16 +118,46 @@ class _RecipesPageState extends State<RecipesPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+        actions: [
+          ElevatedButton(
+            child: Text('Recipes tags'),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        RecipesTagsPage(title: 'Recipes tags')),
+              );
+            },
+          ),
+          IconButton(
+              onPressed: () => FirebaseAuth.instance.signOut(),
+              icon: Icon(Icons.logout))
+        ],
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
+          SizedBox(
+              height: 50,
+              width: 500,
+              child: TextFormField(
+                key: Key(_filter.toString()),
+                decoration: InputDecoration(
+                    border: InputBorder.none,
+                    labelText:
+                        'Quickfilter: (${filteredRecipes.length} recepten)'),
+                autofocus: true,
+                controller: _filterTextFieldController..text = '$_filter',
+                onChanged: (text) => {_updateFilter(text)},
+              )
+          ),
           TextFormField(
             key: Key(_filter.toString()),
             decoration: InputDecoration(
                 border: InputBorder.none,
-                labelText: 'Filter: (${filteredRecipes.length} recepten)'),
+                labelText: 'Quickfilter: (${filteredRecipes.length} recepten)'),
             autofocus: true,
             controller: _filterTextFieldController..text = '$_filter',
             onChanged: (text) => {_updateFilter(text)},
@@ -143,7 +175,8 @@ class _RecipesPageState extends State<RecipesPage> {
                           height: 150.0,
                         ),
                         alignment: Alignment.center,
-                        child: ReceptItemWidget(recept: item, key: ObjectKey(item)),
+                        child: ReceptItemWidget(
+                            recept: item, key: ObjectKey(item)),
                       ),
                     ],
                   ),
