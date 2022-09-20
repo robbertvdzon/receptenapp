@@ -3,8 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:receptenapp/src/ui/plannerapp/PlannerHomePage.dart';
 import '../../global.dart';
 import '../../services/repositories/UserRepository.dart';
-import '../ingredientsapp/search/IngredientsPage.dart';
-import '../receptenapp/search/RecipesPage.dart';
+import '../ingredientsapp/search/SearchIngredientsPage.dart';
+import '../receptenapp/search/SearchRecipesPage.dart';
 
 class AllAppHomePage extends StatefulWidget {
 
@@ -47,22 +47,22 @@ class _AllAppHomePageState extends State<AllAppHomePage> {
             Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  buildElevatedButton(context, RecipesPage(title: 'Recepten'), "assets/images/recipes.png"),
-                  buildElevatedButton(context, IngredientsPage(title: 'Ingredienten'), "assets/images/ingredients.png"),
+                  buildElevatedButton(context, SearchRecipesPage(title: 'Recepten'), "assets/images/recipes.png"),
+                  buildElevatedButton(context, SearchIngredientsPage(title: 'Ingredienten'), "assets/images/ingredients.png"),
                 ]
             ),
             Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  buildElevatedButton(context, RecipesPage(title: 'planner'), "assets/images/planner.png"),
-                  buildElevatedButton(context, IngredientsPage(title: 'Boodschappen'), "assets/images/shopping.png"),
+                  buildElevatedButton(context, SearchRecipesPage(title: 'planner'), "assets/images/planner.png"),
+                  buildElevatedButton(context, SearchIngredientsPage(title: 'Boodschappen'), "assets/images/shopping.png"),
                 ]
             ),
             Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  buildElevatedButton(context, IngredientsPage(title: 'Dagbook'), "assets/images/diary.png"),
-                  buildElevatedButton(context, RecipesPage(title: 'Statistieken'), "assets/images/statistics.png"),
+                  buildElevatedButton(context, SearchIngredientsPage(title: 'Dagbook'), "assets/images/diary.png"),
+                  buildElevatedButton(context, SearchRecipesPage(title: 'Statistieken'), "assets/images/statistics.png"),
                 ]
             ),
           ],
@@ -135,7 +135,7 @@ class _AllAppHomePageState extends State<AllAppHomePage> {
                   context,
                   MaterialPageRoute(
                       builder: (context) =>
-                          RecipesPage(title: 'Recepten')),
+                          SearchRecipesPage(title: 'Recepten')),
                 );
               },
             ),
@@ -155,7 +155,7 @@ class _AllAppHomePageState extends State<AllAppHomePage> {
                   context,
                   MaterialPageRoute(
                       builder: (context) =>
-                          RecipesPage(title: 'Recepten')),
+                          SearchRecipesPage(title: 'Recepten')),
                 );
               },
             ),

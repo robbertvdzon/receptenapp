@@ -7,14 +7,16 @@ import '../../../services/repositories/ProductsRepository.dart';
 import 'IngredientDetailsPage.dart';
 
 class IngredientItemWidget extends StatefulWidget {
-  IngredientItemWidget({Key? key, required this.ingredient, required this.categories})
+  IngredientItemWidget(
+      {Key? key, required this.ingredient, required this.categories})
       : super(key: key) {}
 
   final Ingredient ingredient;
   final List<String> categories;
 
   @override
-  State<IngredientItemWidget> createState() => _WidgetState(ingredient, categories);
+  State<IngredientItemWidget> createState() =>
+      _WidgetState(ingredient, categories);
 }
 
 class _WidgetState extends State<IngredientItemWidget> {
@@ -27,18 +29,20 @@ class _WidgetState extends State<IngredientItemWidget> {
   _WidgetState(Ingredient ingredient, List<String> categories) {
     this.ingredient = ingredient;
     this.newIngredient = ingredient;
-    this.categories= categories;
+    this.categories = categories;
   }
 
   _openForm() {
     Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) =>
-              IngredientDetailsPage(title: 'Ingredient', ingredient: ingredient, categories: categories,)),
+          builder: (context) => IngredientDetailsPage(
+                title: 'Ingredient',
+                ingredient: ingredient,
+                categories: categories,
+              )),
     );
   }
-
 
   _saveForm() {
     ingredientsRepository.saveIngredient(newIngredient);
@@ -46,26 +50,29 @@ class _WidgetState extends State<IngredientItemWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        new TextButton(
-          onPressed: () {
-            _openForm();
-          },
-          child: new Text(ingredient.name+" ("+(ingredient.nutrientName??"")+")"),
+    return InkWell(
+        onTap: () {
+          _openForm();
+        }, // Handle your callback
+        child:
+        Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Row(children: <Widget>[
+              new Text(ingredient.name+" ${ingredient.getDisplayNutrientName()}"),
+            ])
+          ],
         )
-      ],
     );
   }
 
   List<DropdownMenuItem<String>> buildList() {
     return categories.map<DropdownMenuItem<String>>((String value) {
-          return DropdownMenuItem<String>(
-            value: value,
-            child: Text(value),
-          );
-        }).toList();
+      return DropdownMenuItem<String>(
+        value: value,
+        child: Text(value),
+      );
+    }).toList();
   }
 }
-
-

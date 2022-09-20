@@ -7,6 +7,8 @@ import '../../global.dart';
 import 'RecipesTagsRepository.dart';
 import 'UserRepository.dart';
 
+final bool PRELOAD_DATABASE_AT_STARTUP = false;
+
 class Repositories {
   var _ingredientsRepository = getIt<IngredientsRepository>();
   var _productsRepository = getIt<ProductsRepository>();
@@ -25,11 +27,13 @@ class Repositories {
       _ingredientsRepository.init(email)
     ];
     Future.wait(futures).then((value) {
-      _recipesRepository.setSampleRecipes();
-      _productsRepository.setSampleProducts();
-      _ingredientTagsRepository.setSampleTags();
-      _recipesTagsRepository.setSampleTags();
-      _ingredientsRepository.setSampleIngredients();
+      if (PRELOAD_DATABASE_AT_STARTUP) {
+        _recipesRepository.setSampleRecipes();
+        _productsRepository.setSampleProducts();
+        _ingredientTagsRepository.setSampleTags();
+        _recipesTagsRepository.setSampleTags();
+        _ingredientsRepository.setSampleIngredients();
+      }
       return null;
     });
   }

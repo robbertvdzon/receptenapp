@@ -58,16 +58,20 @@ class _WidgetState extends State<ProductItemWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        new TextButton(
-          onPressed: () {
-            _openForm();
-          },
-          child: new Text(product.name??""),
+    return InkWell(
+        onTap: () {
+          _openForm();
+        }, // Handle your callback
+        child:
+        Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Row(children: <Widget>[
+              new Text(product.name??""),
+            ])
+          ],
         )
-
-      ],
     );
   }
 

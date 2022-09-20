@@ -33,6 +33,11 @@ class Ingredient {
   bool containsTag(String? tag) {
     return this.tags.contains(tag);
   }
+
+  String getDisplayNutrientName() {
+    if (nutrientName==null) return "";
+    return "[$nutrientName]";
+  }
 }
 
 @JsonSerializable()

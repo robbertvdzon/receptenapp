@@ -5,16 +5,16 @@ import '../../../model/products/v1/products.dart';
 import '../../../services/repositories/ProductsRepository.dart';
 import 'ProductItemWidget.dart';
 
-class ProductsPage extends StatefulWidget {
-  ProductsPage({Key? key, required this.title}) : super(key: key) {}
+class SearchProductsPage extends StatefulWidget {
+  SearchProductsPage({Key? key, required this.title}) : super(key: key) {}
 
   final String title;
 
   @override
-  State<ProductsPage> createState() => _ProductsPageState();
+  State<SearchProductsPage> createState() => _SearchProductsPageState();
 }
 
-class _ProductsPageState extends State<ProductsPage> {
+class _SearchProductsPageState extends State<SearchProductsPage> {
   Products products = Products(List.empty());
   List<Product> filteredProducts = List.empty();
   TextEditingController _textFieldController = TextEditingController();
@@ -24,7 +24,8 @@ class _ProductsPageState extends State<ProductsPage> {
   String codeDialog ="";
   String valueText = "";
 
-  _ProductsPageState() {
+  @override
+  void initState() {
     products = productsRepository.getProducts();
     filteredProducts = products.products.where((element) => element.name!=null && element.name!.contains(_filter)).toList();
   }
@@ -98,17 +99,23 @@ class _ProductsPageState extends State<ProductsPage> {
       ),
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-          TextFormField(key: Key(_filter.toString()),
-            decoration: InputDecoration(border: InputBorder.none, labelText: 'Filter: (${filteredProducts.length} ingredienten)'),
-            autofocus: true,
-            controller: _filterTextFieldController..text = '$_filter',
-            onChanged: (text) => {_updateFilter(text)},
-          )
-            ,
+            SizedBox(
+                height: 50,
+                width: 500,
+                child:
+                TextFormField(key: Key(_filter.toString()),
+                  decoration: InputDecoration(border: InputBorder.none, labelText: 'Filter: (${filteredProducts.length} ingredienten)'),
+                  autofocus: true,
+                  controller: _filterTextFieldController..text = '$_filter',
+                  onChanged: (text) => {_updateFilter(text)},
+                )
+            ),
             SizedBox(
               height: 750,
+              width: 500,
               child: ListView(
                 children: filteredProducts.map((item) {
                   return Container(

@@ -1,31 +1,32 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
+import 'package:receptenapp/src/services/repositories/IngredientsRepository.dart';
 import '../../../global.dart';
-import '../../../model/recipes/v1/recept.dart';
+import '../../../model/ingredients/v1/ingredients.dart';
 import '../../../services/repositories/ProductsRepository.dart';
-import '../../../services/repositories/RecipesRepository.dart';
-import '../recepts/ReceptItemWidget.dart';
-import '../recepttags/RecipesTagsPage.dart';
+import '../ingredienttags/IngredientTagsPage.dart';
+import '../products/SearchProductsPage.dart';
+import '../ingredients/IngredientItemWidget.dart';
 
-class RecipesPage extends StatefulWidget {
-  RecipesPage({Key? key, required this.title}) : super(key: key) {}
+class SearchIngredientsPage extends StatefulWidget {
+  SearchIngredientsPage({Key? key, required this.title}) : super(key: key) {}
 
   final String title;
 
   @override
-  State<RecipesPage> createState() => _RecipesPageState();
+  State<SearchIngredientsPage> createState() => _SearchIngredientsPageState();
 }
 
-class _RecipesPageState extends State<RecipesPage> {
-  List<Recept> recipes = List.empty();
-  List<Recept> filteredRecipes = List.empty();
-  List<String> products = List.empty();
+class _SearchIngredientsPageState extends State<SearchIngredientsPage> {
+  List<Ingredient> ingredients = List.empty();
+  List<Ingredient> filteredIngredients = List.empty();
+  List<String> nutricients = List.empty();
 
   TextEditingController _textFieldController = TextEditingController();
   TextEditingController _filterTextFieldController = TextEditingController();
-  var recipesRepository = getIt<RecipesRepository>();
-  var nutrientsRepository = getIt<ProductsRepository>();
+  var ingredientsRepository = getIt<IngredientsRepository>();
+  var productsRepository = getIt<ProductsRepository>();
   String _filter = "";
   String codeDialog = "";
   String valueText = "";
@@ -33,12 +34,14 @@ class _RecipesPageState extends State<RecipesPage> {
   @override
   void initState() {
     super.initState();
-    recipes = recipesRepository.getRecipes().recipes;
-    filteredRecipes = recipes
+    ingredients = ingredientsRepository.getIngredients().ingredients;
+    ingredients.sort((a, b) => a.name.compareTo(b.name));
+
+    filteredIngredients = ingredients
         .where((element) =>
-            element.name != null && element.name!.contains(_filter))
+    element.name != null && element.name.contains(_filter))
         .toList();
-    products = nutrientsRepository
+    nutricients = productsRepository
         .getProducts()
         .products
         .map((e) => e.name ?? "")
@@ -53,10 +56,10 @@ class _RecipesPageState extends State<RecipesPage> {
   }
 
   void addNutrient(String name) {
-    recipesRepository.createAndAddRecept(name).then((value) => {
+    ingredientsRepository.createAndAddIngredient(name).then((value) => {
           setState(() {
-            recipes = recipesRepository.getRecipes().recipes;
-            filteredRecipes = recipes
+            ingredients = ingredientsRepository.getIngredients().ingredients;
+            filteredIngredients = ingredients
                 .where((element) =>
                     element.name != null && element.name!.contains(_filter))
                 .toList();
@@ -65,7 +68,7 @@ class _RecipesPageState extends State<RecipesPage> {
   }
 
   void _filterNutrients() {
-    filteredRecipes = recipes
+    filteredIngredients = ingredients
         .where((element) =>
             element.name != null &&
             element.name!.toLowerCase().contains(_filter.toLowerCase()))
@@ -120,25 +123,25 @@ class _RecipesPageState extends State<RecipesPage> {
         title: Text(widget.title),
         actions: [
           ElevatedButton(
-            child: Text('Zoek'),
+            child: Text('Producten'),
             onPressed: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                        RecipesTagsPage(title: 'Zoek')),
+                        SearchProductsPage(title: 'Producten')),
               );
             },
           ),
           SizedBox(width: 10),
           ElevatedButton(
-            child: Text('Recipes tags'),
+            child: Text('Tags'),
             onPressed: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                        RecipesTagsPage(title: 'Recipes tags')),
+                        IngredientsTagsPage(title: 'Ingredient tags')),
               );
             },
           ),
@@ -147,6 +150,7 @@ class _RecipesPageState extends State<RecipesPage> {
               onPressed: () => FirebaseAuth.instance.signOut(),
               icon: Icon(Icons.logout))
         ],
+
       ),
       body: Center(
         child: Column(
@@ -161,31 +165,36 @@ class _RecipesPageState extends State<RecipesPage> {
                   decoration: InputDecoration(
                       border: InputBorder.none,
                       labelText:
-                          'Quickfilter: (${filteredRecipes.length} recepten)'),
+                      'Filter: (${filteredIngredients.length} ingredienten)'),
                   autofocus: true,
                   controller: _filterTextFieldController..text = '$_filter',
                   onChanged: (text) => {_updateFilter(text)},
-                )),
+                )
+            ),
             SizedBox(
               height: 750,
               width: 500,
               child: ListView(
-                children: filteredRecipes.map((item) {
+                children: filteredIngredients.map((item) {
                   return Container(
                     child: Column(
                       children: [
                         Container(
                           constraints: BoxConstraints.expand(
-                            height: 150.0,
+                            height: 30.0,
                           ),
                           alignment: Alignment.center,
-                          child: ReceptItemWidget(
-                              recept: item, key: ObjectKey(item)),
+                          child: IngredientItemWidget(
+                              ingredient: item,
+                              categories: nutricients,
+                              key: ObjectKey(item)),
                         ),
                       ],
                     ),
+
                     margin: EdgeInsets.all(0),
                     padding: EdgeInsets.all(0),
+                    // color: Colors.green[100],
                   );
                 }).toList(),
               ),
@@ -193,14 +202,12 @@ class _RecipesPageState extends State<RecipesPage> {
           ],
         ),
       ),
-
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           // _filterTextFieldController.text ="bla";
           // _incrementCounter(_filterTextFieldController);
           _displayTextInputDialog(context);
         },
-        tooltip: 'Add nutrient',
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
