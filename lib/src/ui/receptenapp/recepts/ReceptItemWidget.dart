@@ -28,6 +28,10 @@ class _WidgetState extends State<ReceptItemWidget> {
   _WidgetState(Recept recept) {
     this.recept = recept;
     this.newRecept = recept;
+  }
+
+  @override
+  void initState() {
     _eventStreamSub = eventBus.on<ReceptChangedEvent>().listen((event) {
       if (event.uuid==recept.uuid){
         setState(() {

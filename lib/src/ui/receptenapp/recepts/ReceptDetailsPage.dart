@@ -29,12 +29,16 @@ class _WidgetState extends State<ReceptDetailsPage> {
 
   _WidgetState(Recept recept) {
     this.recept = enricher.enrichRecipe(recept);
+  }
+
+  @override
+  void initState() {
     _eventStreamSub = eventBus.on<ReceptChangedEvent>().listen((event) {
-      if (event.uuid==recept.uuid){
+      if (event.uuid==recept.recept.uuid){
         setState(() {
-          Recept? updatedRecept = recipesRepository.getReceptByUuid(recept.uuid);
+          Recept? updatedRecept = recipesRepository.getReceptByUuid(recept.recept.uuid);
           if (updatedRecept!=null) {
-            recept = updatedRecept;
+            recept = enricher.enrichRecipe(updatedRecept);
           }
         });
       }
