@@ -90,11 +90,6 @@ class _WidgetState extends State<ReceptDetailsPage> {
       },
       children: [
         TableRow(children: [
-          Text("Opmerking"),
-          Text(":"),
-          Text(enrichedRecept.recept.remark),
-        ]),
-        TableRow(children: [
           Text("Voorbereidingstijd"),
           Text(":"),
           Text("${enrichedRecept.recept.preparingTime}"),
@@ -118,11 +113,6 @@ class _WidgetState extends State<ReceptDetailsPage> {
           Text("Proteine"),
           Text(":"),
           Text("${enrichedRecept.nutritionalValues.prot}"),
-        ]),
-        TableRow(children: [
-          Text("Tags"),
-          Text(":"),
-          Text("${enrichedRecept.tags.map((e) => e?.tag).join(",")}"),
         ]),
       ],
     );
@@ -167,11 +157,11 @@ class _WidgetState extends State<ReceptDetailsPage> {
                   // Note: Sensitivity is integer used when you don't want to mess up vertical drag
                   int sensitivity = 8;
                   if (details.delta.dx > sensitivity) {
-                    nextRecept();
-                    // Right Swipe
-                  } else if (details.delta.dx < -sensitivity) {
                     //Left Swipe
                     prevRecept();
+                  } else if (details.delta.dx < -sensitivity) {
+                    nextRecept();
+                    // Right Swipe
                   }
                 },
                 child: Column(
@@ -213,6 +203,13 @@ class _WidgetState extends State<ReceptDetailsPage> {
                           left: 0, bottom: 0, right: 20, top: 0),
                       child: tableWithValues(),
                     ),
+                    Text(''),
+                    Text('Tags:',
+                        style: TextStyle(
+                            fontSize: 20.0, fontWeight: FontWeight.bold)),
+                    Text(
+                        "${enrichedRecept.tags.map((e) => e?.tag).join("\n")}"),
+                    Text(''),
                   ],
                 ))));
   }
