@@ -162,39 +162,58 @@ class _WidgetState extends State<ReceptDetailsPage> {
           ],
         ),
         body: SingleChildScrollView(
-            child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(enrichedRecept.recept.name, style: TextStyle(fontSize: 25.0)),
-            Container(
-              alignment: Alignment.topLeft, // use aligment
-              padding: EdgeInsets.only(left: 0, bottom: 0, right: 20, top: 0),
-              child: Image.asset('assets/images/recept1.jpeg',
-                  height: 300, width: 300, fit: BoxFit.cover),
-            ),
-            Text(''),
-            Text('Opmerkingen:',
-                style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
-            Text(enrichedRecept.recept.remark),
-            Text(''),
-            Text('Ingredienten:',
-                style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
-            Text(
-                "${enrichedRecept.ingredienten.map((e) => e?.toTextString()).join("\n")}"),
-            Text(''),
-            Text('Bereiding:',
-                style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
-            Text(enrichedRecept.recept.directions),
-            Text(''),
-            Text('Details:',
-                style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
-            Container(
-              alignment: Alignment.center, // use aligment
-              padding: EdgeInsets.only(left: 0, bottom: 0, right: 20, top: 0),
-              child: tableWithValues(),
-            ),
-          ],
-        )));
+            child: GestureDetector(
+                onHorizontalDragUpdate: (details) {
+                  // Note: Sensitivity is integer used when you don't want to mess up vertical drag
+                  int sensitivity = 8;
+                  if (details.delta.dx > sensitivity) {
+                    nextRecept();
+                    // Right Swipe
+                  } else if (details.delta.dx < -sensitivity) {
+                    //Left Swipe
+                    prevRecept();
+                  }
+                },
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(enrichedRecept.recept.name,
+                        style: TextStyle(fontSize: 25.0)),
+                    Container(
+                      alignment: Alignment.topLeft, // use aligment
+                      padding: EdgeInsets.only(
+                          left: 0, bottom: 0, right: 20, top: 0),
+                      child: Image.asset('assets/images/recept1.jpeg',
+                          height: 300, width: 300, fit: BoxFit.cover),
+                    ),
+                    Text(''),
+                    Text('Opmerkingen:',
+                        style: TextStyle(
+                            fontSize: 20.0, fontWeight: FontWeight.bold)),
+                    Text(enrichedRecept.recept.remark),
+                    Text(''),
+                    Text('Ingredienten:',
+                        style: TextStyle(
+                            fontSize: 20.0, fontWeight: FontWeight.bold)),
+                    Text(
+                        "${enrichedRecept.ingredienten.map((e) => e?.toTextString()).join("\n")}"),
+                    Text(''),
+                    Text('Bereiding:',
+                        style: TextStyle(
+                            fontSize: 20.0, fontWeight: FontWeight.bold)),
+                    Text(enrichedRecept.recept.directions),
+                    Text(''),
+                    Text('Details:',
+                        style: TextStyle(
+                            fontSize: 20.0, fontWeight: FontWeight.bold)),
+                    Container(
+                      alignment: Alignment.center, // use aligment
+                      padding: EdgeInsets.only(
+                          left: 0, bottom: 0, right: 20, top: 0),
+                      child: tableWithValues(),
+                    ),
+                  ],
+                ))));
   }
 }
