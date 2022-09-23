@@ -6,6 +6,7 @@ import '../../../model/recipes/v1/recept.dart';
 import '../../../services/repositories/ProductsRepository.dart';
 import '../../../services/repositories/RecipesRepository.dart';
 import '../recepts/ReceptItemWidget.dart';
+import '../recepts/UIRecepenGlobalState.dart';
 import '../recepttags/RecipesTagsPage.dart';
 
 class SearchRecipesPage extends StatefulWidget {
@@ -19,13 +20,14 @@ class SearchRecipesPage extends StatefulWidget {
 
 class _SearchRecipesPageState extends State<SearchRecipesPage> {
   List<Recept> recipes = List.empty();
-  List<Recept> filteredRecipes = List.empty();
+  // List<Recept> filteredRecipes = List.empty();
   List<String> products = List.empty();
 
   TextEditingController _textFieldController = TextEditingController();
   TextEditingController _filterTextFieldController = TextEditingController();
   var recipesRepository = getIt<RecipesRepository>();
   var nutrientsRepository = getIt<ProductsRepository>();
+  var uiReceptenGlobalState = getIt<UIReceptenGlobalState>();
   String _filter = "";
   String codeDialog = "";
   String valueText = "";
@@ -34,7 +36,7 @@ class _SearchRecipesPageState extends State<SearchRecipesPage> {
   void initState() {
     super.initState();
     recipes = recipesRepository.getRecipes().recipes;
-    filteredRecipes = recipes
+    uiReceptenGlobalState.filteredRecipes = recipes
         .where((element) =>
             element.name != null && element.name!.contains(_filter))
         .toList();
@@ -56,7 +58,7 @@ class _SearchRecipesPageState extends State<SearchRecipesPage> {
     recipesRepository.createAndAddRecept(name).then((value) => {
           setState(() {
             recipes = recipesRepository.getRecipes().recipes;
-            filteredRecipes = recipes
+            uiReceptenGlobalState.filteredRecipes = recipes
                 .where((element) =>
                     element.name != null && element.name!.contains(_filter))
                 .toList();
@@ -65,7 +67,7 @@ class _SearchRecipesPageState extends State<SearchRecipesPage> {
   }
 
   void _filterNutrients() {
-    filteredRecipes = recipes
+    uiReceptenGlobalState.filteredRecipes = recipes
         .where((element) =>
             element.name != null &&
             element.name!.toLowerCase().contains(_filter.toLowerCase()))
@@ -161,7 +163,7 @@ class _SearchRecipesPageState extends State<SearchRecipesPage> {
                   decoration: InputDecoration(
                       border: InputBorder.none,
                       labelText:
-                          'Quickfilter: (${filteredRecipes.length} recepten)'),
+                          'Quickfilter: (${uiReceptenGlobalState.filteredRecipes.length} recepten)'),
                   autofocus: true,
                   controller: _filterTextFieldController..text = '$_filter',
                   onChanged: (text) => {_updateFilter(text)},
@@ -170,7 +172,7 @@ class _SearchRecipesPageState extends State<SearchRecipesPage> {
               height: 750,
               width: 500,
               child: ListView(
-                children: filteredRecipes.map((item) {
+                children: uiReceptenGlobalState.filteredRecipes.map((item) {
                   return Container(
                     child: Column(
                       children: [

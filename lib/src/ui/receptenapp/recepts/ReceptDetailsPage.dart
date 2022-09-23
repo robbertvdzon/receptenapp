@@ -10,6 +10,8 @@ import '../../../services/enricher/Enricher.dart';
 import 'ReceptEditPage.dart';
 import 'package:event_bus/event_bus.dart';
 
+import 'UIRecepenGlobalState.dart';
+
 class ReceptDetailsPage extends StatefulWidget {
   ReceptDetailsPage({Key? key, required this.title, required this.recept})
       : super(key: key) {}
@@ -22,25 +24,51 @@ class ReceptDetailsPage extends StatefulWidget {
 }
 
 class _WidgetState extends State<ReceptDetailsPage> {
-  late EnrichedRecept recept;
   var recipesRepository = getIt<RecipesRepository>();
+  var uiReceptenGlobalState = getIt<UIReceptenGlobalState>();
+
+  late Recept recept;
+  late EnrichedRecept enrichedRecept;
   var enricher = getIt<Enricher>();
   var eventBus = getIt<EventBus>();
   StreamSubscription? _eventStreamSub;
 
   _WidgetState(Recept recept) {
-    this.recept = enricher.enrichRecipe(recept);
+    this.enrichedRecept = enricher.enrichRecipe(recept);
+    this.recept = recept;
+  }
+
+  void nextRecept() {
+    uiReceptenGlobalState.selectedRecept = recept;
+    uiReceptenGlobalState.selectNextRecept();
+    Recept? newRecept = uiReceptenGlobalState.selectedRecept;
+    if (newRecept != null) {
+      this.enrichedRecept = enricher.enrichRecipe(newRecept);
+      this.recept = newRecept;
+      setState(() {});
+    }
+  }
+
+  void prevRecept() {
+    uiReceptenGlobalState.selectedRecept = recept;
+    uiReceptenGlobalState.selectPreviousRecept();
+    Recept? newRecept = uiReceptenGlobalState.selectedRecept;
+    if (newRecept != null) {
+      this.enrichedRecept = enricher.enrichRecipe(newRecept);
+      this.recept = newRecept;
+      setState(() {});
+    }
   }
 
   @override
   void initState() {
     _eventStreamSub = eventBus.on<ReceptChangedEvent>().listen((event) {
-      if (event.uuid == recept.recept.uuid) {
+      if (event.uuid == enrichedRecept.recept.uuid) {
         setState(() {
           Recept? updatedRecept =
-              recipesRepository.getReceptByUuid(recept.recept.uuid);
+              recipesRepository.getReceptByUuid(enrichedRecept.recept.uuid);
           if (updatedRecept != null) {
-            recept = enricher.enrichRecipe(updatedRecept);
+            enrichedRecept = enricher.enrichRecipe(updatedRecept);
           }
         });
       }
@@ -64,37 +92,37 @@ class _WidgetState extends State<ReceptDetailsPage> {
         TableRow(children: [
           Text("Opmerking"),
           Text(":"),
-          Text(recept.recept.remark),
+          Text(enrichedRecept.recept.remark),
         ]),
         TableRow(children: [
           Text("Voorbereidingstijd"),
           Text(":"),
-          Text("${recept.recept.preparingTime}"),
+          Text("${enrichedRecept.recept.preparingTime}"),
         ]),
         TableRow(children: [
           Text("Totale kooktijd"),
           Text(":"),
-          Text("${recept.recept.totalCookingTime}"),
+          Text("${enrichedRecept.recept.totalCookingTime}"),
         ]),
         TableRow(children: [
           Text("Kcal"),
           Text(":"),
-          Text("${recept.nutritionalValues.kcal}"),
+          Text("${enrichedRecept.nutritionalValues.kcal}"),
         ]),
         TableRow(children: [
           Text("Vet"),
           Text(":"),
-          Text("${recept.nutritionalValues.fat}"),
+          Text("${enrichedRecept.nutritionalValues.fat}"),
         ]),
         TableRow(children: [
           Text("Proteine"),
           Text(":"),
-          Text("${recept.nutritionalValues.prot}"),
+          Text("${enrichedRecept.nutritionalValues.prot}"),
         ]),
         TableRow(children: [
           Text("Tags"),
           Text(":"),
-          Text("${recept.tags.map((e) => e?.tag).join(",")}"),
+          Text("${enrichedRecept.tags.map((e) => e?.tag).join(",")}"),
         ]),
       ],
     );
@@ -108,12 +136,16 @@ class _WidgetState extends State<ReceptDetailsPage> {
           actions: [
             ElevatedButton(
               child: Text('Prev'),
-              onPressed: () {},
+              onPressed: () {
+                prevRecept();
+              },
             ),
             SizedBox(width: 10),
             ElevatedButton(
               child: Text('Next'),
-              onPressed: () {},
+              onPressed: () {
+                nextRecept();
+              },
             ),
             SizedBox(width: 10),
             ElevatedButton(
@@ -122,43 +154,47 @@ class _WidgetState extends State<ReceptDetailsPage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) =>
-                          ReceptEditPage(title: 'Edit', recept: recept)),
+                      builder: (context) => ReceptEditPage(
+                          title: 'Edit', recept: enrichedRecept)),
                 );
               },
             ),
           ],
         ),
         body: SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(recept.recept.name, style: TextStyle(fontSize: 25.0)),
-                    Container(
-                      alignment: Alignment.topLeft, // use aligment
-                      padding: EdgeInsets.only(left: 0, bottom: 0, right: 20, top: 0),
-                      child: Image.asset('assets/images/recept1.jpeg',
-                          height: 300, width: 300, fit: BoxFit.cover),
-                    ),
-                    Text(''),
-                    Text('Opmerkingen:', style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
-                    Text(recept.recept.remark),
-                    Text(''),
-                    Text('Ingredienten:', style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
-                    Text(
-                        "${recept.ingredienten.map((e) => e?.toTextString()).join("\n")}"),
-                    Text(''),
-                    Text('Bereiding:', style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
-                    Text(recept.recept.directions),
-                    Text(''),
-                    Text('Details:', style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
-                    Container(
-                      alignment: Alignment.center, // use aligment
-                      padding: EdgeInsets.only(left: 0, bottom: 0, right: 20, top: 0),
-                      child: tableWithValues(),
-                    ),
-                  ],
+            child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(enrichedRecept.recept.name, style: TextStyle(fontSize: 25.0)),
+            Container(
+              alignment: Alignment.topLeft, // use aligment
+              padding: EdgeInsets.only(left: 0, bottom: 0, right: 20, top: 0),
+              child: Image.asset('assets/images/recept1.jpeg',
+                  height: 300, width: 300, fit: BoxFit.cover),
+            ),
+            Text(''),
+            Text('Opmerkingen:',
+                style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
+            Text(enrichedRecept.recept.remark),
+            Text(''),
+            Text('Ingredienten:',
+                style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
+            Text(
+                "${enrichedRecept.ingredienten.map((e) => e?.toTextString()).join("\n")}"),
+            Text(''),
+            Text('Bereiding:',
+                style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
+            Text(enrichedRecept.recept.directions),
+            Text(''),
+            Text('Details:',
+                style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
+            Container(
+              alignment: Alignment.center, // use aligment
+              padding: EdgeInsets.only(left: 0, bottom: 0, right: 20, top: 0),
+              child: tableWithValues(),
+            ),
+          ],
         )));
   }
 }

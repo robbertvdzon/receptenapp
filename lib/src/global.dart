@@ -10,6 +10,7 @@ import 'package:receptenapp/src/services/repositories/RecipesRepository.dart';
 import 'package:receptenapp/src/services/repositories/RecipesTagsRepository.dart';
 import 'package:receptenapp/src/services/repositories/Repositories.dart';
 import 'package:receptenapp/src/services/repositories/UserRepository.dart';
+import 'package:receptenapp/src/ui/receptenapp/recepts/UIRecepenGlobalState.dart';
 
 import '../firebase_options.dart';
 
@@ -29,4 +30,5 @@ Future<void> setupDependencies() async {
   getIt.registerSingleton<Repositories>(Repositories());
   getIt.registerSingleton<Enricher>(Enricher());
   getIt.registerSingleton<EventBus>(EventBus());
+  getIt.registerSingleton<UIReceptenGlobalState>(UIReceptenGlobalState());
 }
