@@ -36,6 +36,8 @@ class _SearchRecipesPageState extends State<SearchRecipesPage> {
   void initState() {
     super.initState();
     recipes = recipesRepository.getRecipes().recipes;
+    recipes.sort((a, b) => a.name.compareTo(b.name));
+
     uiReceptenGlobalState.filteredRecipes = recipes
         .where((element) =>
             element.name != null && element.name!.contains(_filter))

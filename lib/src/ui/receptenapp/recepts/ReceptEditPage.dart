@@ -32,6 +32,7 @@ class _WidgetState extends State<ReceptEditPage> {
   _saveForm() {
     recipesRepository.saveRecept(newRecept);
     eventBus.fire(ReceptChangedEvent(newRecept.uuid));
+    Navigator.pop(context);
   }
 
 
@@ -61,7 +62,7 @@ class _WidgetState extends State<ReceptEditPage> {
                     decoration: InputDecoration(label: Text('Opmerking:')),
                     initialValue: "${recept.recept.remark}",
                     onChanged: (text) {
-                      // newRecept.remark = text;
+                      newRecept.remark = text;
                     },
                   ),
                   TextFormField(
