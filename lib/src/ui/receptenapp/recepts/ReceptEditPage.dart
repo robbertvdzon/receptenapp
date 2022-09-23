@@ -1,5 +1,4 @@
-import 'dart:async';
-
+import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
 import 'package:receptenapp/src/services/repositories/RecipesRepository.dart';
 import '../../../global.dart';
@@ -7,79 +6,41 @@ import '../../../model/enriched/enrichedmodels.dart';
 import '../../../model/events/ReceptChangedEvent.dart';
 import '../../../model/recipes/v1/recept.dart';
 import '../../../services/enricher/Enricher.dart';
-import 'ReceptEditPage.dart';
-import 'package:event_bus/event_bus.dart';
 
-class ReceptDetailsPage extends StatefulWidget {
-  ReceptDetailsPage({Key? key, required this.title, required this.recept}) : super(key: key) {}
+class ReceptEditPage extends StatefulWidget {
+  ReceptEditPage({Key? key, required this.title, required this.recept}) : super(key: key) {}
 
-  final Recept recept;
+  final EnrichedRecept recept;
   final String title;
 
   @override
-  State<ReceptDetailsPage> createState() => _WidgetState(recept);
+  State<ReceptEditPage> createState() => _WidgetState(recept);
 }
 
-class _WidgetState extends State<ReceptDetailsPage> {
+class _WidgetState extends State<ReceptEditPage> {
   late EnrichedRecept recept;
+  late Recept newRecept;
   var recipesRepository = getIt<RecipesRepository>();
   var enricher = getIt<Enricher>();
   var eventBus = getIt<EventBus>();
-  StreamSubscription? _eventStreamSub;
 
-  _WidgetState(Recept recept) {
-    this.recept = enricher.enrichRecipe(recept);
-    _eventStreamSub = eventBus.on<ReceptChangedEvent>().listen((event) {
-      if (event.uuid==recept.uuid){
-        setState(() {
-          Recept? updatedRecept = recipesRepository.getReceptByUuid(recept.uuid);
-          if (updatedRecept!=null) {
-            recept = updatedRecept;
-          }
-        });
-      }
-    });
+  _WidgetState(EnrichedRecept recept) {
+    this.recept = recept;
+    this.newRecept = recept.recept;
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-    _eventStreamSub?.cancel();
+  _saveForm() {
+    recipesRepository.saveRecept(newRecept);
+    eventBus.fire(ReceptChangedEvent(newRecept.uuid));
   }
+
 
   @override
   Widget build(BuildContext context) {
-
     return
       Scaffold(
           appBar: AppBar(
             title: Text(widget.title),
-            actions: [
-              ElevatedButton(
-                child: Text('Prev'),
-                onPressed: () {
-                },
-              ),
-              SizedBox(width: 10),
-              ElevatedButton(
-                child: Text('Next'),
-                onPressed: () {
-                },
-              ),
-              SizedBox(width: 10),
-              ElevatedButton(
-                child: Text('Edit'),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            ReceptEditPage(title: 'Edit', recept: recept)),
-                  );
-
-                },
-              ),
-            ],
           ),
           body: Center(
 
@@ -92,18 +53,30 @@ class _WidgetState extends State<ReceptDetailsPage> {
                   TextFormField(
                     decoration: InputDecoration(label: Text('Name:')),
                     initialValue: "${recept.recept.name}",
+                    onChanged: (text) {
+                      newRecept.name = text;
+                    },
                   ),
                   TextFormField(
                     decoration: InputDecoration(label: Text('Opmerking:')),
                     initialValue: "${recept.recept.remark}",
+                    onChanged: (text) {
+                      // newRecept.remark = text;
+                    },
                   ),
                   TextFormField(
                     decoration: InputDecoration(label: Text('Voorbereidingstijd:')),
                     initialValue: "${recept.recept.preparingTime}",
+                    onChanged: (text) {
+                      newRecept.preparingTime = int.parse(text);
+                    },
                   ),
                   TextFormField(
                     decoration: InputDecoration(label: Text('Totale kooktijd:')),
                     initialValue: "${recept.recept.totalCookingTime}",
+                    onChanged: (text) {
+                      newRecept.totalCookingTime = int.parse(text);
+                    },
                   ),
                   TextFormField(
                     decoration: InputDecoration(label: Text('Nt:')),
@@ -125,6 +98,12 @@ class _WidgetState extends State<ReceptDetailsPage> {
                     decoration: InputDecoration(label: Text('Tags:')),
                     initialValue: "${recept.tags.map((e) => e?.tag).join(",")}",
                   ),
+                  ElevatedButton(
+                    child: Text('SAVE!'),
+                    onPressed: () {
+                      _saveForm();
+                    },
+                  )
                 ],
               )
 

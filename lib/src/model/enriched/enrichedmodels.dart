@@ -6,16 +6,11 @@ import '../ingredients/v1/ingredients.dart';
 import '../recipes/v1/recept.dart';
 
 class EnrichedRecept {
-  String uuid;
-  String name;
-  String directions = "";
-  String remarks = "";
-  int totalCookingTime = 0;
-  int preparingTime = 0;
+  Recept recept;
   NutritionalValues nutritionalValues;
   List<EnrichedReceptIngredient> ingredienten;
   List<ReceptTag?> tags;
-  EnrichedRecept(this.uuid, this.name, this.directions, this.nutritionalValues, this.ingredienten, this.tags, this.remarks, this.totalCookingTime, this.preparingTime);
+  EnrichedRecept(this.recept, this.nutritionalValues, this.ingredienten, this.tags);
 }
 
 class EnrichedReceptIngredient {

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:event_bus/event_bus.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get_it/get_it.dart';
 import 'package:receptenapp/src/services/enricher/Enricher.dart';
@@ -27,4 +28,5 @@ Future<void> setupDependencies() async {
   getIt.registerSingleton<RecipesTagsRepository>(RecipesTagsRepository());
   getIt.registerSingleton<Repositories>(Repositories());
   getIt.registerSingleton<Enricher>(Enricher());
+  getIt.registerSingleton<EventBus>(EventBus());
 }

@@ -1,8 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:receptenapp/src/services/repositories/RecipesRepository.dart';
 import '../../../global.dart';
+import '../../../model/events/ReceptChangedEvent.dart';
 import '../../../model/recipes/v1/recept.dart';
 import 'ReceptDetailsPage.dart';
+import 'package:event_bus/event_bus.dart';
 
 class ReceptItemWidget extends StatefulWidget {
   ReceptItemWidget({Key? key, required this.recept})
@@ -18,10 +22,28 @@ class _WidgetState extends State<ReceptItemWidget> {
   late Recept recept;
   late Recept newRecept;
   var recipesRepository = getIt<RecipesRepository>();
+  var eventBus = getIt<EventBus>();
+  StreamSubscription? _eventStreamSub;
 
   _WidgetState(Recept recept) {
     this.recept = recept;
     this.newRecept = recept;
+    _eventStreamSub = eventBus.on<ReceptChangedEvent>().listen((event) {
+      if (event.uuid==recept.uuid){
+        setState(() {
+          Recept? updatedRecept = recipesRepository.getReceptByUuid(recept.uuid);
+          if (updatedRecept!=null) {
+            recept = updatedRecept;
+          }
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _eventStreamSub?.cancel();
   }
 
   _openForm() {
