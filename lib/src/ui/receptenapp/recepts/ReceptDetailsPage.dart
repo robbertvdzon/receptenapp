@@ -11,7 +11,8 @@ import 'ReceptEditPage.dart';
 import 'package:event_bus/event_bus.dart';
 
 class ReceptDetailsPage extends StatefulWidget {
-  ReceptDetailsPage({Key? key, required this.title, required this.recept}) : super(key: key) {}
+  ReceptDetailsPage({Key? key, required this.title, required this.recept})
+      : super(key: key) {}
 
   final Recept recept;
   final String title;
@@ -34,10 +35,11 @@ class _WidgetState extends State<ReceptDetailsPage> {
   @override
   void initState() {
     _eventStreamSub = eventBus.on<ReceptChangedEvent>().listen((event) {
-      if (event.uuid==recept.recept.uuid){
+      if (event.uuid == recept.recept.uuid) {
         setState(() {
-          Recept? updatedRecept = recipesRepository.getReceptByUuid(recept.recept.uuid);
-          if (updatedRecept!=null) {
+          Recept? updatedRecept =
+              recipesRepository.getReceptByUuid(recept.recept.uuid);
+          if (updatedRecept != null) {
             recept = enricher.enrichRecipe(updatedRecept);
           }
         });
@@ -51,91 +53,112 @@ class _WidgetState extends State<ReceptDetailsPage> {
     _eventStreamSub?.cancel();
   }
 
-  @override
-  Widget build(BuildContext context) {
-
-    return
-      Scaffold(
-          appBar: AppBar(
-            title: Text(widget.title),
-            actions: [
-              ElevatedButton(
-                child: Text('Prev'),
-                onPressed: () {
-                },
-              ),
-              SizedBox(width: 10),
-              ElevatedButton(
-                child: Text('Next'),
-                onPressed: () {
-                },
-              ),
-              SizedBox(width: 10),
-              ElevatedButton(
-                child: Text('Edit'),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            ReceptEditPage(title: 'Edit', recept: recept)),
-                  );
-
-                },
-              ),
-            ],
-          ),
-          body: Center(
-
-              child:Column(
-                children: <Widget>[
-                  TextFormField(
-                    decoration: InputDecoration(label: Text('uuid:')),
-                    initialValue: "${recept.recept.uuid}",
-                  ),
-                  TextFormField(
-                    decoration: InputDecoration(label: Text('Name:')),
-                    initialValue: "${recept.recept.name}",
-                  ),
-                  TextFormField(
-                    decoration: InputDecoration(label: Text('Opmerking:')),
-                    initialValue: "${recept.recept.remark}",
-                  ),
-                  TextFormField(
-                    decoration: InputDecoration(label: Text('Voorbereidingstijd:')),
-                    initialValue: "${recept.recept.preparingTime}",
-                  ),
-                  TextFormField(
-                    decoration: InputDecoration(label: Text('Totale kooktijd:')),
-                    initialValue: "${recept.recept.totalCookingTime}",
-                  ),
-                  TextFormField(
-                    decoration: InputDecoration(label: Text('Nt:')),
-                    initialValue: "${recept.nutritionalValues.nt}",
-                  ),
-                  TextFormField(
-                    decoration: InputDecoration(label: Text('Kcal:')),
-                    initialValue: "${recept.nutritionalValues.kcal}",
-                  ),
-                  TextFormField(
-                    decoration: InputDecoration(label: Text('Fat:')),
-                    initialValue: "${recept.nutritionalValues.fat}",
-                  ),
-                  TextFormField(
-                    decoration: InputDecoration(label: Text('Ingredients:')),
-                    initialValue: "${recept.ingredienten.map((e) => e?.toTextString()).join(",")}",
-                  ),
-                  TextFormField(
-                    decoration: InputDecoration(label: Text('Tags:')),
-                    initialValue: "${recept.tags.map((e) => e?.tag).join(",")}",
-                  ),
-                ],
-              )
-
-          ))
-    ;
+  Table tableWithValues() {
+    return Table(
+      columnWidths: const {
+        0: FixedColumnWidth(200),
+        1: FixedColumnWidth(10),
+        2: FlexColumnWidth(2),
+      },
+      children: [
+        TableRow(children: [
+          Text("Opmerking"),
+          Text(":"),
+          Text(recept.recept.remark),
+        ]),
+        TableRow(children: [
+          Text("Voorbereidingstijd"),
+          Text(":"),
+          Text("${recept.recept.preparingTime}"),
+        ]),
+        TableRow(children: [
+          Text("Totale kooktijd"),
+          Text(":"),
+          Text("${recept.recept.totalCookingTime}"),
+        ]),
+        TableRow(children: [
+          Text("Kcal"),
+          Text(":"),
+          Text("${recept.nutritionalValues.kcal}"),
+        ]),
+        TableRow(children: [
+          Text("Vet"),
+          Text(":"),
+          Text("${recept.nutritionalValues.fat}"),
+        ]),
+        TableRow(children: [
+          Text("Proteine"),
+          Text(":"),
+          Text("${recept.nutritionalValues.prot}"),
+        ]),
+        TableRow(children: [
+          Text("Tags"),
+          Text(":"),
+          Text("${recept.tags.map((e) => e?.tag).join(",")}"),
+        ]),
+      ],
+    );
   }
 
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+          title: Text(widget.title),
+          actions: [
+            ElevatedButton(
+              child: Text('Prev'),
+              onPressed: () {},
+            ),
+            SizedBox(width: 10),
+            ElevatedButton(
+              child: Text('Next'),
+              onPressed: () {},
+            ),
+            SizedBox(width: 10),
+            ElevatedButton(
+              child: Text('Edit'),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          ReceptEditPage(title: 'Edit', recept: recept)),
+                );
+              },
+            ),
+          ],
+        ),
+        body: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(recept.recept.name, style: TextStyle(fontSize: 25.0)),
+                    Container(
+                      alignment: Alignment.topLeft, // use aligment
+                      padding: EdgeInsets.only(left: 0, bottom: 0, right: 20, top: 0),
+                      child: Image.asset('assets/images/recept1.jpeg',
+                          height: 300, width: 300, fit: BoxFit.cover),
+                    ),
+                    Text(''),
+                    Text('Opmerkingen:', style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
+                    Text(recept.recept.remark),
+                    Text(''),
+                    Text('Ingredienten:', style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
+                    Text(
+                        "${recept.ingredienten.map((e) => e?.toTextString()).join("\n")}"),
+                    Text(''),
+                    Text('Bereiding:', style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
+                    Text(recept.recept.directions),
+                    Text(''),
+                    Text('Details:', style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
+                    Container(
+                      alignment: Alignment.center, // use aligment
+                      padding: EdgeInsets.only(left: 0, bottom: 0, right: 20, top: 0),
+                      child: tableWithValues(),
+                    ),
+                  ],
+        )));
+  }
 }
-
-
