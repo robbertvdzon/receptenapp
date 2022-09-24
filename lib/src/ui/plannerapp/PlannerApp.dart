@@ -10,8 +10,6 @@ import '../../services/repositories/Repositories.dart';
 import '../../services/repositories/UserRepository.dart';
 import 'PlannerHomePage.dart';
 
-const DISABLE_AUTH = true;
-
 class PlannerApp extends StatefulWidget {
   PlannerApp({Key? key}) : super(key: key) {}
 

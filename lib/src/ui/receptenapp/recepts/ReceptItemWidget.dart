@@ -8,6 +8,7 @@ import '../../../model/recipes/v1/recept.dart';
 import 'ReceptDetailsPage.dart';
 import 'package:event_bus/event_bus.dart';
 
+
 class ReceptItemWidget extends StatefulWidget {
   ReceptItemWidget({Key? key, required this.recept})
       : super(key: key) {}
@@ -19,6 +20,8 @@ class ReceptItemWidget extends StatefulWidget {
 }
 
 class _WidgetState extends State<ReceptItemWidget> {
+  static const IconData star = IconData(0xe5f9, fontFamily: 'MaterialIcons');
+
   late Recept recept;
   late Recept newRecept;
   var recipesRepository = getIt<RecipesRepository>();
@@ -97,6 +100,7 @@ class _WidgetState extends State<ReceptItemWidget> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
+                  if (recept.favorite) new Icon(star, size: 20.0, color: Colors.yellow),
                   Text(recept.preparingTime.toString() +
                       "/" +
                       recept.totalCookingTime.toString() +

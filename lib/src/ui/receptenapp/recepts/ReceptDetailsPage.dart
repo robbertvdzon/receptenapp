@@ -24,6 +24,7 @@ class ReceptDetailsPage extends StatefulWidget {
 }
 
 class _WidgetState extends State<ReceptDetailsPage> {
+  static const IconData star = IconData(0xe5f9, fontFamily: 'MaterialIcons');
   var recipesRepository = getIt<RecipesRepository>();
   var uiReceptenGlobalState = getIt<UIReceptenGlobalState>();
 
@@ -60,6 +61,13 @@ class _WidgetState extends State<ReceptDetailsPage> {
     }
   }
 
+  void setFavorite(bool favorite){
+    recept.favorite = favorite;
+    recipesRepository.saveRecept(recept);
+    eventBus.fire(ReceptChangedEvent(recept.uuid));
+  }
+
+
   @override
   void initState() {
     _eventStreamSub = eventBus.on<ReceptChangedEvent>().listen((event) {
@@ -89,6 +97,11 @@ class _WidgetState extends State<ReceptDetailsPage> {
         2: FlexColumnWidth(2),
       },
       children: [
+        TableRow(children: [
+          Text("Favoriet"),
+          Text(":"),
+          Text("${enrichedRecept.recept.favorite}"),
+        ]),
         TableRow(children: [
           Text("Voorbereidingstijd"),
           Text(":"),
@@ -154,6 +167,7 @@ class _WidgetState extends State<ReceptDetailsPage> {
                   child: Image.asset('assets/images/recept1.jpeg',
                       height: 300, width: 300, fit: BoxFit.cover),
                 ),
+                if (recept.favorite) new Icon(star, size: 20.0, color: Colors.yellow),
                 Text(''),
                 Text('Opmerkingen:',
                     style:
@@ -207,6 +221,19 @@ class _WidgetState extends State<ReceptDetailsPage> {
                           builder: (context) => ReceptEditPage(
                               title: 'Edit', recept: enrichedRecept)),
                     );
+                  },
+                ),
+                Text(''),
+                if (!recept.favorite) ElevatedButton(
+                  child: Text('Voeg toe aan favorieten'),
+                  onPressed: () {
+                    setFavorite(true);
+                  },
+                ),
+                if (recept.favorite) ElevatedButton(
+                  child: Text('Verwijder van favorieten'),
+                  onPressed: () {
+                    setFavorite(false);
                   },
                 ),
               ],

@@ -7,7 +7,6 @@ import '../../global.dart';
 import 'RecipesTagsRepository.dart';
 import 'UserRepository.dart';
 
-final bool PRELOAD_DATABASE_AT_STARTUP = false;
 
 class Repositories {
   var _ingredientsRepository = getIt<IngredientsRepository>();

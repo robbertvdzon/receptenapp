@@ -20,6 +20,7 @@ class SearchRecipesPage extends StatefulWidget {
 
 class _SearchRecipesPageState extends State<SearchRecipesPage> {
   List<Recept> recipes = List.empty();
+
   // List<Recept> filteredRecipes = List.empty();
   List<String> products = List.empty();
 
@@ -29,6 +30,7 @@ class _SearchRecipesPageState extends State<SearchRecipesPage> {
   var nutrientsRepository = getIt<ProductsRepository>();
   var uiReceptenGlobalState = getIt<UIReceptenGlobalState>();
   String _filter = "";
+  bool? _filterOnFavorite = false;
   String codeDialog = "";
   String valueText = "";
 
@@ -56,6 +58,13 @@ class _SearchRecipesPageState extends State<SearchRecipesPage> {
     });
   }
 
+  void _updateFilterOnFavorite(bool? filterOnFavorite) {
+    setState(() {
+      _filterOnFavorite = filterOnFavorite;
+      _filterNutrients();
+    });
+  }
+
   void addNutrient(String name) {
     recipesRepository.createAndAddRecept(name).then((value) => {
           setState(() {
@@ -69,11 +78,23 @@ class _SearchRecipesPageState extends State<SearchRecipesPage> {
   }
 
   void _filterNutrients() {
-    uiReceptenGlobalState.filteredRecipes = recipes
-        .where((element) =>
-            element.name != null &&
-            element.name!.toLowerCase().contains(_filter.toLowerCase()))
-        .toList();
+    bool filterOnFavorite = _filterOnFavorite == true;
+
+    // TODO: dit kan vast in 1 query!
+    if (filterOnFavorite) {
+      uiReceptenGlobalState.filteredRecipes = recipes
+          .where((element) =>
+              element.favorite &&
+              element.name != null &&
+              element.name.toLowerCase().contains(_filter.toLowerCase()))
+          .toList();
+    } else {
+      uiReceptenGlobalState.filteredRecipes = recipes
+          .where((element) =>
+              element.name != null &&
+              element.name.toLowerCase().contains(_filter.toLowerCase()))
+          .toList();
+    }
   }
 
   Future<void> _displayTextInputDialog(BuildContext context) async {
@@ -129,8 +150,7 @@ class _SearchRecipesPageState extends State<SearchRecipesPage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) =>
-                        RecipesTagsPage(title: 'Zoek')),
+                    builder: (context) => RecipesTagsPage(title: 'Zoek')),
               );
             },
           ),
@@ -169,6 +189,17 @@ class _SearchRecipesPageState extends State<SearchRecipesPage> {
                   autofocus: true,
                   controller: _filterTextFieldController..text = '$_filter',
                   onChanged: (text) => {_updateFilter(text)},
+                )),
+            SizedBox(
+                height: 50,
+                width: 500,
+                child: CheckboxListTile(
+                  checkColor: Colors.white,
+                  title: Text("Filter op favoriet"),
+                  value: _filterOnFavorite,
+                  onChanged: (bool? value) {
+                    _updateFilterOnFavorite(value);
+                  },
                 )),
             SizedBox(
               height: 750,

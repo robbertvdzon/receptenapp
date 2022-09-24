@@ -25,6 +25,7 @@ class Recept {
   String remark = "";
   int totalCookingTime = 0;
   int preparingTime = 0;
+  bool favorite = false;
 
   List<ReceptIngredient> ingredients;
   List<String> tags = List.empty();
@@ -51,7 +52,6 @@ class ReceptIngredient {
   // ReceptIngredientAmount amount; TODO: use interface!
   ReceptIngredientAmountGrams? amountGrams = null;
   ReceptIngredientAmountItems? amountItems = null;
-
 
   ReceptIngredient(this.name, {ReceptIngredientAmountGrams? amountGrams: null, ReceptIngredientAmountItems? amountItems: null}){
     this.amountGrams = amountGrams;

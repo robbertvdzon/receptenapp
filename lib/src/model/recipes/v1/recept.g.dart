@@ -27,6 +27,7 @@ Recept _$ReceptFromJson(Map<String, dynamic> json) => Recept(
       ..remark = json['remark'] as String
       ..totalCookingTime = json['totalCookingTime'] as int
       ..preparingTime = json['preparingTime'] as int
+      ..favorite = json['favorite'] as bool
       ..tags = (json['tags'] as List<dynamic>).map((e) => e as String).toList();
 
 Map<String, dynamic> _$ReceptToJson(Recept instance) => <String, dynamic>{
@@ -36,6 +37,7 @@ Map<String, dynamic> _$ReceptToJson(Recept instance) => <String, dynamic>{
       'remark': instance.remark,
       'totalCookingTime': instance.totalCookingTime,
       'preparingTime': instance.preparingTime,
+      'favorite': instance.favorite,
       'ingredients': instance.ingredients,
       'tags': instance.tags,
     };
