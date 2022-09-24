@@ -10,6 +10,7 @@ import '../../../services/enricher/Enricher.dart';
 import 'ReceptEditPage.dart';
 import 'package:event_bus/event_bus.dart';
 
+import 'ReceptIngredientItemWidget.dart';
 import 'UIRecepenGlobalState.dart';
 
 class ReceptDetailsPage extends StatefulWidget {
@@ -177,8 +178,26 @@ class _WidgetState extends State<ReceptDetailsPage> {
                 Text('Ingredienten:',
                     style:
                         TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
-                Text(
-                    "${enrichedRecept.ingredienten.map((e) => e?.toTextString()).join("\n")}"),
+              ]+
+                  enrichedRecept.ingredienten.map((item) {
+                    return Container(
+                      child: Column(
+                        children: [
+                          Container(
+                            constraints: BoxConstraints.expand(
+                              height: 20.0,
+                            ),
+                            alignment: Alignment.topLeft,
+                            child:
+                             ReceptIngredientItemWidget(
+                                 ingredient: item, key: ObjectKey(item)),
+                          ),
+                        ],
+                      ),
+                      margin: EdgeInsets.all(0),
+                      padding: EdgeInsets.all(0),
+                    );
+                  }).toList()+[
                 Text(''),
                 Text('Bereiding:',
                     style:

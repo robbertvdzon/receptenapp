@@ -23,8 +23,11 @@ class Enricher {
   EnrichedReceptIngredient enrichtReceptIngredient(
       ReceptIngredient receptIngredient) {
     var nutritionalValues = NutritionalValues();
+    Ingredient? ingredient = _ingredientsRepository.getIngredientByName(receptIngredient.name);
+
     return EnrichedReceptIngredient(
         receptIngredient.name,
+        ingredient,
         receptIngredient.amountGrams,
         receptIngredient.amountItems,
         nutritionalValues);
