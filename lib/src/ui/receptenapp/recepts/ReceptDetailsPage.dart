@@ -124,112 +124,92 @@ class _WidgetState extends State<ReceptDetailsPage> {
     return Scaffold(
         appBar: AppBar(
           title: Text(widget.title),
-          // actions: [
-          //   ElevatedButton(
-          //     child: Text('Prev'),
-          //     onPressed: () {
-          //       prevRecept();
-          //     },
-          //   ),
-          //   SizedBox(width: 10),
-          //   ElevatedButton(
-          //     child: Text('Next'),
-          //     onPressed: () {
-          //       nextRecept();
-          //     },
-          //   ),
-          //   SizedBox(width: 10),
-          // ],
         ),
-        body: SingleChildScrollView(
-            child: GestureDetector(
-                onPanUpdate: (details) {
-                  swipeDirection = details.delta.dx < 0 ? 'left' : 'right';
-                },
-                onPanEnd: (details) {
-                  if (swipeDirection == null) {
-                    return;
-                  }
-                  if (swipeDirection == 'left') {
-                    nextRecept();
-                    //handle swipe left event
-                  }
-                  if (swipeDirection == 'right') {
-                    prevRecept();
-                    //handle swipe right event
-                  }
-                },
+        body: GestureDetector(
+            onPanUpdate: (details) {
+              swipeDirection = details.delta.dx < 0 ? 'left' : 'right';
+            },
+            onPanEnd: (details) {
+              if (swipeDirection == null) {
+                return;
+              }
+              if (swipeDirection == 'left') {
+                nextRecept();
+              }
+              if (swipeDirection == 'right') {
+                prevRecept();
+              }
+            },
+            child: SingleChildScrollView(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(enrichedRecept.recept.name,
-                        style: TextStyle(fontSize: 25.0)),
-                    Container(
-                      alignment: Alignment.topLeft, // use aligment
-                      padding: EdgeInsets.only(
-                          left: 0, bottom: 0, right: 20, top: 0),
-                      child: Image.asset('assets/images/recept1.jpeg',
-                          height: 300, width: 300, fit: BoxFit.cover),
-                    ),
-                    Text(''),
-                    Text('Opmerkingen:',
-                        style: TextStyle(
-                            fontSize: 20.0, fontWeight: FontWeight.bold)),
-                    Text(enrichedRecept.recept.remark),
-                    Text(''),
-                    Text('Ingredienten:',
-                        style: TextStyle(
-                            fontSize: 20.0, fontWeight: FontWeight.bold)),
-                    Text(
-                        "${enrichedRecept.ingredienten.map((e) => e?.toTextString()).join("\n")}"),
-                    Text(''),
-                    Text('Bereiding:',
-                        style: TextStyle(
-                            fontSize: 20.0, fontWeight: FontWeight.bold)),
-                    Text(enrichedRecept.recept.directions),
-                    Text(''),
-                    Text('Details:',
-                        style: TextStyle(
-                            fontSize: 20.0, fontWeight: FontWeight.bold)),
-                    Container(
-                      alignment: Alignment.center, // use aligment
-                      padding: EdgeInsets.only(
-                          left: 0, bottom: 0, right: 20, top: 0),
-                      child: tableWithValues(),
-                    ),
-                    Text(''),
-                    Text('Tags:',
-                        style: TextStyle(
-                            fontSize: 20.0, fontWeight: FontWeight.bold)),
-                    Text(
-                        "${enrichedRecept.tags.map((e) => e?.tag).join("\n")}"),
-                    Text(''),
-                    ElevatedButton(
-                      child: Text('Bewerk'),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ReceptEditPage(
-                                  title: 'Edit', recept: enrichedRecept)),
-                        );
-                      },
-                    ),
-                    Text(''),
-                    ElevatedButton(
-                      child: Text('Voeg toe aan planner'),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ReceptEditPage(
-                                  title: 'Edit', recept: enrichedRecept)),
-                        );
-                      },
-                    ),
-
-                  ],
-                ))));
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(enrichedRecept.recept.name,
+                    style: TextStyle(fontSize: 25.0)),
+                Container(
+                  alignment: Alignment.topLeft, // use aligment
+                  padding:
+                      EdgeInsets.only(left: 0, bottom: 0, right: 20, top: 0),
+                  child: Image.asset('assets/images/recept1.jpeg',
+                      height: 300, width: 300, fit: BoxFit.cover),
+                ),
+                Text(''),
+                Text('Opmerkingen:',
+                    style:
+                        TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
+                Text(enrichedRecept.recept.remark),
+                Text(''),
+                Text('Ingredienten:',
+                    style:
+                        TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
+                Text(
+                    "${enrichedRecept.ingredienten.map((e) => e?.toTextString()).join("\n")}"),
+                Text(''),
+                Text('Bereiding:',
+                    style:
+                        TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
+                Text(enrichedRecept.recept.directions),
+                Text(''),
+                Text('Details:',
+                    style:
+                        TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
+                Container(
+                  alignment: Alignment.center, // use aligment
+                  padding:
+                      EdgeInsets.only(left: 0, bottom: 0, right: 20, top: 0),
+                  child: tableWithValues(),
+                ),
+                Text(''),
+                Text('Tags:',
+                    style:
+                        TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
+                Text("${enrichedRecept.tags.map((e) => e?.tag).join("\n")}"),
+                Text(''),
+                ElevatedButton(
+                  child: Text('Bewerk'),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ReceptEditPage(
+                              title: 'Edit', recept: enrichedRecept)),
+                    );
+                  },
+                ),
+                Text(''),
+                ElevatedButton(
+                  child: Text('Voeg toe aan planner'),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ReceptEditPage(
+                              title: 'Edit', recept: enrichedRecept)),
+                    );
+                  },
+                ),
+              ],
+            ))));
   }
 }
