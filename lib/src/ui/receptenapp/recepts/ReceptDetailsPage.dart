@@ -120,48 +120,43 @@ class _WidgetState extends State<ReceptDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
+    String? swipeDirection;
     return Scaffold(
         appBar: AppBar(
           title: Text(widget.title),
-          actions: [
-            ElevatedButton(
-              child: Text('Prev'),
-              onPressed: () {
-                prevRecept();
-              },
-            ),
-            SizedBox(width: 10),
-            ElevatedButton(
-              child: Text('Next'),
-              onPressed: () {
-                nextRecept();
-              },
-            ),
-            SizedBox(width: 10),
-            ElevatedButton(
-              child: Text('Edit'),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => ReceptEditPage(
-                          title: 'Edit', recept: enrichedRecept)),
-                );
-              },
-            ),
-          ],
+          // actions: [
+          //   ElevatedButton(
+          //     child: Text('Prev'),
+          //     onPressed: () {
+          //       prevRecept();
+          //     },
+          //   ),
+          //   SizedBox(width: 10),
+          //   ElevatedButton(
+          //     child: Text('Next'),
+          //     onPressed: () {
+          //       nextRecept();
+          //     },
+          //   ),
+          //   SizedBox(width: 10),
+          // ],
         ),
         body: SingleChildScrollView(
             child: GestureDetector(
-                onHorizontalDragUpdate: (details) {
-                  // Note: Sensitivity is integer used when you don't want to mess up vertical drag
-                  int sensitivity = 8;
-                  if (details.delta.dx > sensitivity) {
-                    //Left Swipe
-                    prevRecept();
-                  } else if (details.delta.dx < -sensitivity) {
+                onPanUpdate: (details) {
+                  swipeDirection = details.delta.dx < 0 ? 'left' : 'right';
+                },
+                onPanEnd: (details) {
+                  if (swipeDirection == null) {
+                    return;
+                  }
+                  if (swipeDirection == 'left') {
                     nextRecept();
-                    // Right Swipe
+                    //handle swipe left event
+                  }
+                  if (swipeDirection == 'right') {
+                    prevRecept();
+                    //handle swipe right event
                   }
                 },
                 child: Column(
@@ -210,6 +205,30 @@ class _WidgetState extends State<ReceptDetailsPage> {
                     Text(
                         "${enrichedRecept.tags.map((e) => e?.tag).join("\n")}"),
                     Text(''),
+                    ElevatedButton(
+                      child: Text('Bewerk'),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ReceptEditPage(
+                                  title: 'Edit', recept: enrichedRecept)),
+                        );
+                      },
+                    ),
+                    Text(''),
+                    ElevatedButton(
+                      child: Text('Voeg toe aan planner'),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ReceptEditPage(
+                                  title: 'Edit', recept: enrichedRecept)),
+                        );
+                      },
+                    ),
+
                   ],
                 ))));
   }
