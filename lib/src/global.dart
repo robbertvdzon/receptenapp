@@ -14,7 +14,7 @@ import 'package:receptenapp/src/ui/receptenapp/recepts/UIRecepenGlobalState.dart
 
 import '../firebase_options.dart';
 
-final bool PRELOAD_DATABASE_AT_STARTUP = false;
+final bool PRELOAD_DATABASE_AT_STARTUP = true;
 final bool DISABLE_AUTH = true;
 
 final getIt = GetIt.instance;
