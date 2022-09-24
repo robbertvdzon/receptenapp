@@ -122,7 +122,7 @@ class RecipesRepository {
       ReceptIngredient("verse basilicum", amountGrams: ReceptIngredientAmountGrams(20)),
       ReceptIngredient("Pecorino Romano", amountGrams: ReceptIngredientAmountGrams(100)),
       ReceptIngredient("cherrytomaten", amountGrams: ReceptIngredientAmountGrams(250)),
-    ], "Gnoccchi met bassilliccum en tommaat");
+    ], "Gnoccchi met bassilliccum en tomaat");
     gnocchi.directions = "Verhit een koekenpan zonder olie of boter en rooster het amandelschaafsel 2 min.\nLaat afkoelen op een bord.\nVerhit 2/3 van de olie in de koekenpan en bak de gnocchi in 10 min. op middelhoog vuur goudbruin en gaar.\nSchep regelmatig om.\n\nSnijd ondertussen de knoflook fijn.\nVerhit de rest van de olie in een hapjespan en fruit de knoflook 30 sec.\nVoeg de spinazie in delen toe en laat al omscheppend slinken.\nMeng de hüttenkäse met peper door het spinaziemengsel en warm 2 min. mee.\nScheur de baslicumblaadjes in stukken en rasp de Pecorino Romano.\nSchep het basilicum, 2/3 van de Pecorino en gnocchi door de spinazie.\nHalveer de tomaten en voeg toe en bestrooi met het amandelschaafsel en de rest van de Pecorino.\n\nVariatietip:    Vervang voor een extra hartig accent het amandelschaafsel eens door 2 el kappertjes.";
     gnocchi.tags = ["vlees","soep","avondeten"];
     gnocchi.remark = "";
