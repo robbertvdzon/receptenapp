@@ -12,6 +12,7 @@ import '../model/ingredients/v1/ingredients.dart';
 import '../model/recipes/v1/recept.dart';
 import '../repositories/RecipesRepository.dart';
 import '../repositories/RecipesTagsRepository.dart';
+import 'ProductsService.dart';
 
 class Enricher {
   var _ingredientsRepository = getIt<IngredientsRepository>();
@@ -19,6 +20,7 @@ class Enricher {
   var _ingredientTagsRepository = getIt<IngredientTagsRepository>();
   var _recipesTagsRepository = getIt<RecipesTagsRepository>();
   var _recipesRepository = getIt<RecipesRepository>();
+  var _productsService = getIt<ProductsService>();
 
   EnrichedReceptIngredient enrichtReceptIngredient(
       ReceptIngredient receptIngredient) {
@@ -40,7 +42,7 @@ class Enricher {
       if (ingredient!=null) {
         var productName = ingredient.productName;
         if (productName!=null) {
-          var product = _productsRepository.getProductByName(productName);
+          var product = _productsService.getProductByName(productName);
           double weight = 0.0;
           if (receptIngredient.amountItems!=null){
             weight = receptIngredient.amountItems!.items * ingredient.gramsPerPiece;
@@ -77,7 +79,7 @@ class Enricher {
 
     var productName = ingredient.productName;
     if (productName!=null) {
-      var product = _productsRepository.getProductByName(productName);
+      var product = _productsService.getProductByName(productName);
       nutritionalValues.kcal = product?.kcal ?? 0;
       nutritionalValues.prot = product?.prot ?? 0;
       nutritionalValues.nt = product?.nt ?? 0;

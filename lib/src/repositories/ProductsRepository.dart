@@ -39,9 +39,9 @@ class ProductsRepository {
 
   }
 
-  Product? getProductByName (String name) {
-    return getProducts().products.firstWhereOrNull((element) => element.name==name);
-  }
+  // Product? getProductByName (String name) {
+  //   return getProducts().products.firstWhereOrNull((element) => element.name==name);
+  // }
 
   Future<void> saveProduct(Product product) async {
     var products = getProducts();

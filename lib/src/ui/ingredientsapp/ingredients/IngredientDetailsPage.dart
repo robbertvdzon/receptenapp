@@ -1,11 +1,10 @@
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:receptenapp/src/model/ingredients/v1/ingredients.dart';
 import '../../../GetItDependencies.dart';
 import '../../../model/enriched/enrichedmodels.dart';
 import '../../../services/Enricher.dart';
-import '../../../repositories/IngredientsRepository.dart';
 import '../../../repositories/ProductsRepository.dart';
+import '../../../services/ProductsService.dart';
 import '../products/ProductDetailsPage.dart';
 import 'IngredientEditPage.dart';
 
@@ -28,7 +27,7 @@ class IngredientDetailsPage extends StatefulWidget {
 class _WidgetState extends State<IngredientDetailsPage> {
   late EnrichedIngredient enrichedIngredient;
   late Ingredient ingredient;
-  var productsRepository = getIt<ProductsRepository>();
+  var productsService = getIt<ProductsService>();
   var enricher = getIt<Enricher>();
 
   _WidgetState(Ingredient ingredient) {
@@ -38,7 +37,7 @@ class _WidgetState extends State<IngredientDetailsPage> {
 
   void _openProdut(){
     if (ingredient.productName==null) return;
-    var product = productsRepository.getProductByName(ingredient.productName!);
+    var product = productsService.getProductByName(ingredient.productName!);
     if (product==null) return;
     Navigator.push(
         context,
@@ -50,9 +49,7 @@ class _WidgetState extends State<IngredientDetailsPage> {
                 )
         )
     );
-
   }
-
 
   Table tableWithValues() {
     return Table(
