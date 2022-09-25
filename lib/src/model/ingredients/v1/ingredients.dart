@@ -34,7 +34,7 @@ class Ingredient {
     return this.tags.contains(tag);
   }
 
-  String getDisplayNutrientName() {
+  String getDisplayProductName() {
     if (productName==null) return "";
     return "[$productName]";
   }

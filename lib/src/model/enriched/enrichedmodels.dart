@@ -37,12 +37,12 @@ class EnrichedIngredient {
   String uuid;
   String name;
   double gramsPerPiece;
-  String? nutrientName;
+  String? productName;
   NutritionalValues nutritionalValues;
   List<IngredientTag?> tags;
   List<Recept?> recipes;
 
-  EnrichedIngredient(this.uuid, this.name, this.gramsPerPiece, this.nutrientName, this.nutritionalValues, this.tags, this.recipes);
+  EnrichedIngredient(this.uuid, this.name, this.gramsPerPiece, this.productName, this.nutritionalValues, this.tags, this.recipes);
 }
 
 class EnrichedIngredientTag {

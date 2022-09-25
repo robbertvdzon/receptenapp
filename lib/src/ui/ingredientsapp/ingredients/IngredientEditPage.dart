@@ -27,13 +27,13 @@ class _WidgetState extends State<IngredientEditPage> {
   late Ingredient newIngredient;
   late List<String> categories = List.empty();
   var ingredientsRepository = getIt<IngredientsRepository>();
-  var nutrientsRepository = getIt<ProductsRepository>();
+  var productsRepository = getIt<ProductsRepository>();
   var enricher = getIt<Enricher>();
 
   _WidgetState(Ingredient ingredient) {
     this.ingredient = enricher.enrichtIngredient(ingredient);
     this.newIngredient = ingredient;
-    this.categories = nutrientsRepository
+    this.categories = productsRepository
         .getProducts()
         .products
         .map((e) => e.name ?? "")
@@ -127,7 +127,7 @@ class _WidgetState extends State<IngredientEditPage> {
                   newIngredient.productName = newValue;
                 });
               },
-              selectedItem: "${ingredient.nutrientName ?? ''}",
+              selectedItem: "${ingredient.productName ?? ''}",
             ),
             ElevatedButton(
               child: Text('SAVE'),

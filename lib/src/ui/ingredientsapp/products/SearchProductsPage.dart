@@ -33,7 +33,7 @@ class _SearchProductsPageState extends State<SearchProductsPage> {
   void _updateFilter(String filter) {
     setState(() {
       _filter = filter;
-      _filterNutrients();
+      _filterProducts();
     });
   }
 
@@ -47,7 +47,7 @@ class _SearchProductsPageState extends State<SearchProductsPage> {
 
   }
 
-  void _filterNutrients() {
+  void _filterProducts() {
     filteredProducts = products.products.where((element) => element.name!=null && element.name!.toLowerCase().contains(_filter.toLowerCase())).toList();
   }
 
@@ -128,7 +128,7 @@ class _SearchProductsPageState extends State<SearchProductsPage> {
                           ),
                           alignment: Alignment.center,
                           child:
-                        ProductItemWidget(nutrient: item, key: ObjectKey(item)),
+                        ProductItemWidget(product: item, key: ObjectKey(item)),
                         ),
                       ],
 
@@ -150,7 +150,7 @@ class _SearchProductsPageState extends State<SearchProductsPage> {
           // _incrementCounter(_filterTextFieldController);
           _displayTextInputDialog(context);
         },
-        tooltip: 'Add nutrient',
+        tooltip: 'Add product',
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );

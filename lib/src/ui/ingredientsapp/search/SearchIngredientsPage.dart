@@ -51,11 +51,11 @@ class _SearchIngredientsPageState extends State<SearchIngredientsPage> {
   void _updateFilter(String filter) {
     setState(() {
       _filter = filter;
-      _filterNutrients();
+      _filterProducts();
     });
   }
 
-  void addNutrient(String name) {
+  void addProduct(String name) {
     ingredientsRepository.createAndAddIngredient(name).then((value) => {
           setState(() {
             ingredients = ingredientsRepository.getIngredients().ingredients;
@@ -67,7 +67,7 @@ class _SearchIngredientsPageState extends State<SearchIngredientsPage> {
         });
   }
 
-  void _filterNutrients() {
+  void _filterProducts() {
     filteredIngredients = ingredients
         .where((element) =>
             element.name != null &&
@@ -106,7 +106,7 @@ class _SearchIngredientsPageState extends State<SearchIngredientsPage> {
                 textColor: Colors.white,
                 child: Text('OK'),
                 onPressed: () {
-                  addNutrient(valueText);
+                  addProduct(valueText);
                   _updateFilter(valueText);
                   Navigator.pop(context);
                 },

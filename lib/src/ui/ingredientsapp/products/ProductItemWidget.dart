@@ -5,12 +5,12 @@ import '../../../repositories/ProductsRepository.dart';
 import 'ProductDetailsPage.dart';
 
 class ProductItemWidget extends StatefulWidget {
-  ProductItemWidget({Key? key, required this.nutrient}) : super(key: key) {}
+  ProductItemWidget({Key? key, required this.product}) : super(key: key) {}
 
-  final Product nutrient;
+  final Product product;
 
   @override
-  State<ProductItemWidget> createState() => _WidgetState(nutrient);
+  State<ProductItemWidget> createState() => _WidgetState(product);
 }
 
 class _WidgetState extends State<ProductItemWidget> {
@@ -41,7 +41,7 @@ class _WidgetState extends State<ProductItemWidget> {
       element.k = newProduct.k;
       element.fe = newProduct.fe;
       element.mg = newProduct.mg;
-      element.customNutrient = newProduct.customNutrient;
+      element.customProduct = newProduct.customProduct;
     });
     productsRepository.saveProducts(baseIngredients);
   }
@@ -51,7 +51,7 @@ class _WidgetState extends State<ProductItemWidget> {
       context,
       MaterialPageRoute(
           builder: (context) =>
-              ProductDetailsPage(title: 'Product', nutrient: product)),
+              ProductDetailsPage(title: 'Product', product: product)),
     );
   }
 

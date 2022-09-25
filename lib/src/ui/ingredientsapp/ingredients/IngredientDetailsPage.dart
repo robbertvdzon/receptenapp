@@ -46,7 +46,7 @@ class _WidgetState extends State<IngredientDetailsPage> {
             builder: (context) =>
                 ProductDetailsPage(
                   title: 'Product',
-                  nutrient: product,
+                  product: product,
                 )
         )
     );
@@ -98,7 +98,7 @@ class _WidgetState extends State<IngredientDetailsPage> {
             InkWell(
             onTap: () {_openProdut();}, // Handle your callback
             child:
-            Text( "${enrichedIngredient.nutrientName}"),
+            Text( "${enrichedIngredient.productName}"),
             )
         ]),
 

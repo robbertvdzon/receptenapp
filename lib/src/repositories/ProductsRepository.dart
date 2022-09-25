@@ -74,11 +74,11 @@ class ProductsRepository {
   }
 
   void setSampleProducts() async {
-    final sample = await readPreloadedNutrients();
+    final sample = await readPreloadedProducts();
     saveProducts(sample);
   }
 
-  Future<Products> readPreloadedNutrients() async {
+  Future<Products> readPreloadedProducts() async {
     final String response = await rootBundle.loadString('assets/NEVO2021.csv');
     List<List<dynamic>> rowsAsListOfValues = const CsvToListConverter(fieldDelimiter: "|").convert(response);
 
@@ -105,7 +105,7 @@ class ProductsRepository {
     bi.k = double.tryParse(element[36].replaceAll(",", "."));
     bi.fe = double.tryParse(element[40].replaceAll(",", "."));
     bi.mg = double.tryParse(element[39].replaceAll(",", "."));
-    bi.customNutrient = false;
+    bi.customProduct = false;
     return bi;
   }
   

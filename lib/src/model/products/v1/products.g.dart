@@ -31,7 +31,7 @@ Product _$ProductFromJson(Map<String, dynamic> json) => Product(
       ..k = (json['k'] as num?)?.toDouble()
       ..fe = (json['fe'] as num?)?.toDouble()
       ..mg = (json['mg'] as num?)?.toDouble()
-      ..customNutrient = json['customNutrient'] as bool?;
+      ..customProduct = json['customProduct'] as bool?;
 
 Map<String, dynamic> _$ProductToJson(Product instance) => <String, dynamic>{
       'name': instance.name,
@@ -47,5 +47,5 @@ Map<String, dynamic> _$ProductToJson(Product instance) => <String, dynamic>{
       'k': instance.k,
       'fe': instance.fe,
       'mg': instance.mg,
-      'customNutrient': instance.customNutrient,
+      'customProduct': instance.customProduct,
     };

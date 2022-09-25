@@ -24,7 +24,7 @@ class _WidgetState extends State<IngredientItemWidget> {
   late Ingredient newIngredient;
   late List<String> categories;
   var ingredientsRepository = getIt<IngredientsRepository>();
-  var nutrientsRepository = getIt<ProductsRepository>();
+  var productsRepository = getIt<ProductsRepository>();
 
   _WidgetState(Ingredient ingredient, List<String> categories) {
     this.ingredient = ingredient;
@@ -58,7 +58,7 @@ class _WidgetState extends State<IngredientItemWidget> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Row(children: <Widget>[
-              new Text(ingredient.name+" ${ingredient.getDisplayNutrientName()}"),
+              new Text(ingredient.name+" ${ingredient.getDisplayProductName()}"),
             ])
           ],
         )

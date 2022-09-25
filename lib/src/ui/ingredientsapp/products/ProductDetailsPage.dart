@@ -4,14 +4,14 @@ import '../../../model/products/v1/products.dart';
 import '../../../repositories/ProductsRepository.dart';
 
 class ProductDetailsPage extends StatefulWidget {
-  ProductDetailsPage({Key? key, required this.title, required this.nutrient})
+  ProductDetailsPage({Key? key, required this.title, required this.product})
       : super(key: key) {}
 
-  final Product nutrient;
+  final Product product;
   final String title;
 
   @override
-  State<ProductDetailsPage> createState() => _WidgetState(nutrient);
+  State<ProductDetailsPage> createState() => _WidgetState(product);
 }
 
 class _WidgetState extends State<ProductDetailsPage> {
@@ -43,7 +43,7 @@ class _WidgetState extends State<ProductDetailsPage> {
       element.k = newProduct.k;
       element.fe = newProduct.fe;
       element.mg = newProduct.mg;
-      element.customNutrient = newProduct.customNutrient;
+      element.customProduct = newProduct.customProduct;
     });
     productsRepository.saveProducts(baseIngredients);
   }
@@ -158,7 +158,7 @@ class _WidgetState extends State<ProductDetailsPage> {
             ),
             TextFormField(
               decoration: InputDecoration(label: Text('custom field:')),
-              initialValue: "${product.customNutrient}",
+              initialValue: "${product.customProduct}",
             ),
 
             ElevatedButton(

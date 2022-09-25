@@ -32,7 +32,7 @@ class Product {
   double? k;
   double? fe;
   double? mg;
-  bool? customNutrient = false;
+  bool? customProduct = false;
 
   Product(this.name);
 

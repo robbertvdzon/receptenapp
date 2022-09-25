@@ -27,7 +27,7 @@ class _SearchRecipesPageState extends State<SearchRecipesPage> {
   TextEditingController _textFieldController = TextEditingController();
   TextEditingController _filterTextFieldController = TextEditingController();
   var recipesRepository = getIt<RecipesRepository>();
-  var nutrientsRepository = getIt<ProductsRepository>();
+  var productsRepository = getIt<ProductsRepository>();
   var uiReceptenGlobalState = getIt<GlobalState>();
   String _filter = "";
   bool? _filterOnFavorite = false;
@@ -44,7 +44,7 @@ class _SearchRecipesPageState extends State<SearchRecipesPage> {
         .where((element) =>
             element.name != null && element.name!.contains(_filter))
         .toList();
-    products = nutrientsRepository
+    products = productsRepository
         .getProducts()
         .products
         .map((e) => e.name ?? "")
@@ -54,18 +54,18 @@ class _SearchRecipesPageState extends State<SearchRecipesPage> {
   void _updateFilter(String filter) {
     setState(() {
       _filter = filter;
-      _filterNutrients();
+      _filterProducts();
     });
   }
 
   void _updateFilterOnFavorite(bool? filterOnFavorite) {
     setState(() {
       _filterOnFavorite = filterOnFavorite;
-      _filterNutrients();
+      _filterProducts();
     });
   }
 
-  void addNutrient(String name) {
+  void addProduct(String name) {
     recipesRepository.createAndAddRecept(name).then((value) => {
           setState(() {
             recipes = recipesRepository.getRecipes().recipes;
@@ -77,7 +77,7 @@ class _SearchRecipesPageState extends State<SearchRecipesPage> {
         });
   }
 
-  void _filterNutrients() {
+  void _filterProducts() {
     bool filterOnFavorite = _filterOnFavorite == true;
 
     // TODO: dit kan vast in 1 query!
@@ -128,7 +128,7 @@ class _SearchRecipesPageState extends State<SearchRecipesPage> {
                 textColor: Colors.white,
                 child: Text('OK'),
                 onPressed: () {
-                  addNutrient(valueText);
+                  addProduct(valueText);
                   _updateFilter(valueText);
                   Navigator.pop(context);
                 },
