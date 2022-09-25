@@ -49,16 +49,16 @@ class ProductsRepository {
       products.products.remove(oldProduct);
     }
     products.products.add(product);
-    return saveProducts(products);
+    return _saveProducts(products);
   }
 
   Future<void> addProduct(Product product) async {
     var products = getProducts();
     products.products.add(product);
-    return saveProducts(products);
+    return _saveProducts(products);
   }
 
-  Future<void> saveProducts(Products products) async {
+  Future<void> _saveProducts(Products products) async {
     if (usersCollection == null) throw Exception("Repository not initialized");
     final Map<String, dynamic> jsonMap = products.toJson();
     final jsonKeyValue = <String, String>{_KEY: jsonEncode(jsonMap)};
@@ -69,21 +69,12 @@ class ProductsRepository {
         .onError((e, _) => print("Error writing document: $e"))
         .then((data) => cachedProducts = products);
   }
-
-  Future<Product> createAndAddProduct(String name) async {
-    return _loadProducts().then((products) {
-      final product = Product(name);
-      products.products.add(product);
-      return saveProducts(products).then((value) => product);
-    });
-  }
-
   void setSampleProducts() async {
-    final sample = await readPreloadedProducts();
-    saveProducts(sample);
+    final sample = await _readPreloadedProducts();
+    _saveProducts(sample);
   }
 
-  Future<Products> readPreloadedProducts() async {
+  Future<Products> _readPreloadedProducts() async {
     final String response = await rootBundle.loadString('assets/NEVO2021.csv');
     List<List<dynamic>> rowsAsListOfValues = const CsvToListConverter(fieldDelimiter: "|").convert(response);
 

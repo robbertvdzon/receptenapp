@@ -41,10 +41,10 @@ class RecipesTagsRepository {
       tags.tags.remove(oldTag);
     }
     tags.tags.add(tag);
-    return saveTags(tags);
+    return _saveTags(tags);
   }
 
-  Future<void> saveTags(ReceptTags tags) async {
+  Future<void> _saveTags(ReceptTags tags) async {
     if (usersCollection == null) throw Exception("Repository not initialized");
     final Map<String, dynamic> jsonMap = tags.toJson();
     final jsonKeyValue = <String, String>{_KEY: jsonEncode(jsonMap)};
@@ -56,16 +56,8 @@ class RecipesTagsRepository {
         .then((data) => cachedTags = tags);
   }
 
-  Future<ReceptTag> createAndAddTag(String name) async {
-    return _loadTags().then((tags) {
-      final tag = ReceptTag(name);
-      tags.tags.add(tag);
-      return saveTags(tags).then((value) => tag);
-    });
-  }
-
   void setSampleTags() {
-    saveTags(_createSample());
+    _saveTags(_createSample());
   }
 
   ReceptTags _createSample() {

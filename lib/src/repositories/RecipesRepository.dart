@@ -38,16 +38,16 @@ class RecipesRepository {
       recipes.recipes.remove(oldRecept);
     }
     recipes.recipes.add(recept);
-    return saveRecipes(recipes);
+    return _saveRecipes(recipes);
   }
 
   Future<void> addRecept(Recept recept) async {
     var recipes = getRecipes();
     recipes.recipes.add(recept);
-    return saveRecipes(recipes);
+    return _saveRecipes(recipes);
   }
 
-  Future<void> saveRecipes(Recipes recipes) async {
+  Future<void> _saveRecipes(Recipes recipes) async {
     if (usersCollection == null) throw Exception("Repository not initialized");
     final Map<String, dynamic> jsonMap = recipes.toJson();
     final jsonKeyValue = <String, String>{_KEY: jsonEncode(jsonMap)};
@@ -75,7 +75,7 @@ class RecipesRepository {
   }
 
   void setSampleRecipes() {
-    saveRecipes(_createSample());
+    _saveRecipes(_createSample());
   }
   
   Recipes _createSample() {

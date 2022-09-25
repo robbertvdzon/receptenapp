@@ -47,18 +47,17 @@ class IngredientsRepository {
     if (oldIngredient!=null){
       ingredients.ingredients.remove(oldIngredient);
     }
-    print(ingredient);
     ingredients.ingredients.add(ingredient);
-    return saveIngredients(ingredients);
+    return _saveIngredients(ingredients);
   }
 
   Future<void> addIngredient(Ingredient ingredient) async {
     var ingredients = getIngredients();
     ingredients.ingredients.add(ingredient);
-    return saveIngredients(ingredients);
+    return _saveIngredients(ingredients);
   }
 
-  Future<void> saveIngredients(Ingredients ingredients) async {
+  Future<void> _saveIngredients(Ingredients ingredients) async {
     if (usersCollection == null) throw Exception("Repository not initialized");
     final Map<String, dynamic> jsonMap = ingredients.toJson();
     final jsonKeyValue = <String, String>{_KEY: jsonEncode(jsonMap)};
@@ -70,16 +69,8 @@ class IngredientsRepository {
         .then((data) => cachedIngredients = ingredients);
   }
 
-  Future<Ingredient> createAndAddIngredient(String name) async {
-    return _loadIngredients().then((ingredients) {
-      final ingredient = Ingredient(name);
-      ingredients.ingredients.add(ingredient);
-      return saveIngredients(ingredients).then((value) => ingredient);
-    });
-  }
-
   void setSampleIngredients() {
-    saveIngredients(_createSample());
+    _saveIngredients(_createSample());
   }
 
   Future<Ingredients> _loadIngredients() async {
