@@ -1,9 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:receptenapp/src/GlobalState.dart';
 import 'package:receptenapp/src/model/ingredients/v1/ingredients.dart';
 import '../../../GetItDependencies.dart';
+import '../../../events/IngredientChangedEvent.dart';
 import '../../../model/enriched/enrichedmodels.dart';
 import '../../../services/Enricher.dart';
-import '../../../repositories/ProductsRepository.dart';
 import '../../../services/ProductsService.dart';
 import '../products/ProductDetailsPage.dart';
 import 'IngredientEditPage.dart';
@@ -25,19 +28,42 @@ class IngredientDetailsPage extends StatefulWidget {
 }
 
 class _WidgetState extends State<IngredientDetailsPage> {
-  late EnrichedIngredient enrichedIngredient;
-  late Ingredient ingredient;
-  var productsService = getIt<ProductsService>();
-  var enricher = getIt<Enricher>();
+  late EnrichedIngredient _enrichedIngredient;
+  late Ingredient _ingredient;
+  var _productsService = getIt<ProductsService>();
+  var _enricher = getIt<Enricher>();
+  var _globalState = getIt<GlobalState>();
+  StreamSubscription? _eventStreamSub;
 
   _WidgetState(Ingredient ingredient) {
-    this.enrichedIngredient = enricher.enrichtIngredient(ingredient);
-    this.ingredient = ingredient;
+    this._enrichedIngredient = _enricher.enrichtIngredient(ingredient);
+    this._ingredient = ingredient;
+  }
+
+  @override
+  void initState() {
+    _handleEvents();
+  }
+
+  void _handleEvents() {
+    _eventStreamSub = _globalState.eventBus.on<IngredientChangedEvent>().listen((event) {
+      if (event.ingredient.uuid == _enrichedIngredient.uuid) {
+        setState(() {
+          _enrichedIngredient = _enricher.enrichtIngredient(event.ingredient);
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _eventStreamSub?.cancel();
   }
 
   void _openProdut(){
-    if (ingredient.productName==null) return;
-    var product = productsService.getProductByName(ingredient.productName!);
+    if (_ingredient.productName==null) return;
+    var product = _productsService.getProductByName(_ingredient.productName!);
     if (product==null) return;
     Navigator.push(
         context,
@@ -62,32 +88,32 @@ class _WidgetState extends State<IngredientDetailsPage> {
         TableRow(children: [
           Text("Naam"),
           Text(":"),
-          Text("${enrichedIngredient.name}"),
+          Text("${_enrichedIngredient.name}"),
         ]),
         TableRow(children: [
           Text("Gewicht per stuk"),
           Text(":"),
-          Text("${enrichedIngredient.gramsPerPiece}"),
+          Text("${_enrichedIngredient.gramsPerPiece}"),
         ]),
         TableRow(children: [
           Text("kcal"),
           Text(":"),
-          Text("${enrichedIngredient.nutritionalValues.kcal}"),
+          Text("${_enrichedIngredient.nutritionalValues.kcal}"),
         ]),
         TableRow(children: [
           Text("fat"),
           Text(":"),
-          Text("${enrichedIngredient.nutritionalValues.fat}"),
+          Text("${_enrichedIngredient.nutritionalValues.fat}"),
         ]),
         TableRow(children: [
           Text("recepten"),
           Text(":"),
-          Text("${enrichedIngredient.recipes.map((e) => e?.name).join(",")}"),
+          Text("${_enrichedIngredient.recipes.map((e) => e?.name).join(",")}"),
         ]),
         TableRow(children: [
           Text("tags"),
           Text(":"),
-          Text("${enrichedIngredient.tags.map((e) => e?.tag).join(",")}"),
+          Text("${_enrichedIngredient.tags.map((e) => e?.tag).join(",")}"),
         ]),
         TableRow(children: [
           Text("product"),
@@ -95,10 +121,9 @@ class _WidgetState extends State<IngredientDetailsPage> {
             InkWell(
             onTap: () {_openProdut();}, // Handle your callback
             child:
-            Text( "${enrichedIngredient.productName}"),
+            Text( "${_enrichedIngredient.productName}"),
             )
         ]),
-
       ],
     );
   }
@@ -121,7 +146,7 @@ class _WidgetState extends State<IngredientDetailsPage> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => IngredientEditPage(
-                          title: 'Edit', ingredient: ingredient)),
+                          title: 'Edit', ingredient: _ingredient)),
                 );
               },
             ),

@@ -1,9 +1,10 @@
-import 'package:dropdown_search/dropdown_search.dart';
+import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:receptenapp/src/repositories/IngredientsRepository.dart';
 import '../../../GetItDependencies.dart';
+import '../../../GlobalState.dart';
+import '../../../events/IngredientChangedEvent.dart';
 import '../../../model/ingredients/v1/ingredients.dart';
-import '../../../repositories/ProductsRepository.dart';
 import 'IngredientDetailsPage.dart';
 
 class IngredientItemWidget extends StatefulWidget {
@@ -21,14 +22,33 @@ class IngredientItemWidget extends StatefulWidget {
 
 class _WidgetState extends State<IngredientItemWidget> {
   late Ingredient ingredient;
-  late Ingredient newIngredient;
-  late List<String> categories;
-  var ingredientsRepository = getIt<IngredientsRepository>();
-  var productsRepository = getIt<ProductsRepository>();
+  var _globalState = getIt<GlobalState>();
+  StreamSubscription? _eventStreamSub;
 
   _WidgetState(Ingredient ingredient, List<String> categories) {
     this.ingredient = ingredient;
-    this.newIngredient = ingredient;
+  }
+
+
+  @override
+  void initState() {
+    _handleEvents();
+  }
+
+  void _handleEvents() {
+    _eventStreamSub = _globalState.eventBus.on<IngredientChangedEvent>().listen((event) {
+      if (event.ingredient.uuid == ingredient.uuid) {
+        setState(() {
+          ingredient = event.ingredient;
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _eventStreamSub?.cancel();
   }
 
   _openForm() {
@@ -40,10 +60,6 @@ class _WidgetState extends State<IngredientItemWidget> {
                 ingredient: ingredient
               )),
     );
-  }
-
-  _saveForm() {
-    ingredientsRepository.saveIngredient(newIngredient);
   }
 
   @override
@@ -65,12 +81,4 @@ class _WidgetState extends State<IngredientItemWidget> {
     );
   }
 
-  List<DropdownMenuItem<String>> buildList() {
-    return categories.map<DropdownMenuItem<String>>((String value) {
-      return DropdownMenuItem<String>(
-        value: value,
-        child: Text(value),
-      );
-    }).toList();
-  }
 }

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:receptenapp/src/model/ingredients/v1/ingredientTags.dart';
 import 'package:receptenapp/src/repositories/IngredientTagsRepository.dart';
 import 'package:receptenapp/src/repositories/IngredientsRepository.dart';
+import '../events/IngredientChangedEvent.dart';
 import '../model/recipes/v1/receptTags.dart';
 import '../repositories/ProductsRepository.dart';
 
@@ -19,7 +20,9 @@ class IngredientService {
   var ingredientsRepository = getIt<IngredientsRepository>();
 
   Future<void> saveIngredient(Ingredient ingredient) async {
-    return ingredientsRepository.saveIngredient(ingredient);
+    return ingredientsRepository.saveIngredient(ingredient).then((value) => {
+      _state.eventBus.fire(IngredientChangedEvent(ingredient))
+    });
 
   }
 
