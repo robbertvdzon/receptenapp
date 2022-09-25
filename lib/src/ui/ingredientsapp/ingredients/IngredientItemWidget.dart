@@ -29,7 +29,6 @@ class _WidgetState extends State<IngredientItemWidget> {
   _WidgetState(Ingredient ingredient, List<String> categories) {
     this.ingredient = ingredient;
     this.newIngredient = ingredient;
-    this.categories = categories;
   }
 
   _openForm() {
@@ -38,8 +37,7 @@ class _WidgetState extends State<IngredientItemWidget> {
       MaterialPageRoute(
           builder: (context) => IngredientDetailsPage(
                 title: 'Ingredient',
-                ingredient: ingredient,
-                categories: categories,
+                ingredient: ingredient
               )),
     );
   }

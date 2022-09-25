@@ -6,40 +6,105 @@ import '../../../model/enriched/enrichedmodels.dart';
 import '../../../services/enricher/Enricher.dart';
 import '../../../services/repositories/IngredientsRepository.dart';
 import '../../../services/repositories/ProductsRepository.dart';
+import '../products/ProductDetailsPage.dart';
+import 'IngredientEditPage.dart';
 
 class IngredientDetailsPage extends StatefulWidget {
   IngredientDetailsPage(
       {Key? key,
       required this.title,
-      required this.ingredient,
-      required this.categories})
+      required this.ingredient}
+      )
       : super(key: key) {}
 
   final Ingredient ingredient;
-  final List<String> categories;
   final String title;
 
   @override
   State<IngredientDetailsPage> createState() =>
-      _WidgetState(ingredient, categories);
+      _WidgetState(ingredient);
 }
 
 class _WidgetState extends State<IngredientDetailsPage> {
-  late EnrichedIngredient ingredient;
-  late Ingredient newIngredient;
-  late List<String> categories;
+  late EnrichedIngredient enrichedIngredient;
+  late Ingredient ingredient;
   var ingredientsRepository = getIt<IngredientsRepository>();
   var nutrientsRepository = getIt<ProductsRepository>();
   var enricher = getIt<Enricher>();
 
-  _WidgetState(Ingredient ingredient, List<String> categories) {
-    this.ingredient = enricher.enrichtIngredient(ingredient);
-    this.newIngredient = ingredient;
-    this.categories = categories;
+  _WidgetState(Ingredient ingredient) {
+    this.enrichedIngredient = enricher.enrichtIngredient(ingredient);
+    this.ingredient = ingredient;
   }
 
-  _saveForm() {
-    ingredientsRepository.saveIngredient(newIngredient);
+  void _openProdut(){
+    if (ingredient.nutrientName==null) return;
+    var product = nutrientsRepository.getProductByName(ingredient.nutrientName!);
+    if (product==null) return;
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) =>
+                ProductDetailsPage(
+                  title: 'Product',
+                  nutrient: product,
+                )
+        )
+    );
+
+  }
+
+
+  Table tableWithValues() {
+    return Table(
+      columnWidths: const {
+        0: FixedColumnWidth(200),
+        1: FixedColumnWidth(10),
+        2: FlexColumnWidth(2),
+      },
+      children: [
+        TableRow(children: [
+          Text("Naam"),
+          Text(":"),
+          Text("${enrichedIngredient.name}"),
+        ]),
+        TableRow(children: [
+          Text("Gewicht per stuk"),
+          Text(":"),
+          Text("${enrichedIngredient.gramsPerPiece}"),
+        ]),
+        TableRow(children: [
+          Text("kcal"),
+          Text(":"),
+          Text("${enrichedIngredient.nutritionalValues.kcal}"),
+        ]),
+        TableRow(children: [
+          Text("fat"),
+          Text(":"),
+          Text("${enrichedIngredient.nutritionalValues.fat}"),
+        ]),
+        TableRow(children: [
+          Text("recepten"),
+          Text(":"),
+          Text("${enrichedIngredient.recipes.map((e) => e?.name).join(",")}"),
+        ]),
+        TableRow(children: [
+          Text("tags"),
+          Text(":"),
+          Text("${enrichedIngredient.tags.map((e) => e?.tag).join(",")}"),
+        ]),
+        TableRow(children: [
+          Text("product"),
+          Text(":"),
+            InkWell(
+            onTap: () {_openProdut();}, // Handle your callback
+            child:
+            Text( "${enrichedIngredient.nutrientName}"),
+            )
+        ]),
+
+      ],
+    );
   }
 
   @override
@@ -52,87 +117,18 @@ class _WidgetState extends State<IngredientDetailsPage> {
             child: SingleChildScrollView(
                 child: Column(
           children: <Widget>[
-            TextFormField(
-              decoration: InputDecoration(label: Text('uuid:')),
-              initialValue: "${ingredient.uuid}",
-            ),
-            TextFormField(
-              decoration: InputDecoration(label: Text('Name:')),
-              initialValue: "${ingredient.name}",
-              onChanged: (text) {
-                newIngredient.name = text;
-              },
-            ),
-            TextFormField(
-              decoration: InputDecoration(label: Text('gramsPerPiece:')),
-              initialValue: "${ingredient.gramsPerPiece}",
-              onChanged: (text) {
-                newIngredient.gramsPerPiece = double.parse(text);
-              },
-            ),
-            TextFormField(
-              decoration: InputDecoration(label: Text('recipes:')),
-              initialValue:
-                  "${ingredient.recipes.map((e) => e?.name).join(",")}",
-            ),
-            TextFormField(
-              decoration: InputDecoration(label: Text('Tags:')),
-              initialValue: "${ingredient.tags.map((e) => e?.tag).join(",")}",
-            ),
-            TextFormField(
-              decoration: InputDecoration(label: Text('kcal:')),
-              initialValue: "${ingredient.nutritionalValues.kcal}",
-            ),
-            TextFormField(
-              decoration: InputDecoration(label: Text('Na:')),
-              initialValue: "${ingredient.nutritionalValues.na}",
-            ),
-            TextFormField(
-              decoration: InputDecoration(label: Text('k:')),
-              initialValue: "${ingredient.nutritionalValues.k}",
-            ),
-            TextFormField(
-              decoration: InputDecoration(label: Text('prot:')),
-              initialValue: "${ingredient.nutritionalValues.prot}",
-            ),
-            TextFormField(
-              decoration: InputDecoration(label: Text('fat:')),
-              initialValue: "${ingredient.nutritionalValues.fat}",
-            ),
-            TextFormField(
-              decoration: InputDecoration(label: Text('fe:')),
-              initialValue: "${ingredient.nutritionalValues.fe}",
-            ),
-            TextFormField(
-              decoration: InputDecoration(label: Text('mg:')),
-              initialValue: "${ingredient.nutritionalValues.mg}",
-            ),
-            TextFormField(
-              decoration: InputDecoration(label: Text('nt:')),
-              initialValue: "${ingredient.nutritionalValues.nt}",
-            ),
-            TextFormField(
-              decoration: InputDecoration(label: Text('Suiker:')),
-              initialValue: "${ingredient.nutritionalValues.sugar}",
-            ),
-            DropdownSearch<String>(
-              popupProps: PopupProps.menu(
-                showSelectedItems: true,
-              ),
-              items: categories,
-              onChanged: (String? newValue) {
-                setState(() {
-                  newIngredient.nutrientName = newValue;
-                });
-              },
-              selectedItem: "${ingredient.nutrientName ?? ''}",
-            ),
+            tableWithValues(),
             ElevatedButton(
-              child: Text('SAVE'),
+              child: Text('Bewerk'),
               onPressed: () {
-                _saveForm();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => IngredientEditPage(
+                          title: 'Edit', ingredient: ingredient)),
+                );
               },
-            )
+            ),
           ],
         ))));
   }

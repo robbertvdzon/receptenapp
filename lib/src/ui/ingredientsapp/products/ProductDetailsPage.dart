@@ -50,14 +50,6 @@ class _WidgetState extends State<ProductDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
-    /*
-    Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-     */
-
     return Scaffold(
         appBar: AppBar(
           title: Text(widget.title),

@@ -41,7 +41,6 @@ class _WidgetState extends State<ReceptIngredientItemWidget> {
             IngredientDetailsPage(
               title: 'Ingredient',
               ingredient: ingredient.ingredient!,
-              categories: List.empty(),
             )
       )
     );
