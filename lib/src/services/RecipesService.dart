@@ -10,7 +10,6 @@ class RecipesService {
   var _recipesRepository = getIt<RecipesRepository>();
   var _eventBus = getIt<EventBus>();
 
-
   Future<void> saveRecept(Recept recept)  {
     Recept? originalRecept = _recipesRepository.getReceptByUuid(recept.uuid);
     if (originalRecept==null){
