@@ -7,7 +7,7 @@ import '../../../GetItDependencies.dart';
 import '../../../model/recipes/v1/recept.dart';
 import '../../../repositories/ProductsRepository.dart';
 import '../../../repositories/RecipesRepository.dart';
-import '../../../services/GlobalStateService.dart';
+import '../../../services/AppStateService.dart';
 import '../recepts/ReceptItemWidget.dart';
 import '../recepttags/RecipesTagsPage.dart';
 
@@ -30,7 +30,7 @@ class _SearchRecipesPageState extends State<SearchRecipesPage> {
   TextEditingController _filterTextFieldController = TextEditingController();
   var _recipesRepository = getIt<RecipesRepository>();
   var _productsRepository = getIt<ProductsRepository>();
-  var _globalStateService = getIt<GlobalStateService>();
+  var _appStateService = getIt<AppStateService>();
   String _filter = "";
   bool? _filterOnFavorite = false;
   String _valueText = "";
@@ -41,7 +41,7 @@ class _SearchRecipesPageState extends State<SearchRecipesPage> {
     recipes = _recipesRepository.getRecipes().recipes;
     recipes.sort((a, b) => a.name.compareTo(b.name));
 
-    _globalStateService.setFilteredRecipes(recipes
+    _appStateService.setFilteredRecipes(recipes
         .where((element) =>
             element.name != null && element.name!.contains(_filter))
         .toList());
@@ -70,7 +70,7 @@ class _SearchRecipesPageState extends State<SearchRecipesPage> {
     _recipesRepository.createAndAddRecept(name).then((value) => {
           setState(() {
             recipes = _recipesRepository.getRecipes().recipes;
-            _globalStateService.setFilteredRecipes(recipes
+            _appStateService.setFilteredRecipes(recipes
                 .where((element) =>
                     element.name != null && element.name!.contains(_filter))
                 .toList());
@@ -83,14 +83,14 @@ class _SearchRecipesPageState extends State<SearchRecipesPage> {
 
     // TODO: dit kan vast in 1 query!
     if (filterOnFavorite) {
-      _globalStateService.setFilteredRecipes(recipes
+      _appStateService.setFilteredRecipes(recipes
           .where((element) =>
               element.favorite &&
               element.name != null &&
               element.name.toLowerCase().contains(_filter.toLowerCase()))
           .toList());
     } else {
-      _globalStateService.setFilteredRecipes(recipes
+      _appStateService.setFilteredRecipes(recipes
           .where((element) =>
               element.name != null &&
               element.name.toLowerCase().contains(_filter.toLowerCase()))
@@ -186,7 +186,7 @@ class _SearchRecipesPageState extends State<SearchRecipesPage> {
                   decoration: InputDecoration(
                       border: InputBorder.none,
                       labelText:
-                          'Quickfilter: (${_globalStateService.getFilteredRecipes().length} recepten)'),
+                          'Quickfilter: (${_appStateService.getFilteredRecipes().length} recepten)'),
                   autofocus: true,
                   controller: _filterTextFieldController..text = '$_filter',
                   onChanged: (text) => {_updateFilter(text)},
@@ -206,7 +206,7 @@ class _SearchRecipesPageState extends State<SearchRecipesPage> {
               height: 750,
               width: 500,
               child: ListView(
-                children: _globalStateService.getFilteredRecipes().map((item) {
+                children: _appStateService.getFilteredRecipes().map((item) {
                   return Container(
                     child: Column(
                       children: [

@@ -5,12 +5,11 @@ import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
 
 import '../../../GetItDependencies.dart';
-import '../../../GlobalState.dart';
 import '../../../events/ReceptChangedEvent.dart';
 import '../../../model/enriched/enrichedmodels.dart';
 import '../../../model/recipes/v1/recept.dart';
+import '../../../services/AppStateService.dart';
 import '../../../services/Enricher.dart';
-import '../../../services/GlobalStateService.dart';
 import '../../../services/RecipesService.dart';
 import '../../Icons.dart';
 import 'ReceptEditPage.dart';
@@ -29,7 +28,7 @@ class ReceptDetailsPage extends StatefulWidget {
 
 class _WidgetState extends State<ReceptDetailsPage> {
   var _recipesService = getIt<RecipesService>();
-  var _globalStateService = getIt<GlobalStateService>();
+  var _appStateService = getIt<AppStateService>();
 
   late Recept _recept;
   late EnrichedRecept _enrichedRecept;
@@ -57,23 +56,23 @@ class _WidgetState extends State<ReceptDetailsPage> {
   }
 
   Recept _getNextRecept(Recept recept){
-    int currentIndex = _globalStateService.getFilteredRecipes().indexOf(recept);
+    int currentIndex = _appStateService.getFilteredRecipes().indexOf(recept);
     int newIndex = currentIndex+1;
-    if (newIndex<_globalStateService.getFilteredRecipes().length) {
-      return _globalStateService.getFilteredRecipes().elementAt(newIndex);
+    if (newIndex<_appStateService.getFilteredRecipes().length) {
+      return _appStateService.getFilteredRecipes().elementAt(newIndex);
     }
     else{
-      return _globalStateService.getFilteredRecipes().last;
+      return _appStateService.getFilteredRecipes().last;
     }
   }
 
   Recept _getPreviousRecept(Recept recept){
-    int currentIndex = _globalStateService.getFilteredRecipes().indexOf(recept);
+    int currentIndex = _appStateService.getFilteredRecipes().indexOf(recept);
     if (currentIndex==0) return recept;
-    if (currentIndex>_globalStateService.getFilteredRecipes().length) {
-      return _globalStateService.getFilteredRecipes().last;
+    if (currentIndex>_appStateService.getFilteredRecipes().length) {
+      return _appStateService.getFilteredRecipes().last;
     }
-    return _globalStateService.getFilteredRecipes().elementAt(currentIndex-1);
+    return _appStateService.getFilteredRecipes().elementAt(currentIndex-1);
   }
 
 
@@ -89,7 +88,7 @@ class _WidgetState extends State<ReceptDetailsPage> {
     _eventStreamSub = _eventBus.on<ReceptChangedEvent>().listen((event) {
       if (event.recept.uuid == _enrichedRecept.recept.uuid) {
         setState(() {
-          Recept? updatedRecept = _globalStateService.getRecipes().firstWhereOrNull((element) => element.uuid==uuid);
+          Recept? updatedRecept = _appStateService.getRecipes().firstWhereOrNull((element) => element.uuid==uuid);
           if (updatedRecept != null) {
             _enrichedRecept = _enricher.enrichRecipe(updatedRecept);
           }

@@ -1,10 +1,10 @@
 import 'package:event_bus/event_bus.dart';
+import 'package:receptenapp/src/repositories/IngredientTagsRepository.dart';
 import 'package:receptenapp/src/repositories/IngredientsRepository.dart';
 import 'package:receptenapp/src/repositories/ProductsRepository.dart';
 import 'package:receptenapp/src/repositories/RecipesRepository.dart';
-import 'package:receptenapp/src/repositories/IngredientTagsRepository.dart';
+
 import '../GetItDependencies.dart';
-import '../GlobalState.dart';
 import '../Toggles.dart';
 import '../events/RepositoriesLoadedEvent.dart';
 import 'RecipesTagsRepository.dart';

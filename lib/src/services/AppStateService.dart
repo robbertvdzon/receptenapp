@@ -15,7 +15,7 @@ import '../repositories/RecipesRepository.dart';
 import '../repositories/RecipesTagsRepository.dart';
 import '../repositories/UserRepository.dart';
 
-class GlobalStateService {
+class AppStateService {
   // stamdata
   List<Recept> recipes = List.empty();
   List<Ingredient> ingredients = List.empty();

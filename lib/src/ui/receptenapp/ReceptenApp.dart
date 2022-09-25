@@ -7,7 +7,7 @@ import 'package:receptenapp/src/ui/receptenapp/search/SearchRecipesPage.dart';
 import '../../GetItDependencies.dart';
 import '../../repositories/Repositories.dart';
 import '../../repositories/UserRepository.dart';
-import '../../services/GlobalStateService.dart';
+import '../../services/AppStateService.dart';
 
 const DISABLE_AUTH = true;
 
@@ -20,9 +20,9 @@ class ReceptenApp extends StatefulWidget {
 
 class _MyAppState extends State<ReceptenApp> {
   late StreamSubscription<User?> user;
-  var userRepository = getIt<UserRepository>();
-  var repositories = getIt<Repositories>();
-  var globalStateService = getIt<GlobalStateService>();
+  var _appRepository = getIt<UserRepository>();
+  var _repositories = getIt<Repositories>();
+  var _appStateService = getIt<AppStateService>();
 
   void initState() {
     super.initState();
@@ -46,9 +46,9 @@ class _MyAppState extends State<ReceptenApp> {
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
           if (snapshot.hasData || DISABLE_AUTH) {
-            userRepository.setUser(snapshot.data);
-            globalStateService.init();
-            repositories.initRepositories();
+            _appRepository.setUser(snapshot.data);
+            _appStateService.init();
+            _repositories.initRepositories();
             return MaterialApp(
               title: 'Flutter Demo',
               theme: ThemeData(

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:receptenapp/src/GlobalState.dart';
+
 import '../../../GetItDependencies.dart';
-import '../../../model/ingredients/v1/ingredientTags.dart';
-import '../../../repositories/IngredientTagsRepository.dart';
-import '../../../services/GlobalStateService.dart';
+import '../../../services/AppStateService.dart';
 import '../../ingredientsapp/ingredienttags/IngredientTagItemWidget.dart';
 
 class IngredientsTagsPage extends StatefulWidget {
@@ -16,7 +14,7 @@ class IngredientsTagsPage extends StatefulWidget {
 }
 
 class _PageState extends State<IngredientsTagsPage> {
-  var _globalStateService = getIt<GlobalStateService>();
+  var _appStateService = getIt<AppStateService>();
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +29,7 @@ class _PageState extends State<IngredientsTagsPage> {
             SizedBox(
               height: 750,
               child: ListView(
-                children: _globalStateService.getIngredientTags().map((item) {
+                children: _appStateService.getIngredientTags().map((item) {
                   return Container(
                     child:
                     Column(

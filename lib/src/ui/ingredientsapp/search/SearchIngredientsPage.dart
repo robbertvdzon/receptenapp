@@ -1,17 +1,15 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'dart:async';
-import 'package:receptenapp/src/repositories/IngredientsRepository.dart';
+
 import '../../../GetItDependencies.dart';
-import '../../../GlobalState.dart';
 import '../../../model/ingredients/v1/ingredients.dart';
-import '../../../repositories/ProductsRepository.dart';
-import '../../../services/GlobalStateService.dart';
+import '../../../services/AppStateService.dart';
 import '../../../services/IngredientsService.dart';
-import '../../../services/ProductsService.dart';
+import '../ingredients/IngredientItemWidget.dart';
 import '../ingredienttags/IngredientTagsPage.dart';
 import '../products/SearchProductsPage.dart';
-import '../ingredients/IngredientItemWidget.dart';
 
 class SearchIngredientsPage extends StatefulWidget {
   SearchIngredientsPage({Key? key, required this.title}) : super(key: key) {}
@@ -29,7 +27,7 @@ class _SearchIngredientsPageState extends State<SearchIngredientsPage> {
 
   TextEditingController _textFieldController = TextEditingController();
   TextEditingController _filterTextFieldController = TextEditingController();
-  var _globalStateService = getIt<GlobalStateService>();
+  var _appStateService = getIt<AppStateService>();
   var _ingredientsService = getIt<IngredientsService>();
   String _filter = "";
   String codeDialog = "";
@@ -38,14 +36,14 @@ class _SearchIngredientsPageState extends State<SearchIngredientsPage> {
   @override
   void initState() {
     super.initState();
-    _ingredients = List.of(_globalStateService.getIngredients());
+    _ingredients = List.of(_appStateService.getIngredients());
     _ingredients.sort((a, b) => a.name.compareTo(b.name));
 
     _filteredIngredients = _ingredients
         .where((element) =>
     element.name != null && element.name.contains(_filter))
         .toList();
-    _products = _globalStateService.getProducts().map((e) => e.name ?? "").toList();
+    _products = _appStateService.getProducts().map((e) => e.name ?? "").toList();
   }
 
   void _updateFilter(String filter) {
@@ -58,7 +56,7 @@ class _SearchIngredientsPageState extends State<SearchIngredientsPage> {
   void addProduct(String name) {
     _ingredientsService.createAndAddIngredient(name).then((value) => {
           setState(() {
-            _ingredients = List.of(_globalStateService.getIngredients());
+            _ingredients = List.of(_appStateService.getIngredients());
             _ingredients.sort((a, b) => a.name.compareTo(b.name));
             _filteredIngredients = _ingredients
                 .where((element) =>

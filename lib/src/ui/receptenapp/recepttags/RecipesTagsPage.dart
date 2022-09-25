@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:receptenapp/src/GlobalState.dart';
+
 import '../../../GetItDependencies.dart';
 import '../../../model/recipes/v1/receptTags.dart';
-import '../../../repositories/RecipesTagsRepository.dart';
-import '../../../services/GlobalStateService.dart';
+import '../../../services/AppStateService.dart';
 import 'ReceptTagItemWidget.dart';
 
 class RecipesTagsPage extends StatefulWidget {
@@ -17,10 +16,10 @@ class RecipesTagsPage extends StatefulWidget {
 
 class _PageState extends State<RecipesTagsPage> {
   List<ReceptTag> _tags = List.empty();
-  var _globalStateService = getIt<GlobalStateService>();
+  var _appStateService = getIt<AppStateService>();
 
   _PageState() {
-    _tags = _globalStateService.getReceptTags();
+    _tags = _appStateService.getReceptTags();
   }
 
   @override

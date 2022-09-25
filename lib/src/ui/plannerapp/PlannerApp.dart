@@ -7,7 +7,7 @@ import '../../GetItDependencies.dart';
 import '../../Toggles.dart';
 import '../../repositories/Repositories.dart';
 import '../../repositories/UserRepository.dart';
-import '../../services/GlobalStateService.dart';
+import '../../services/AppStateService.dart';
 import 'PlannerHomePage.dart';
 
 class PlannerApp extends StatefulWidget {
@@ -19,9 +19,9 @@ class PlannerApp extends StatefulWidget {
 
 class _MyAppState extends State<PlannerApp> {
   late StreamSubscription<User?> user;
-  var userRepository = getIt<UserRepository>();
-  var repositories = getIt<Repositories>();
-  var globalStateService = getIt<GlobalStateService>();
+  var _userRepository = getIt<UserRepository>();
+  var _repositories = getIt<Repositories>();
+  var _appStateService = getIt<AppStateService>();
 
   void initState() {
     super.initState();
@@ -45,9 +45,9 @@ class _MyAppState extends State<PlannerApp> {
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
           if (snapshot.hasData || DISABLE_AUTH) {
-            userRepository.setUser(snapshot.data);
-            globalStateService.init();
-            repositories.initRepositories();
+            _userRepository.setUser(snapshot.data);
+            _appStateService.init();
+            _repositories.initRepositories();
             return MaterialApp(
               title: 'Flutter Demo',
               theme: ThemeData(

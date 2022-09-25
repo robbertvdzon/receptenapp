@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutterfire_ui/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:receptenapp/src/services/GlobalStateService.dart';
+import 'package:receptenapp/src/services/AppStateService.dart';
 import '../../GetItDependencies.dart';
 import '../../Toggles.dart';
 import '../../repositories/Repositories.dart';
@@ -19,9 +19,9 @@ class MainApp extends StatefulWidget {
 
 class _MainAppState extends State<MainApp> {
   late StreamSubscription<User?> user;
-  var userRepository = getIt<UserRepository>();
-  var repositories = getIt<Repositories>();
-  var globalStateService = getIt<GlobalStateService>();
+  var _userRepository = getIt<UserRepository>();
+  var _repositories = getIt<Repositories>();
+  var _appStateService = getIt<AppStateService>();
 
   void initState() {
     super.initState();
@@ -45,9 +45,9 @@ class _MainAppState extends State<MainApp> {
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
           if (snapshot.hasData || DISABLE_AUTH) {
-            userRepository.setUser(snapshot.data);
-            globalStateService.init();
-            repositories.initRepositories();
+            _userRepository.setUser(snapshot.data);
+            _appStateService.init();
+            _repositories.initRepositories();
             return MaterialApp(
               title: 'Flutter Demo',
               theme: ThemeData(

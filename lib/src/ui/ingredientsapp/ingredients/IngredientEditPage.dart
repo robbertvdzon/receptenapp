@@ -1,11 +1,11 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
-import 'package:receptenapp/src/GlobalState.dart';
 import 'package:receptenapp/src/model/ingredients/v1/ingredients.dart';
+
 import '../../../GetItDependencies.dart';
 import '../../../model/enriched/enrichedmodels.dart';
+import '../../../services/AppStateService.dart';
 import '../../../services/Enricher.dart';
-import '../../../services/GlobalStateService.dart';
 import '../../../services/IngredientsService.dart';
 
 class IngredientEditPage extends StatefulWidget {
@@ -29,12 +29,12 @@ class _WidgetState extends State<IngredientEditPage> {
   late List<String> _categories = List.empty();
   var _ingredientService = getIt<IngredientsService>();
   var _enricher = getIt<Enricher>();
-  var _globalStateService = getIt<GlobalStateService>();
+  var _appStateService = getIt<AppStateService>();
 
   _WidgetState(Ingredient ingredient) {
     this._ingredient = _enricher.enrichtIngredient(ingredient);
     this._newIngredient = ingredient;
-    this._categories = _globalStateService.getProducts().map((e) => e.name ?? "").toList();
+    this._categories = _appStateService.getProducts().map((e) => e.name ?? "").toList();
   }
 
   _saveForm() {
