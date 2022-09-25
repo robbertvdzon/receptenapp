@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:receptenapp/src/repositories/RecipesRepository.dart';
 import '../../../GetItDependencies.dart';
-import '../../../model/events/ReceptChangedEvent.dart';
+import '../../../events/ReceptChangedEvent.dart';
 import '../../../model/recipes/v1/recept.dart';
 import 'ReceptDetailsPage.dart';
 import 'package:event_bus/event_bus.dart';

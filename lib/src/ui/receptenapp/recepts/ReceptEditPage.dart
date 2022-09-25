@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:receptenapp/src/repositories/RecipesRepository.dart';
 import '../../../GetItDependencies.dart';
 import '../../../model/enriched/enrichedmodels.dart';
-import '../../../model/events/ReceptChangedEvent.dart';
+import '../../../events/ReceptChangedEvent.dart';
 import '../../../model/recipes/v1/recept.dart';
 import '../../../services/Enricher.dart';
 
