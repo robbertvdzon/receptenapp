@@ -11,9 +11,9 @@ import 'package:receptenapp/src/repositories/RecipesTagsRepository.dart';
 import 'package:receptenapp/src/repositories/Repositories.dart';
 import 'package:receptenapp/src/repositories/UserRepository.dart';
 import 'package:receptenapp/src/services/GlobalStateService.dart';
-import 'package:receptenapp/src/services/IngredientService.dart';
+import 'package:receptenapp/src/services/IngredientsService.dart';
 import 'package:receptenapp/src/services/ProductsService.dart';
-import 'package:receptenapp/src/services/ReceptService.dart';
+import 'package:receptenapp/src/services/RecipesService.dart';
 import '../firebase_options.dart';
 import 'GlobalState.dart';
 
@@ -33,8 +33,8 @@ Future<void> setupDependencies() async {
   getIt.registerSingleton<IngredientTagsRepository>(IngredientTagsRepository());
   getIt.registerSingleton<RecipesTagsRepository>(RecipesTagsRepository());
   getIt.registerSingleton<Repositories>(Repositories());
-  getIt.registerSingleton<ReceptService>(ReceptService());
-  getIt.registerSingleton<IngredientService>(IngredientService());
+  getIt.registerSingleton<RecipesService>(RecipesService());
+  getIt.registerSingleton<IngredientsService>(IngredientsService());
   getIt.registerSingleton<ProductsService>(ProductsService());
   getIt.registerSingleton<GlobalStateService>(GlobalStateService());
   getIt.registerSingleton<Enricher>(Enricher());

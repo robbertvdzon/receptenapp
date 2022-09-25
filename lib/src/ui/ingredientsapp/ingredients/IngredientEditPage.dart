@@ -5,7 +5,7 @@ import 'package:receptenapp/src/model/ingredients/v1/ingredients.dart';
 import '../../../GetItDependencies.dart';
 import '../../../model/enriched/enrichedmodels.dart';
 import '../../../services/Enricher.dart';
-import '../../../services/IngredientService.dart';
+import '../../../services/IngredientsService.dart';
 
 class IngredientEditPage extends StatefulWidget {
   IngredientEditPage(
@@ -26,7 +26,7 @@ class _WidgetState extends State<IngredientEditPage> {
   late EnrichedIngredient _ingredient;
   late Ingredient _newIngredient;
   late List<String> _categories = List.empty();
-  var _ingredientService = getIt<IngredientService>();
+  var _ingredientService = getIt<IngredientsService>();
   var _enricher = getIt<Enricher>();
   var _globalState = getIt<GlobalState>();
 

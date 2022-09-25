@@ -14,7 +14,7 @@ import '../repositories/RecipesRepository.dart';
 import '../repositories/RecipesTagsRepository.dart';
 import '../GlobalState.dart';
 
-class ReceptService {
+class RecipesService {
   var _recipesRepository = getIt<RecipesRepository>();
 
 

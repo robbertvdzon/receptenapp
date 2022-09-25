@@ -10,7 +10,7 @@ import 'package:receptenapp/src/repositories/RecipesRepository.dart';
 import 'package:receptenapp/src/repositories/RecipesTagsRepository.dart';
 import 'package:receptenapp/src/repositories/Repositories.dart';
 import 'package:receptenapp/src/repositories/UserRepository.dart';
-import 'package:receptenapp/src/services/ReceptService.dart';
+import 'package:receptenapp/src/services/RecipesService.dart';
 import '../firebase_options.dart';
 import 'GlobalState.dart';
 

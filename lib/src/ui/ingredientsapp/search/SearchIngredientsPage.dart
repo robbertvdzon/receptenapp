@@ -6,7 +6,7 @@ import '../../../GetItDependencies.dart';
 import '../../../GlobalState.dart';
 import '../../../model/ingredients/v1/ingredients.dart';
 import '../../../repositories/ProductsRepository.dart';
-import '../../../services/IngredientService.dart';
+import '../../../services/IngredientsService.dart';
 import '../../../services/ProductsService.dart';
 import '../ingredienttags/IngredientTagsPage.dart';
 import '../products/SearchProductsPage.dart';
@@ -29,7 +29,7 @@ class _SearchIngredientsPageState extends State<SearchIngredientsPage> {
   TextEditingController _textFieldController = TextEditingController();
   TextEditingController _filterTextFieldController = TextEditingController();
   var _globalState = getIt<GlobalState>();
-  var _ingredientsService = getIt<IngredientService>();
+  var _ingredientsService = getIt<IngredientsService>();
   String _filter = "";
   String codeDialog = "";
   String valueText = "";

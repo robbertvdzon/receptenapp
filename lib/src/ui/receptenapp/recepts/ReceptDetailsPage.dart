@@ -10,7 +10,7 @@ import '../../../events/ReceptChangedEvent.dart';
 import '../../../model/enriched/enrichedmodels.dart';
 import '../../../model/recipes/v1/recept.dart';
 import '../../../services/Enricher.dart';
-import '../../../services/ReceptService.dart';
+import '../../../services/RecipesService.dart';
 import '../../Icons.dart';
 import 'ReceptEditPage.dart';
 import 'ReceptIngredientItemWidget.dart';
@@ -27,7 +27,7 @@ class ReceptDetailsPage extends StatefulWidget {
 }
 
 class _WidgetState extends State<ReceptDetailsPage> {
-  var _recipesService = getIt<ReceptService>();
+  var _recipesService = getIt<RecipesService>();
   var _globalState = getIt<GlobalState>();
 
   late Recept _recept;

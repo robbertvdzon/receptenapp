@@ -5,7 +5,7 @@ import '../GetItDependencies.dart';
 import '../events/IngredientChangedEvent.dart';
 import '../model/ingredients/v1/ingredients.dart';
 
-class IngredientService {
+class IngredientsService {
   var _eventBus = getIt<EventBus>();
   var _ingredientsRepository = getIt<IngredientsRepository>();
 

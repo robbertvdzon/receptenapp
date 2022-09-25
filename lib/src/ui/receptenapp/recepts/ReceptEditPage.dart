@@ -5,7 +5,7 @@ import '../../../GetItDependencies.dart';
 import '../../../events/ReceptChangedEvent.dart';
 import '../../../model/enriched/enrichedmodels.dart';
 import '../../../model/recipes/v1/recept.dart';
-import '../../../services/ReceptService.dart';
+import '../../../services/RecipesService.dart';
 
 class ReceptEditPage extends StatefulWidget {
   ReceptEditPage({Key? key, required this.title, required this.recept}) : super(key: key) {}
@@ -20,7 +20,7 @@ class ReceptEditPage extends StatefulWidget {
 class _WidgetState extends State<ReceptEditPage> {
   late EnrichedRecept _recept;
   late Recept _newRecept;
-  var _recipesService = getIt<ReceptService>();
+  var _recipesService = getIt<RecipesService>();
   var _eventBus = getIt<EventBus>();
 
   _WidgetState(EnrichedRecept recept) {
