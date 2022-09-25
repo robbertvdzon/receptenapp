@@ -45,7 +45,6 @@ class _MainAppState extends State<MainApp> {
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
           if (snapshot.hasData || DISABLE_AUTH) {
-            print("START AFTER AUTH");
             userRepository.setUser(snapshot.data);
             globalStateService.init();
             repositories.initRepositories();

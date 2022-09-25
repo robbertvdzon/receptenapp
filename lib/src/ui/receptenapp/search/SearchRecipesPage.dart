@@ -4,7 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../../../GetItDependencies.dart';
-import '../../../GlobalState.dart';
 import '../../../model/recipes/v1/recept.dart';
 import '../../../repositories/ProductsRepository.dart';
 import '../../../repositories/RecipesRepository.dart';
@@ -42,10 +41,10 @@ class _SearchRecipesPageState extends State<SearchRecipesPage> {
     recipes = _recipesRepository.getRecipes().recipes;
     recipes.sort((a, b) => a.name.compareTo(b.name));
 
-    _globalStateService.filteredRecipes = recipes
+    _globalStateService.setFilteredRecipes(recipes
         .where((element) =>
             element.name != null && element.name!.contains(_filter))
-        .toList();
+        .toList());
     products = _productsRepository
         .getProducts()
         .products
@@ -71,10 +70,10 @@ class _SearchRecipesPageState extends State<SearchRecipesPage> {
     _recipesRepository.createAndAddRecept(name).then((value) => {
           setState(() {
             recipes = _recipesRepository.getRecipes().recipes;
-            _globalStateService.filteredRecipes = recipes
+            _globalStateService.setFilteredRecipes(recipes
                 .where((element) =>
                     element.name != null && element.name!.contains(_filter))
-                .toList();
+                .toList());
           })
         });
   }
@@ -84,18 +83,18 @@ class _SearchRecipesPageState extends State<SearchRecipesPage> {
 
     // TODO: dit kan vast in 1 query!
     if (filterOnFavorite) {
-      _globalStateService.filteredRecipes = recipes
+      _globalStateService.setFilteredRecipes(recipes
           .where((element) =>
               element.favorite &&
               element.name != null &&
               element.name.toLowerCase().contains(_filter.toLowerCase()))
-          .toList();
+          .toList());
     } else {
-      _globalStateService.filteredRecipes = recipes
+      _globalStateService.setFilteredRecipes(recipes
           .where((element) =>
               element.name != null &&
               element.name.toLowerCase().contains(_filter.toLowerCase()))
-          .toList();
+          .toList());
     }
   }
 
@@ -187,7 +186,7 @@ class _SearchRecipesPageState extends State<SearchRecipesPage> {
                   decoration: InputDecoration(
                       border: InputBorder.none,
                       labelText:
-                          'Quickfilter: (${_globalStateService.filteredRecipes.length} recepten)'),
+                          'Quickfilter: (${_globalStateService.filteredRecipes().length} recepten)'),
                   autofocus: true,
                   controller: _filterTextFieldController..text = '$_filter',
                   onChanged: (text) => {_updateFilter(text)},
@@ -207,7 +206,7 @@ class _SearchRecipesPageState extends State<SearchRecipesPage> {
               height: 750,
               width: 500,
               child: ListView(
-                children: _globalStateService.filteredRecipes.map((item) {
+                children: _globalStateService.filteredRecipes().map((item) {
                   return Container(
                     child: Column(
                       children: [

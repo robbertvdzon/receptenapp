@@ -40,7 +40,7 @@ class GlobalStateService {
   User? user() => _state.user;
 
   // filter data
-  List<Recept> filteredRecipes = List.empty();
+  List<Recept> filteredRecipes() => _state.filteredRecipes;
 
 
   @override
@@ -57,6 +57,10 @@ class GlobalStateService {
     _state.user = _userRepository.getUser();
   }
 
+  setFilteredRecipes(List<Recept> recipes) {
+    _state.filteredRecipes = recipes;
+  }
+
 }
 
 
@@ -70,6 +74,6 @@ class _GlobalState {
   User? user = null;
 
   // filter data
-  // List<Recept> filteredRecipes = List.empty();
+  List<Recept> filteredRecipes = List.empty();
 
 }

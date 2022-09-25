@@ -57,23 +57,23 @@ class _WidgetState extends State<ReceptDetailsPage> {
   }
 
   Recept _getNextRecept(Recept recept){
-    int currentIndex = _globalStateService.filteredRecipes.indexOf(recept);
+    int currentIndex = _globalStateService.filteredRecipes().indexOf(recept);
     int newIndex = currentIndex+1;
-    if (newIndex<_globalStateService.filteredRecipes.length) {
-      return _globalStateService.filteredRecipes.elementAt(newIndex);
+    if (newIndex<_globalStateService.filteredRecipes().length) {
+      return _globalStateService.filteredRecipes().elementAt(newIndex);
     }
     else{
-      return _globalStateService.filteredRecipes.last;
+      return _globalStateService.filteredRecipes().last;
     }
   }
 
   Recept _getPreviousRecept(Recept recept){
-    int currentIndex = _globalStateService.filteredRecipes.indexOf(recept);
+    int currentIndex = _globalStateService.filteredRecipes().indexOf(recept);
     if (currentIndex==0) return recept;
-    if (currentIndex>_globalStateService.filteredRecipes.length) {
-      return _globalStateService.filteredRecipes.last;
+    if (currentIndex>_globalStateService.filteredRecipes().length) {
+      return _globalStateService.filteredRecipes().last;
     }
-    return _globalStateService.filteredRecipes.elementAt(currentIndex-1);
+    return _globalStateService.filteredRecipes().elementAt(currentIndex-1);
   }
 
 
