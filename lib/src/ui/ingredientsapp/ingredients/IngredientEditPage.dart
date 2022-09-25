@@ -38,7 +38,9 @@ class _WidgetState extends State<IngredientEditPage> {
   }
 
   _saveForm() {
-    _ingredientService.saveIngredient(_newIngredient);
+    _ingredientService
+        .saveIngredient(_newIngredient)
+        .whenComplete(() => Navigator.pop(context));
   }
 
   @override

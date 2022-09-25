@@ -4,14 +4,11 @@ import 'package:event_bus/event_bus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:receptenapp/src/services/Enricher.dart';
-import 'package:receptenapp/src/services/RecipesService.dart';
 
 import '../../../GetItDependencies.dart';
 import '../../../events/ReceptCreatedEvent.dart';
 import '../../../model/enriched/enrichedmodels.dart';
 import '../../../model/recipes/v1/recept.dart';
-import '../../../repositories/ProductsRepository.dart';
-import '../../../repositories/RecipesRepository.dart';
 import '../../../services/AppStateService.dart';
 import '../recepts/ReceptEditPage.dart';
 import '../recepts/ReceptItemWidget.dart';
@@ -27,7 +24,6 @@ class SearchRecipesPage extends StatefulWidget {
 }
 
 class _SearchRecipesPageState extends State<SearchRecipesPage> {
-  TextEditingController _filterTextFieldController = TextEditingController();
   var _appStateService = getIt<AppStateService>();
   var _enricher = getIt<Enricher>();
   var _eventBus = getIt<EventBus>();
@@ -104,7 +100,7 @@ class _SearchRecipesPageState extends State<SearchRecipesPage> {
 
   List<Recept> _getSortedListOrRecipes() {
     List<Recept> recipes = List.of(_appStateService.getRecipes());
-    recipes.sort((a, b) => a.name.compareTo(b.name));
+    recipes.sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
     return recipes;
   }
 
@@ -159,7 +155,7 @@ class _SearchRecipesPageState extends State<SearchRecipesPage> {
                           .getFilteredRecipes()
                           .length} recepten)'),
                   autofocus: true,
-                  controller: _filterTextFieldController..text = '$_filter',
+                  controller: TextEditingController()..text = '$_filter',
                   onChanged: (text) => {_updateFilter(text)},
                 )),
             SizedBox(

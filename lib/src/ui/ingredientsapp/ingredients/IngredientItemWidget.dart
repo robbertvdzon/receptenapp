@@ -10,15 +10,14 @@ import 'IngredientDetailsPage.dart';
 
 class IngredientItemWidget extends StatefulWidget {
   IngredientItemWidget(
-      {Key? key, required this.ingredient, required this.categories})
+      {Key? key, required this.ingredient})
       : super(key: key) {}
 
   final Ingredient ingredient;
-  final List<String> categories;
 
   @override
   State<IngredientItemWidget> createState() =>
-      _WidgetState(ingredient, categories);
+      _WidgetState(ingredient);
 }
 
 class _WidgetState extends State<IngredientItemWidget> {
@@ -26,7 +25,7 @@ class _WidgetState extends State<IngredientItemWidget> {
   var _eventBus = getIt<EventBus>();
   StreamSubscription? _eventStreamSub;
 
-  _WidgetState(Ingredient ingredient, List<String> categories) {
+  _WidgetState(Ingredient ingredient) {
     this._ingredient = ingredient;
   }
 

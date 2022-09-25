@@ -14,14 +14,12 @@ class RecipesService {
     Recept? originalRecept = _recipesRepository.getReceptByUuid(recept.uuid);
     if (originalRecept==null){
       // add recept
-      print("ADD");
       return _recipesRepository
           .addRecept(recept)
           .whenComplete(() => _eventBus.fire(ReceptCreatedEvent(recept)));
     }
     else{
       // save recept
-      print("SAVE");
       return _recipesRepository
           .saveRecept(recept)
           .whenComplete(() => _eventBus.fire(ReceptChangedEvent(recept)));

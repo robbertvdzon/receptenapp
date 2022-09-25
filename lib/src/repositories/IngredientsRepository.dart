@@ -47,8 +47,13 @@ class IngredientsRepository {
     if (oldIngredient!=null){
       ingredients.ingredients.remove(oldIngredient);
     }
-    print("SAVE INGREDIENT:");
     print(ingredient);
+    ingredients.ingredients.add(ingredient);
+    return saveIngredients(ingredients);
+  }
+
+  Future<void> addIngredient(Ingredient ingredient) async {
+    var ingredients = getIngredients();
     ingredients.ingredients.add(ingredient);
     return saveIngredients(ingredients);
   }

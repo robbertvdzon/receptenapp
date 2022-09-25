@@ -1,12 +1,17 @@
 import 'dart:async';
 
+import 'package:event_bus/event_bus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../../../GetItDependencies.dart';
+import '../../../events/IngredientCreatedEvent.dart';
+import '../../../model/enriched/enrichedmodels.dart';
 import '../../../model/ingredients/v1/ingredients.dart';
 import '../../../services/AppStateService.dart';
+import '../../../services/Enricher.dart';
 import '../../../services/IngredientsService.dart';
+import '../ingredients/IngredientEditPage.dart';
 import '../ingredients/IngredientItemWidget.dart';
 import '../ingredienttags/IngredientTagsPage.dart';
 import '../products/SearchProductsPage.dart';
@@ -21,98 +26,63 @@ class SearchIngredientsPage extends StatefulWidget {
 }
 
 class _SearchIngredientsPageState extends State<SearchIngredientsPage> {
-  List<Ingredient> _ingredients = List.empty();
   List<Ingredient> _filteredIngredients = List.empty();
-  List<String> _products = List.empty();
-
-  TextEditingController _textFieldController = TextEditingController();
-  TextEditingController _filterTextFieldController = TextEditingController();
   var _appStateService = getIt<AppStateService>();
-  var _ingredientsService = getIt<IngredientsService>();
+  var _eventBus = getIt<EventBus>();
   String _filter = "";
-  String codeDialog = "";
-  String valueText = "";
+  StreamSubscription? _eventStreamSub;
 
   @override
   void initState() {
     super.initState();
-    _ingredients = List.of(_appStateService.getIngredients());
-    _ingredients.sort((a, b) => a.name.compareTo(b.name));
+    _filterIngredients();
+    _eventStreamSub = _eventBus.on<IngredientCreatedEvent>().listen((event) => _processEvent(event));
+  }
 
-    _filteredIngredients = _ingredients
-        .where((element) =>
-    element.name != null && element.name.contains(_filter))
-        .toList();
-    _products = _appStateService.getProducts().map((e) => e.name ?? "").toList();
+  @override
+  void dispose() {
+    super.dispose();
+    _eventStreamSub?.cancel();
+  }
+
+  void _processEvent(IngredientCreatedEvent event) {
+    setState(() {
+      _filter = event.ingredient.name;
+      _filterIngredients();
+    });
   }
 
   void _updateFilter(String filter) {
     setState(() {
       _filter = filter;
-      _filterProducts();
+      _filterIngredients();
     });
   }
 
-  void addProduct(String name) {
-    _ingredientsService.createAndAddIngredient(name).then((value) => {
-          setState(() {
-            _ingredients = List.of(_appStateService.getIngredients());
-            _ingredients.sort((a, b) => a.name.compareTo(b.name));
-            _filteredIngredients = _ingredients
-                .where((element) =>
-                    element.name != null && element.name!.contains(_filter))
-                .toList();
-          })
-        });
+  void _createNewIngredient() {
+    Ingredient newIgredient = new Ingredient("Nieuw ingredient");
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) =>
+              IngredientEditPage(
+                  title: 'Nieuw ingredient', ingredient: newIgredient)),
+    );
   }
 
-  void _filterProducts() {
-    _filteredIngredients = _ingredients
+  void _filterIngredients() {
+    List<Ingredient> ingredients = _getSortedListOfIngredients();
+    _filteredIngredients = ingredients
         .where((element) =>
             element.name != null &&
-            element.name!.toLowerCase().contains(_filter.toLowerCase()))
+            element.name.toLowerCase().contains(_filter.toLowerCase()))
         .toList();
   }
 
-  Future<void> _displayTextInputDialog(BuildContext context) async {
-    return showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text('TextField in Dialog'),
-            content: TextField(
-              onChanged: (value) {
-                setState(() {
-                  valueText = value;
-                });
-              },
-              controller: _textFieldController,
-              decoration: InputDecoration(hintText: "Text Field in Dialog"),
-            ),
-            actions: <Widget>[
-              FlatButton(
-                color: Colors.red,
-                textColor: Colors.white,
-                child: Text('CANCEL'),
-                onPressed: () {
-                  setState(() {
-                    Navigator.pop(context);
-                  });
-                },
-              ),
-              FlatButton(
-                color: Colors.green,
-                textColor: Colors.white,
-                child: Text('OK'),
-                onPressed: () {
-                  addProduct(valueText);
-                  _updateFilter(valueText);
-                  Navigator.pop(context);
-                },
-              ),
-            ],
-          );
-        });
+  List<Ingredient> _getSortedListOfIngredients() {
+    List<Ingredient> ingredients = List.of(_appStateService.getIngredients());
+    ingredients.sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
+    return ingredients;
   }
 
   @override
@@ -166,7 +136,7 @@ class _SearchIngredientsPageState extends State<SearchIngredientsPage> {
                       labelText:
                       'Filter: (${_filteredIngredients.length} ingredienten)'),
                   autofocus: true,
-                  controller: _filterTextFieldController..text = '$_filter',
+                  controller: TextEditingController()..text = '$_filter',
                   onChanged: (text) => {_updateFilter(text)},
                 )
             ),
@@ -185,12 +155,10 @@ class _SearchIngredientsPageState extends State<SearchIngredientsPage> {
                           alignment: Alignment.center,
                           child: IngredientItemWidget(
                               ingredient: item,
-                              categories: _products,
                               key: ObjectKey(item)),
                         ),
                       ],
                     ),
-
                     margin: EdgeInsets.all(0),
                     padding: EdgeInsets.all(0),
                     // color: Colors.green[100],
@@ -203,9 +171,7 @@ class _SearchIngredientsPageState extends State<SearchIngredientsPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // _filterTextFieldController.text ="bla";
-          // _incrementCounter(_filterTextFieldController);
-          _displayTextInputDialog(context);
+          _createNewIngredient();
         },
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
