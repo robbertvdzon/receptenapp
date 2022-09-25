@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
-import 'package:receptenapp/src/GlobalState.dart';
 import 'package:receptenapp/src/model/ingredients/v1/ingredients.dart';
 
 import '../../../GetItDependencies.dart';
@@ -34,7 +33,6 @@ class _WidgetState extends State<IngredientDetailsPage> {
   late Ingredient _ingredient;
   var _productsService = getIt<ProductsService>();
   var _enricher = getIt<Enricher>();
-  var _globalState = getIt<GlobalState>();
   var _eventBus = getIt<EventBus>();
   StreamSubscription? _eventStreamSub;
 

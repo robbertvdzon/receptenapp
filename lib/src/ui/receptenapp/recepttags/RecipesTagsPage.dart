@@ -3,6 +3,7 @@ import 'package:receptenapp/src/GlobalState.dart';
 import '../../../GetItDependencies.dart';
 import '../../../model/recipes/v1/receptTags.dart';
 import '../../../repositories/RecipesTagsRepository.dart';
+import '../../../services/GlobalStateService.dart';
 import 'ReceptTagItemWidget.dart';
 
 class RecipesTagsPage extends StatefulWidget {
@@ -16,10 +17,10 @@ class RecipesTagsPage extends StatefulWidget {
 
 class _PageState extends State<RecipesTagsPage> {
   List<ReceptTag> _tags = List.empty();
-  var _globalState = getIt<GlobalState>();
+  var _globalStateService = getIt<GlobalStateService>();
 
   _PageState() {
-    _tags = _globalState.receptTags;
+    _tags = _globalStateService.receptTags();
   }
 
   @override

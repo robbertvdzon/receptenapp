@@ -10,6 +10,7 @@ import '../../../events/ReceptChangedEvent.dart';
 import '../../../model/enriched/enrichedmodels.dart';
 import '../../../model/recipes/v1/recept.dart';
 import '../../../services/Enricher.dart';
+import '../../../services/GlobalStateService.dart';
 import '../../../services/RecipesService.dart';
 import '../../Icons.dart';
 import 'ReceptEditPage.dart';
@@ -28,7 +29,7 @@ class ReceptDetailsPage extends StatefulWidget {
 
 class _WidgetState extends State<ReceptDetailsPage> {
   var _recipesService = getIt<RecipesService>();
-  var _globalState = getIt<GlobalState>();
+  var _globalStateService = getIt<GlobalStateService>();
 
   late Recept _recept;
   late EnrichedRecept _enrichedRecept;
@@ -56,23 +57,23 @@ class _WidgetState extends State<ReceptDetailsPage> {
   }
 
   Recept _getNextRecept(Recept recept){
-    int currentIndex = _globalState.filteredRecipes.indexOf(recept);
+    int currentIndex = _globalStateService.filteredRecipes.indexOf(recept);
     int newIndex = currentIndex+1;
-    if (newIndex<_globalState.filteredRecipes.length) {
-      return _globalState.filteredRecipes.elementAt(newIndex);
+    if (newIndex<_globalStateService.filteredRecipes.length) {
+      return _globalStateService.filteredRecipes.elementAt(newIndex);
     }
     else{
-      return _globalState.filteredRecipes.last;
+      return _globalStateService.filteredRecipes.last;
     }
   }
 
   Recept _getPreviousRecept(Recept recept){
-    int currentIndex = _globalState.filteredRecipes.indexOf(recept);
+    int currentIndex = _globalStateService.filteredRecipes.indexOf(recept);
     if (currentIndex==0) return recept;
-    if (currentIndex>_globalState.filteredRecipes.length) {
-      return _globalState.filteredRecipes.last;
+    if (currentIndex>_globalStateService.filteredRecipes.length) {
+      return _globalStateService.filteredRecipes.last;
     }
-    return _globalState.filteredRecipes.elementAt(currentIndex-1);
+    return _globalStateService.filteredRecipes.elementAt(currentIndex-1);
   }
 
 
@@ -88,7 +89,7 @@ class _WidgetState extends State<ReceptDetailsPage> {
     _eventStreamSub = _eventBus.on<ReceptChangedEvent>().listen((event) {
       if (event.recept.uuid == _enrichedRecept.recept.uuid) {
         setState(() {
-          Recept? updatedRecept = _globalState.recipes.firstWhereOrNull((element) => element.uuid==uuid);
+          Recept? updatedRecept = _globalStateService.recipes().firstWhereOrNull((element) => element.uuid==uuid);
           if (updatedRecept != null) {
             _enrichedRecept = _enricher.enrichRecipe(updatedRecept);
           }

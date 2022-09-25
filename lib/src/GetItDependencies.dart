@@ -25,7 +25,6 @@ Future<void> setupDependencies() async {
   );
   getIt.registerSingleton<FirebaseFirestore>(FirebaseFirestore.instance);
   getIt.registerSingleton<EventBus>(EventBus());
-  getIt.registerSingleton<GlobalState>(GlobalState());
   getIt.registerSingleton<UserRepository>(UserRepository());
   getIt.registerSingleton<RecipesRepository>(RecipesRepository());
   getIt.registerSingleton<IngredientsRepository>(IngredientsRepository());

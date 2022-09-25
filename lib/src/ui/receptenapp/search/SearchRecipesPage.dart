@@ -1,12 +1,15 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'dart:async';
+
 import '../../../GetItDependencies.dart';
+import '../../../GlobalState.dart';
 import '../../../model/recipes/v1/recept.dart';
 import '../../../repositories/ProductsRepository.dart';
 import '../../../repositories/RecipesRepository.dart';
+import '../../../services/GlobalStateService.dart';
 import '../recepts/ReceptItemWidget.dart';
-import '../../../GlobalState.dart';
 import '../recepttags/RecipesTagsPage.dart';
 
 class SearchRecipesPage extends StatefulWidget {
@@ -26,25 +29,24 @@ class _SearchRecipesPageState extends State<SearchRecipesPage> {
 
   TextEditingController _textFieldController = TextEditingController();
   TextEditingController _filterTextFieldController = TextEditingController();
-  var recipesRepository = getIt<RecipesRepository>();
-  var productsRepository = getIt<ProductsRepository>();
-  var uiReceptenGlobalState = getIt<GlobalState>();
+  var _recipesRepository = getIt<RecipesRepository>();
+  var _productsRepository = getIt<ProductsRepository>();
+  var _globalStateService = getIt<GlobalStateService>();
   String _filter = "";
   bool? _filterOnFavorite = false;
-  String codeDialog = "";
-  String valueText = "";
+  String _valueText = "";
 
   @override
   void initState() {
     super.initState();
-    recipes = recipesRepository.getRecipes().recipes;
+    recipes = _recipesRepository.getRecipes().recipes;
     recipes.sort((a, b) => a.name.compareTo(b.name));
 
-    uiReceptenGlobalState.filteredRecipes = recipes
+    _globalStateService.filteredRecipes = recipes
         .where((element) =>
             element.name != null && element.name!.contains(_filter))
         .toList();
-    products = productsRepository
+    products = _productsRepository
         .getProducts()
         .products
         .map((e) => e.name ?? "")
@@ -66,10 +68,10 @@ class _SearchRecipesPageState extends State<SearchRecipesPage> {
   }
 
   void addProduct(String name) {
-    recipesRepository.createAndAddRecept(name).then((value) => {
+    _recipesRepository.createAndAddRecept(name).then((value) => {
           setState(() {
-            recipes = recipesRepository.getRecipes().recipes;
-            uiReceptenGlobalState.filteredRecipes = recipes
+            recipes = _recipesRepository.getRecipes().recipes;
+            _globalStateService.filteredRecipes = recipes
                 .where((element) =>
                     element.name != null && element.name!.contains(_filter))
                 .toList();
@@ -82,14 +84,14 @@ class _SearchRecipesPageState extends State<SearchRecipesPage> {
 
     // TODO: dit kan vast in 1 query!
     if (filterOnFavorite) {
-      uiReceptenGlobalState.filteredRecipes = recipes
+      _globalStateService.filteredRecipes = recipes
           .where((element) =>
               element.favorite &&
               element.name != null &&
               element.name.toLowerCase().contains(_filter.toLowerCase()))
           .toList();
     } else {
-      uiReceptenGlobalState.filteredRecipes = recipes
+      _globalStateService.filteredRecipes = recipes
           .where((element) =>
               element.name != null &&
               element.name.toLowerCase().contains(_filter.toLowerCase()))
@@ -106,7 +108,7 @@ class _SearchRecipesPageState extends State<SearchRecipesPage> {
             content: TextField(
               onChanged: (value) {
                 setState(() {
-                  valueText = value;
+                  _valueText = value;
                 });
               },
               controller: _textFieldController,
@@ -128,8 +130,8 @@ class _SearchRecipesPageState extends State<SearchRecipesPage> {
                 textColor: Colors.white,
                 child: Text('OK'),
                 onPressed: () {
-                  addProduct(valueText);
-                  _updateFilter(valueText);
+                  addProduct(_valueText);
+                  _updateFilter(_valueText);
                   Navigator.pop(context);
                 },
               ),
@@ -185,7 +187,7 @@ class _SearchRecipesPageState extends State<SearchRecipesPage> {
                   decoration: InputDecoration(
                       border: InputBorder.none,
                       labelText:
-                          'Quickfilter: (${uiReceptenGlobalState.filteredRecipes.length} recepten)'),
+                          'Quickfilter: (${_globalStateService.filteredRecipes.length} recepten)'),
                   autofocus: true,
                   controller: _filterTextFieldController..text = '$_filter',
                   onChanged: (text) => {_updateFilter(text)},
@@ -205,7 +207,7 @@ class _SearchRecipesPageState extends State<SearchRecipesPage> {
               height: 750,
               width: 500,
               child: ListView(
-                children: uiReceptenGlobalState.filteredRecipes.map((item) {
+                children: _globalStateService.filteredRecipes.map((item) {
                   return Container(
                     child: Column(
                       children: [
