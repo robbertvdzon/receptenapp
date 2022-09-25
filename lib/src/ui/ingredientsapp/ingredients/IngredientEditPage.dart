@@ -23,21 +23,21 @@ class IngredientEditPage extends StatefulWidget {
 }
 
 class _WidgetState extends State<IngredientEditPage> {
-  late EnrichedIngredient ingredient;
-  late Ingredient newIngredient;
-  late List<String> categories = List.empty();
-  var ingredientService = getIt<IngredientService>();
-  var enricher = getIt<Enricher>();
-  var globalState = getIt<GlobalState>();
+  late EnrichedIngredient _ingredient;
+  late Ingredient _newIngredient;
+  late List<String> _categories = List.empty();
+  var _ingredientService = getIt<IngredientService>();
+  var _enricher = getIt<Enricher>();
+  var _globalState = getIt<GlobalState>();
 
   _WidgetState(Ingredient ingredient) {
-    this.ingredient = enricher.enrichtIngredient(ingredient);
-    this.newIngredient = ingredient;
-    this.categories = globalState.products.map((e) => e.name ?? "").toList();
+    this._ingredient = _enricher.enrichtIngredient(ingredient);
+    this._newIngredient = ingredient;
+    this._categories = _globalState.products.map((e) => e.name ?? "").toList();
   }
 
   _saveForm() {
-    ingredientService.saveIngredient(newIngredient);
+    _ingredientService.saveIngredient(_newIngredient);
   }
 
   @override
@@ -52,78 +52,78 @@ class _WidgetState extends State<IngredientEditPage> {
           children: <Widget>[
             TextFormField(
               decoration: InputDecoration(label: Text('uuid:')),
-              initialValue: "${ingredient.uuid}",
+              initialValue: "${_ingredient.uuid}",
             ),
             TextFormField(
               decoration: InputDecoration(label: Text('Name:')),
-              initialValue: "${ingredient.name}",
+              initialValue: "${_ingredient.name}",
               onChanged: (text) {
-                newIngredient.name = text;
+                _newIngredient.name = text;
               },
             ),
             TextFormField(
               decoration: InputDecoration(label: Text('gramsPerPiece:')),
-              initialValue: "${ingredient.gramsPerPiece}",
+              initialValue: "${_ingredient.gramsPerPiece}",
               onChanged: (text) {
-                newIngredient.gramsPerPiece = double.parse(text);
+                _newIngredient.gramsPerPiece = double.parse(text);
               },
             ),
             TextFormField(
               decoration: InputDecoration(label: Text('recipes:')),
               initialValue:
-                  "${ingredient.recipes.map((e) => e?.name).join(",")}",
+                  "${_ingredient.recipes.map((e) => e?.name).join(",")}",
             ),
             TextFormField(
               decoration: InputDecoration(label: Text('Tags:')),
-              initialValue: "${ingredient.tags.map((e) => e?.tag).join(",")}",
+              initialValue: "${_ingredient.tags.map((e) => e?.tag).join(",")}",
             ),
             TextFormField(
               decoration: InputDecoration(label: Text('kcal:')),
-              initialValue: "${ingredient.nutritionalValues.kcal}",
+              initialValue: "${_ingredient.nutritionalValues.kcal}",
             ),
             TextFormField(
               decoration: InputDecoration(label: Text('Na:')),
-              initialValue: "${ingredient.nutritionalValues.na}",
+              initialValue: "${_ingredient.nutritionalValues.na}",
             ),
             TextFormField(
               decoration: InputDecoration(label: Text('k:')),
-              initialValue: "${ingredient.nutritionalValues.k}",
+              initialValue: "${_ingredient.nutritionalValues.k}",
             ),
             TextFormField(
               decoration: InputDecoration(label: Text('prot:')),
-              initialValue: "${ingredient.nutritionalValues.prot}",
+              initialValue: "${_ingredient.nutritionalValues.prot}",
             ),
             TextFormField(
               decoration: InputDecoration(label: Text('fat:')),
-              initialValue: "${ingredient.nutritionalValues.fat}",
+              initialValue: "${_ingredient.nutritionalValues.fat}",
             ),
             TextFormField(
               decoration: InputDecoration(label: Text('fe:')),
-              initialValue: "${ingredient.nutritionalValues.fe}",
+              initialValue: "${_ingredient.nutritionalValues.fe}",
             ),
             TextFormField(
               decoration: InputDecoration(label: Text('mg:')),
-              initialValue: "${ingredient.nutritionalValues.mg}",
+              initialValue: "${_ingredient.nutritionalValues.mg}",
             ),
             TextFormField(
               decoration: InputDecoration(label: Text('nt:')),
-              initialValue: "${ingredient.nutritionalValues.nt}",
+              initialValue: "${_ingredient.nutritionalValues.nt}",
             ),
             TextFormField(
               decoration: InputDecoration(label: Text('Suiker:')),
-              initialValue: "${ingredient.nutritionalValues.sugar}",
+              initialValue: "${_ingredient.nutritionalValues.sugar}",
             ),
             DropdownSearch<String>(
               popupProps: PopupProps.menu(
                 showSelectedItems: true,
               ),
-              items: categories,
+              items: _categories,
               onChanged: (String? newValue) {
                 setState(() {
-                  newIngredient.productName = newValue;
+                  _newIngredient.productName = newValue;
                 });
               },
-              selectedItem: "${ingredient.productName ?? ''}",
+              selectedItem: "${_ingredient.productName ?? ''}",
             ),
             ElevatedButton(
               child: Text('SAVE'),

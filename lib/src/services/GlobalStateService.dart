@@ -37,7 +37,6 @@ class GlobalStateService {
     _state.products = _productsRepository.cachedProducts?.products??List.empty();
     _state.receptTags = _recipesTagsRepository.cachedTags?.tags??List.empty();
     _state.user = _userRepository.getUser();
-    print(_state.products);
   }
 
 }

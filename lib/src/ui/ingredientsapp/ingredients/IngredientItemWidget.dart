@@ -13,7 +13,7 @@ class IngredientItemWidget extends StatefulWidget {
       : super(key: key) {}
 
   final Ingredient ingredient;
-  final List<String> categories;
+  final List<String> categories; 
 
   @override
   State<IngredientItemWidget> createState() =>
