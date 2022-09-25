@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../global.dart';
 import '../../../model/enriched/enrichedmodels.dart';
 import '../../../model/recipes/v1/receptTags.dart';
-import '../../../services/enricher/Enricher.dart';
+import '../../../services/Enricher.dart';
 
 class ReceptTagDetailsPage extends StatefulWidget {
   ReceptTagDetailsPage({Key? key, required this.title, required this.receptTag}) : super(key: key) {}

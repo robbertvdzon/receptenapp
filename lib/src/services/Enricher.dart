@@ -1,15 +1,15 @@
 import 'dart:convert';
 
 import 'package:receptenapp/src/model/ingredients/v1/ingredientTags.dart';
-import 'package:receptenapp/src/services/repositories/IngredientTagsRepository.dart';
-import 'package:receptenapp/src/services/repositories/IngredientsRepository.dart';
-import '../../model/recipes/v1/receptTags.dart';
+import 'package:receptenapp/src/repositories/IngredientTagsRepository.dart';
+import 'package:receptenapp/src/repositories/IngredientsRepository.dart';
+import '../model/recipes/v1/receptTags.dart';
 import '../repositories/ProductsRepository.dart';
 
-import '../../global.dart';
-import '../../model/enriched/enrichedmodels.dart';
-import '../../model/ingredients/v1/ingredients.dart';
-import '../../model/recipes/v1/recept.dart';
+import '../global.dart';
+import '../model/enriched/enrichedmodels.dart';
+import '../model/ingredients/v1/ingredients.dart';
+import '../model/recipes/v1/recept.dart';
 import '../repositories/RecipesRepository.dart';
 import '../repositories/RecipesTagsRepository.dart';
 

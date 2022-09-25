@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../global.dart';
 import '../../../model/products/v1/products.dart';
-import '../../../services/repositories/ProductsRepository.dart';
+import '../../../repositories/ProductsRepository.dart';
 
 class ProductDetailsPage extends StatefulWidget {
   ProductDetailsPage({Key? key, required this.title, required this.nutrient})

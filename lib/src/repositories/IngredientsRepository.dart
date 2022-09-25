@@ -2,11 +2,10 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
-import 'package:receptenapp/src/model/recipes/v1/recept.dart';
-import 'package:receptenapp/src/services/repositories/RecipesRepository.dart';
+import '../global.dart';
+import '../model/ingredients/v1/ingredients.dart';
+import 'RecipesRepository.dart';
 
-import '../../global.dart';
-import '../../model/ingredients/v1/ingredients.dart';
 
 class IngredientsRepository {
   final String _DOCNAME = "ingredients";

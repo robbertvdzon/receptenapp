@@ -5,8 +5,8 @@ import 'package:flutterfire_ui/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:receptenapp/src/ui/receptenapp/search/SearchRecipesPage.dart';
 import '../../global.dart';
-import '../../services/repositories/Repositories.dart';
-import '../../services/repositories/UserRepository.dart';
+import '../../repositories/Repositories.dart';
+import '../../repositories/UserRepository.dart';
 
 const DISABLE_AUTH = true;
 

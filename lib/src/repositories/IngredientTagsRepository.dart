@@ -2,10 +2,9 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
-import 'package:receptenapp/src/services/repositories/IngredientsRepository.dart';
-
-import '../../global.dart';
-import '../../model/ingredients/v1/ingredientTags.dart';
+import '../global.dart';
+import '../model/ingredients/v1/ingredientTags.dart';
+import 'IngredientsRepository.dart';
 
 class IngredientTagsRepository {
   final String _DOCNAME = "ingredienttags";

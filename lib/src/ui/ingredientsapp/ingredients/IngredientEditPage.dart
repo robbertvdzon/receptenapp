@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:receptenapp/src/model/ingredients/v1/ingredients.dart';
 import '../../../global.dart';
 import '../../../model/enriched/enrichedmodels.dart';
-import '../../../services/enricher/Enricher.dart';
-import '../../../services/repositories/IngredientsRepository.dart';
-import '../../../services/repositories/ProductsRepository.dart';
+import '../../../services/Enricher.dart';
+import '../../../repositories/IngredientsRepository.dart';
+import '../../../repositories/ProductsRepository.dart';
 
 class IngredientEditPage extends StatefulWidget {
   IngredientEditPage(

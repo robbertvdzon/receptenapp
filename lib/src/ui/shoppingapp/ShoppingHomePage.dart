@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../../global.dart';
-import '../../services/repositories/UserRepository.dart';
+import '../../repositories/UserRepository.dart';
 import '../ingredientsapp/ingredienttags/IngredientTagsPage.dart';
 
 class ShoppingHomePage extends StatefulWidget {

@@ -1,17 +1,17 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:receptenapp/src/services/repositories/RecipesRepository.dart';
+import 'package:receptenapp/src/repositories/RecipesRepository.dart';
 import '../../../global.dart';
 import '../../../model/enriched/enrichedmodels.dart';
 import '../../../model/events/ReceptChangedEvent.dart';
 import '../../../model/recipes/v1/recept.dart';
-import '../../../services/enricher/Enricher.dart';
+import '../../../services/Enricher.dart';
 import 'ReceptEditPage.dart';
 import 'package:event_bus/event_bus.dart';
 
 import 'ReceptIngredientItemWidget.dart';
-import '../../state/UIRecepenGlobalState.dart';
+import '../../UIRecepenGlobalState.dart';
 
 class ReceptDetailsPage extends StatefulWidget {
   ReceptDetailsPage({Key? key, required this.title, required this.recept})

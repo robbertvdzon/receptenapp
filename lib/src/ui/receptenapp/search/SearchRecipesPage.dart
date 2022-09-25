@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import '../../../global.dart';
 import '../../../model/recipes/v1/recept.dart';
-import '../../../services/repositories/ProductsRepository.dart';
-import '../../../services/repositories/RecipesRepository.dart';
+import '../../../repositories/ProductsRepository.dart';
+import '../../../repositories/RecipesRepository.dart';
 import '../recepts/ReceptItemWidget.dart';
-import '../../state/UIRecepenGlobalState.dart';
+import '../../UIRecepenGlobalState.dart';
 import '../recepttags/RecipesTagsPage.dart';
 
 class SearchRecipesPage extends StatefulWidget {

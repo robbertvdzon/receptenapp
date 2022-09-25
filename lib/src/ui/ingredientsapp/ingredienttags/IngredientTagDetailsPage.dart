@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../global.dart';
 import '../../../model/enriched/enrichedmodels.dart';
 import '../../../model/ingredients/v1/ingredientTags.dart';
-import '../../../services/enricher/Enricher.dart';
+import '../../../services/Enricher.dart';
 
 class IngredientTagDetailsPage extends StatefulWidget {
   IngredientTagDetailsPage({Key? key, required this.title, required this.ingredientTag}) : super(key: key) {}

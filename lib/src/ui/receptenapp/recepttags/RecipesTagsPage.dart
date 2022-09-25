@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../global.dart';
 import '../../../model/recipes/v1/receptTags.dart';
-import '../../../services/repositories/RecipesTagsRepository.dart';
+import '../../../repositories/RecipesTagsRepository.dart';
 import 'ReceptTagItemWidget.dart';
 
 class RecipesTagsPage extends StatefulWidget {

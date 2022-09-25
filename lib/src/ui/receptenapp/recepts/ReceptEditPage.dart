@@ -1,11 +1,11 @@
 import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
-import 'package:receptenapp/src/services/repositories/RecipesRepository.dart';
+import 'package:receptenapp/src/repositories/RecipesRepository.dart';
 import '../../../global.dart';
 import '../../../model/enriched/enrichedmodels.dart';
 import '../../../model/events/ReceptChangedEvent.dart';
 import '../../../model/recipes/v1/recept.dart';
-import '../../../services/enricher/Enricher.dart';
+import '../../../services/Enricher.dart';
 
 class ReceptEditPage extends StatefulWidget {
   ReceptEditPage({Key? key, required this.title, required this.recept}) : super(key: key) {}

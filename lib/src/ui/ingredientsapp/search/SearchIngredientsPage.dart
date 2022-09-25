@@ -1,10 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
-import 'package:receptenapp/src/services/repositories/IngredientsRepository.dart';
+import 'package:receptenapp/src/repositories/IngredientsRepository.dart';
 import '../../../global.dart';
 import '../../../model/ingredients/v1/ingredients.dart';
-import '../../../services/repositories/ProductsRepository.dart';
+import '../../../repositories/ProductsRepository.dart';
 import '../ingredienttags/IngredientTagsPage.dart';
 import '../products/SearchProductsPage.dart';
 import '../ingredients/IngredientItemWidget.dart';

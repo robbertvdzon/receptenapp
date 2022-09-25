@@ -4,10 +4,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:csv/csv.dart';
 import 'package:flutter/services.dart';
 import 'package:collection/collection.dart';
-import 'package:receptenapp/src/services/repositories/IngredientsRepository.dart';
+import 'package:receptenapp/src/repositories/IngredientsRepository.dart';
 
-import '../../global.dart';
-import '../../model/products/v1/products.dart';
+import '../global.dart';
+import '../model/products/v1/products.dart';
 
 
 
