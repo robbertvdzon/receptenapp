@@ -47,23 +47,4 @@ class UIReceptenGlobalState {
     user = _userRepository.getUser();
   }
 
-  Recept selectNextRecept(Recept recept){
-    int currentIndex = filteredRecipes.indexOf(recept);
-    int newIndex = currentIndex+1;
-    if (newIndex<filteredRecipes.length) {
-      return filteredRecipes.elementAt(newIndex);
-    }
-    else{
-      return filteredRecipes.last;
-    }
-  }
-
-  Recept selectPreviousRecept(Recept recept){
-    int currentIndex = filteredRecipes.indexOf(recept);
-    if (currentIndex==0) return recept;
-    if (currentIndex>filteredRecipes.length) {
-      return filteredRecipes.last;
-    }
-    return filteredRecipes.elementAt(currentIndex-1);
-  }
 }

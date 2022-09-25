@@ -7,6 +7,7 @@ import '../../../model/enriched/enrichedmodels.dart';
 import '../../../model/events/ReceptChangedEvent.dart';
 import '../../../model/recipes/v1/recept.dart';
 import '../../../services/Enricher.dart';
+import '../../../services/ReceptService.dart';
 import 'ReceptEditPage.dart';
 import 'package:event_bus/event_bus.dart';
 
@@ -33,6 +34,7 @@ class _WidgetState extends State<ReceptDetailsPage> {
   late EnrichedRecept enrichedRecept;
   var enricher = getIt<Enricher>();
   var eventBus = getIt<EventBus>();
+  var receptService = getIt<ReceptService>();
   StreamSubscription? _eventStreamSub;
 
   _WidgetState(Recept recept) {
@@ -41,14 +43,14 @@ class _WidgetState extends State<ReceptDetailsPage> {
   }
 
   void nextRecept() {
-    recept = uiReceptenGlobalState.selectNextRecept(recept);
+    recept = receptService.selectNextRecept(recept);
     this.enrichedRecept = enricher.enrichRecipe(recept);
     this.recept = recept;
     setState(() {});
   }
 
   void prevRecept() {
-    recept = uiReceptenGlobalState.selectPreviousRecept(recept);
+    recept = receptService.selectPreviousRecept(recept);
     this.enrichedRecept = enricher.enrichRecipe(recept);
     this.recept = recept;
     setState(() {});
