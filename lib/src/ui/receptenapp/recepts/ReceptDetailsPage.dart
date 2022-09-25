@@ -41,24 +41,17 @@ class _WidgetState extends State<ReceptDetailsPage> {
   }
 
   void nextRecept() {
-    // uiReceptenGlobalState.selectedRecept = recept;
     recept = uiReceptenGlobalState.selectNextRecept(recept);
-    Recept? newRecept = recept;
-    if (newRecept != null) {
-      this.enrichedRecept = enricher.enrichRecipe(newRecept);
-      this.recept = newRecept;
-      setState(() {});
-    }
+    this.enrichedRecept = enricher.enrichRecipe(recept);
+    this.recept = recept;
+    setState(() {});
   }
 
   void prevRecept() {
     recept = uiReceptenGlobalState.selectPreviousRecept(recept);
-    Recept? newRecept = recept;
-    if (newRecept != null) {
-      this.enrichedRecept = enricher.enrichRecipe(newRecept);
-      this.recept = newRecept;
-      setState(() {});
-    }
+    this.enrichedRecept = enricher.enrichRecipe(recept);
+    this.recept = recept;
+    setState(() {});
   }
 
   void setFavorite(bool favorite){
