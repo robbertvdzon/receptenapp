@@ -31,7 +31,7 @@ class _PageState extends State<IngredientsTagsPage> {
             SizedBox(
               height: 750,
               child: ListView(
-                children: _globalStateService.ingredientTags().map((item) {
+                children: _globalStateService.getIngredientTags().map((item) {
                   return Container(
                     child:
                     Column(

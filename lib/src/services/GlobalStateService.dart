@@ -16,8 +16,18 @@ import '../repositories/RecipesTagsRepository.dart';
 import '../repositories/UserRepository.dart';
 
 class GlobalStateService {
+  // stamdata
+  List<Recept> recipes = List.empty();
+  List<Ingredient> ingredients = List.empty();
+  List<IngredientTag> ingredientTags = List.empty();
+  List<Product> products = List.empty();
+  List<ReceptTag> receptTags = List.empty();
+  User? user = null;
+
+  // filter data
+  List<Recept> filteredRecipes = List.empty();
+  
   StreamSubscription? _eventStreamSub;
-  var _state = _GlobalState();
   var _eventBus = getIt<EventBus>();
   var _ingredientsRepository = getIt<IngredientsRepository>();
   var _productsRepository = getIt<ProductsRepository>();
@@ -32,15 +42,17 @@ class GlobalStateService {
     });
   }
 
-  List<Recept> recipes() => _state.recipes;
-  List<Ingredient> ingredients() => _state.ingredients;
-  List<IngredientTag> ingredientTags() => _state.ingredientTags;
-  List<Product> products() => _state.products;
-  List<ReceptTag> receptTags() => _state.receptTags;
-  User? user() => _state.user;
+  List<Recept> getRecipes() => recipes;
+  List<Ingredient> getIngredients() => ingredients;
+  List<IngredientTag> getIngredientTags() => ingredientTags;
+  List<Product> getProducts() => products;
+  List<ReceptTag> getReceptTags() => receptTags;
+  User? getUser() => user;
 
-  // filter data
-  List<Recept> filteredRecipes() => _state.filteredRecipes;
+  List<Recept> getFilteredRecipes() => filteredRecipes;
+  setFilteredRecipes(List<Recept> recipes) {
+    filteredRecipes = recipes;
+  }
 
 
   @override
@@ -49,31 +61,15 @@ class GlobalStateService {
   }
 
   void _loadFromStore(){
-    _state.recipes = _recipesRepository.cachedRecipes?.recipes??List.empty();
-    _state.ingredients = _ingredientsRepository.cachedIngredients?.ingredients??List.empty();
-    _state.ingredientTags = _ingredientTagsRepository.cachedTags?.tags??List.empty();
-    _state.products = _productsRepository.cachedProducts?.products??List.empty();
-    _state.receptTags = _recipesTagsRepository.cachedTags?.tags??List.empty();
-    _state.user = _userRepository.getUser();
+    recipes = _recipesRepository.cachedRecipes?.recipes??List.empty();
+    ingredients = _ingredientsRepository.cachedIngredients?.ingredients??List.empty();
+    ingredientTags = _ingredientTagsRepository.cachedTags?.tags??List.empty();
+    products = _productsRepository.cachedProducts?.products??List.empty();
+    receptTags = _recipesTagsRepository.cachedTags?.tags??List.empty();
+    user = _userRepository.getUser();
   }
 
-  setFilteredRecipes(List<Recept> recipes) {
-    _state.filteredRecipes = recipes;
-  }
 
 }
 
 
-class _GlobalState {
-  // stamdata
-  List<Recept> recipes = List.empty();
-  List<Ingredient> ingredients = List.empty();
-  List<IngredientTag> ingredientTags = List.empty();
-  List<Product> products = List.empty();
-  List<ReceptTag> receptTags = List.empty();
-  User? user = null;
-
-  // filter data
-  List<Recept> filteredRecipes = List.empty();
-
-}

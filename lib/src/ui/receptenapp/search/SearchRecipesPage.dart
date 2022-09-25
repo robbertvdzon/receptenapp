@@ -186,7 +186,7 @@ class _SearchRecipesPageState extends State<SearchRecipesPage> {
                   decoration: InputDecoration(
                       border: InputBorder.none,
                       labelText:
-                          'Quickfilter: (${_globalStateService.filteredRecipes().length} recepten)'),
+                          'Quickfilter: (${_globalStateService.getFilteredRecipes().length} recepten)'),
                   autofocus: true,
                   controller: _filterTextFieldController..text = '$_filter',
                   onChanged: (text) => {_updateFilter(text)},
@@ -206,7 +206,7 @@ class _SearchRecipesPageState extends State<SearchRecipesPage> {
               height: 750,
               width: 500,
               child: ListView(
-                children: _globalStateService.filteredRecipes().map((item) {
+                children: _globalStateService.getFilteredRecipes().map((item) {
                   return Container(
                     child: Column(
                       children: [

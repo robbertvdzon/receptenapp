@@ -38,14 +38,14 @@ class _SearchIngredientsPageState extends State<SearchIngredientsPage> {
   @override
   void initState() {
     super.initState();
-    _ingredients = List.of(_globalStateService.ingredients());
+    _ingredients = List.of(_globalStateService.getIngredients());
     _ingredients.sort((a, b) => a.name.compareTo(b.name));
 
     _filteredIngredients = _ingredients
         .where((element) =>
     element.name != null && element.name.contains(_filter))
         .toList();
-    _products = _globalStateService.products().map((e) => e.name ?? "").toList();
+    _products = _globalStateService.getProducts().map((e) => e.name ?? "").toList();
   }
 
   void _updateFilter(String filter) {
@@ -58,7 +58,7 @@ class _SearchIngredientsPageState extends State<SearchIngredientsPage> {
   void addProduct(String name) {
     _ingredientsService.createAndAddIngredient(name).then((value) => {
           setState(() {
-            _ingredients = List.of(_globalStateService.ingredients());
+            _ingredients = List.of(_globalStateService.getIngredients());
             _ingredients.sort((a, b) => a.name.compareTo(b.name));
             _filteredIngredients = _ingredients
                 .where((element) =>

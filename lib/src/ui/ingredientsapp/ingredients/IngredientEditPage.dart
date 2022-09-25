@@ -34,7 +34,7 @@ class _WidgetState extends State<IngredientEditPage> {
   _WidgetState(Ingredient ingredient) {
     this._ingredient = _enricher.enrichtIngredient(ingredient);
     this._newIngredient = ingredient;
-    this._categories = _globalStateService.products().map((e) => e.name ?? "").toList();
+    this._categories = _globalStateService.getProducts().map((e) => e.name ?? "").toList();
   }
 
   _saveForm() {

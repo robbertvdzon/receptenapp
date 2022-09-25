@@ -57,23 +57,23 @@ class _WidgetState extends State<ReceptDetailsPage> {
   }
 
   Recept _getNextRecept(Recept recept){
-    int currentIndex = _globalStateService.filteredRecipes().indexOf(recept);
+    int currentIndex = _globalStateService.getFilteredRecipes().indexOf(recept);
     int newIndex = currentIndex+1;
-    if (newIndex<_globalStateService.filteredRecipes().length) {
-      return _globalStateService.filteredRecipes().elementAt(newIndex);
+    if (newIndex<_globalStateService.getFilteredRecipes().length) {
+      return _globalStateService.getFilteredRecipes().elementAt(newIndex);
     }
     else{
-      return _globalStateService.filteredRecipes().last;
+      return _globalStateService.getFilteredRecipes().last;
     }
   }
 
   Recept _getPreviousRecept(Recept recept){
-    int currentIndex = _globalStateService.filteredRecipes().indexOf(recept);
+    int currentIndex = _globalStateService.getFilteredRecipes().indexOf(recept);
     if (currentIndex==0) return recept;
-    if (currentIndex>_globalStateService.filteredRecipes().length) {
-      return _globalStateService.filteredRecipes().last;
+    if (currentIndex>_globalStateService.getFilteredRecipes().length) {
+      return _globalStateService.getFilteredRecipes().last;
     }
-    return _globalStateService.filteredRecipes().elementAt(currentIndex-1);
+    return _globalStateService.getFilteredRecipes().elementAt(currentIndex-1);
   }
 
 
@@ -89,7 +89,7 @@ class _WidgetState extends State<ReceptDetailsPage> {
     _eventStreamSub = _eventBus.on<ReceptChangedEvent>().listen((event) {
       if (event.recept.uuid == _enrichedRecept.recept.uuid) {
         setState(() {
-          Recept? updatedRecept = _globalStateService.recipes().firstWhereOrNull((element) => element.uuid==uuid);
+          Recept? updatedRecept = _globalStateService.getRecipes().firstWhereOrNull((element) => element.uuid==uuid);
           if (updatedRecept != null) {
             _enrichedRecept = _enricher.enrichRecipe(updatedRecept);
           }

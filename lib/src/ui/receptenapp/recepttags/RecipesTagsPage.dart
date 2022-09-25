@@ -20,7 +20,7 @@ class _PageState extends State<RecipesTagsPage> {
   var _globalStateService = getIt<GlobalStateService>();
 
   _PageState() {
-    _tags = _globalStateService.receptTags();
+    _tags = _globalStateService.getReceptTags();
   }
 
   @override
