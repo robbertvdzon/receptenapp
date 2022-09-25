@@ -1,25 +1,22 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutterfire_ui/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:get_it/get_it.dart';
 import '../../GetItDependencies.dart';
+import '../../Toggles.dart';
 import '../../repositories/Repositories.dart';
 import '../../repositories/UserRepository.dart';
 import 'AllAppHomePage.dart';
 
-const DISABLE_AUTH = true;
-
-class AllApp extends StatefulWidget {
-  AllApp({Key? key}) : super(key: key) {}
+class MainApp extends StatefulWidget {
+  MainApp({Key? key}) : super(key: key) {}
 
   @override
-  _MyAppState createState() => _MyAppState();
+  _MainAppState createState() => _MainAppState();
 }
 
-class _MyAppState extends State<AllApp> {
+class _MainAppState extends State<MainApp> {
   late StreamSubscription<User?> user;
   var userRepository = getIt<UserRepository>();
   var repositories = getIt<Repositories>();
@@ -55,7 +52,7 @@ class _MyAppState extends State<AllApp> {
                 brightness: Brightness.dark,
                 primarySwatch: Colors.blue,
               ),
-              home: AllAppHomePage(title: 'All app'),
+              home: AllAppHomePage(title: 'Gutz'),
             );
           }
           return MaterialApp(
