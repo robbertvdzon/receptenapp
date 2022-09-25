@@ -16,11 +16,11 @@ class ReceptTagDetailsPage extends StatefulWidget {
 }
 
 class _WidgetState extends State<ReceptTagDetailsPage> {
-  late EnrichedRecipeTag receptTag;
-  var enricher = getIt<Enricher>();
+  late EnrichedRecipeTag _receptTag;
+  var _enricher = getIt<Enricher>();
 
   _WidgetState(ReceptTag receptTag) {
-    this.receptTag = enricher.enrichtRecipeTag(receptTag);
+    this._receptTag = _enricher.enrichtRecipeTag(receptTag);
   }
   @override
   Widget build(BuildContext context) {
@@ -36,11 +36,11 @@ class _WidgetState extends State<ReceptTagDetailsPage> {
                 children: <Widget>[
                   TextFormField(
                     decoration: InputDecoration(label: Text('tag:')),
-                    initialValue: "${receptTag.tag}",
+                    initialValue: "${_receptTag.tag}",
                   ),
                   TextFormField(
                     decoration: InputDecoration(label: Text('recipes:')),
-                    initialValue: "${receptTag.recipes.map((e) => e?.name).join(",")}",
+                    initialValue: "${_receptTag.recipes.map((e) => e?.name).join(",")}",
                   ),
 
                 ],

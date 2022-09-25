@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:receptenapp/src/GlobalState.dart';
 import '../../../GetItDependencies.dart';
 import '../../../model/recipes/v1/receptTags.dart';
 import '../../../repositories/RecipesTagsRepository.dart';
@@ -14,11 +15,11 @@ class RecipesTagsPage extends StatefulWidget {
 }
 
 class _PageState extends State<RecipesTagsPage> {
-  List<ReceptTag> tags = List.empty();
-  var tagsRepository = getIt<RecipesTagsRepository>();
+  List<ReceptTag> _tags = List.empty();
+  var _globalState = getIt<GlobalState>();
 
   _PageState() {
-    tags = tagsRepository.getTags().tags;
+    _tags = _globalState.receptTags;
   }
 
   @override
@@ -34,7 +35,7 @@ class _PageState extends State<RecipesTagsPage> {
             SizedBox(
               height: 750,
               child: ListView(
-                children: tags.map((item) {
+                children: _tags.map((item) {
                   return Container(
                     child:
                     Column(

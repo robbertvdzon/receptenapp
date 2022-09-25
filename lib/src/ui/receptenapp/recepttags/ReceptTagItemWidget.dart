@@ -13,10 +13,10 @@ class ReceptTagItemWidget extends StatefulWidget {
 }
 
 class _WidgetState extends State<ReceptTagItemWidget> {
-  late ReceptTag receptTag;
+  late ReceptTag _receptTag;
 
   _WidgetState(ReceptTag receptTag) {
-    this.receptTag = receptTag;
+    this._receptTag = receptTag;
   }
 
   _openForm() {
@@ -24,7 +24,7 @@ class _WidgetState extends State<ReceptTagItemWidget> {
       context,
       MaterialPageRoute(
           builder: (context) =>
-              ReceptTagDetailsPage(title: 'Recept Tag', receptTag: receptTag)),
+              ReceptTagDetailsPage(title: 'Recept Tag', receptTag: _receptTag)),
     );
   }
 
@@ -36,7 +36,7 @@ class _WidgetState extends State<ReceptTagItemWidget> {
           onPressed: () {
             _openForm();
           },
-          child: new Text(receptTag.tag??""),
+          child: new Text(_receptTag.tag??""),
         )
       ],
     );

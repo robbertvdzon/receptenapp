@@ -3,8 +3,11 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:receptenapp/src/repositories/IngredientsRepository.dart';
 import '../../../GetItDependencies.dart';
+import '../../../GlobalState.dart';
 import '../../../model/ingredients/v1/ingredients.dart';
 import '../../../repositories/ProductsRepository.dart';
+import '../../../services/IngredientService.dart';
+import '../../../services/ProductsService.dart';
 import '../ingredienttags/IngredientTagsPage.dart';
 import '../products/SearchProductsPage.dart';
 import '../ingredients/IngredientItemWidget.dart';
@@ -25,8 +28,8 @@ class _SearchIngredientsPageState extends State<SearchIngredientsPage> {
 
   TextEditingController _textFieldController = TextEditingController();
   TextEditingController _filterTextFieldController = TextEditingController();
-  var _ingredientsRepository = getIt<IngredientsRepository>();
-  var productsRepository = getIt<ProductsRepository>();
+  var _globalState = getIt<GlobalState>();
+  var _ingredientsService = getIt<IngredientService>();
   String _filter = "";
   String codeDialog = "";
   String valueText = "";
@@ -34,18 +37,14 @@ class _SearchIngredientsPageState extends State<SearchIngredientsPage> {
   @override
   void initState() {
     super.initState();
-    _ingredients = _ingredientsRepository.getIngredients().ingredients;
+    _ingredients = List.of(_globalState.ingredients);
     _ingredients.sort((a, b) => a.name.compareTo(b.name));
 
     _filteredIngredients = _ingredients
         .where((element) =>
     element.name != null && element.name.contains(_filter))
         .toList();
-    _products = productsRepository
-        .getProducts()
-        .products
-        .map((e) => e.name ?? "")
-        .toList();
+    _products = _globalState.products.map((e) => e.name ?? "").toList();
   }
 
   void _updateFilter(String filter) {
@@ -56,9 +55,10 @@ class _SearchIngredientsPageState extends State<SearchIngredientsPage> {
   }
 
   void addProduct(String name) {
-    _ingredientsRepository.createAndAddIngredient(name).then((value) => {
+    _ingredientsService.createAndAddIngredient(name).then((value) => {
           setState(() {
-            _ingredients = _ingredientsRepository.getIngredients().ingredients;
+            _ingredients = List.of(_globalState.ingredients);
+            _ingredients.sort((a, b) => a.name.compareTo(b.name));
             _filteredIngredients = _ingredients
                 .where((element) =>
                     element.name != null && element.name!.contains(_filter))

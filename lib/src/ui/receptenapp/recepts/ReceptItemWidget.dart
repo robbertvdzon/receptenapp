@@ -1,17 +1,15 @@
 import 'dart:async';
 
+import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
-import 'package:receptenapp/src/repositories/RecipesRepository.dart';
+
 import '../../../GetItDependencies.dart';
 import '../../../events/ReceptChangedEvent.dart';
 import '../../../model/recipes/v1/recept.dart';
 import 'ReceptDetailsPage.dart';
-import 'package:event_bus/event_bus.dart';
-
 
 class ReceptItemWidget extends StatefulWidget {
-  ReceptItemWidget({Key? key, required this.recept})
-      : super(key: key) {}
+  ReceptItemWidget({Key? key, required this.recept}) : super(key: key) {}
 
   final Recept recept;
 
@@ -22,26 +20,20 @@ class ReceptItemWidget extends StatefulWidget {
 class _WidgetState extends State<ReceptItemWidget> {
   static const IconData star = IconData(0xe5f9, fontFamily: 'MaterialIcons');
 
-  late Recept recept;
-  late Recept newRecept;
-  var recipesRepository = getIt<RecipesRepository>();
-  var eventBus = getIt<EventBus>();
+  late Recept _recept;
+  var _eventBus = getIt<EventBus>();
   StreamSubscription? _eventStreamSub;
 
   _WidgetState(Recept recept) {
-    this.recept = recept;
-    this.newRecept = recept;
+    this._recept = recept;
   }
 
   @override
   void initState() {
-    _eventStreamSub = eventBus.on<ReceptChangedEvent>().listen((event) {
-      if (event.uuid==recept.uuid){
+    _eventStreamSub = _eventBus.on<ReceptChangedEvent>().listen((event) {
+      if (event.recept.uuid == _recept.uuid) {
         setState(() {
-          Recept? updatedRecept = recipesRepository.getReceptByUuid(recept.uuid);
-          if (updatedRecept!=null) {
-            recept = updatedRecept;
-          }
+          _recept = event.recept;
         });
       }
     });
@@ -58,66 +50,51 @@ class _WidgetState extends State<ReceptItemWidget> {
       context,
       MaterialPageRoute(
           builder: (context) =>
-              ReceptDetailsPage(title: 'Recept', recept: recept)),
+              ReceptDetailsPage(title: 'Recept', recept: _recept)),
     );
-  }
-
-  saveRecept(Recipes recipes, Recept newRecept) {
-    // receptenBoek.recepten.remove(recept);
-    recipes.recipes
-        .where((element) => element.uuid == recept.uuid)
-        .forEach((element) {
-      element.name = newRecept.name;
-    });
-    recipesRepository.saveRecipes(recipes);
   }
 
   @override
   Widget build(BuildContext context) {
-
     return InkWell(
-      onTap: () {_openForm();}, // Handle your callback
-      child:
-      Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          new Text(
-              recept.name,
-            style: TextStyle(fontSize: 20),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Container(
-                alignment: Alignment.topLeft, // use aligment
-                padding: EdgeInsets.only(left:0, bottom: 0, right: 20, top:0),
-                child: Image.asset('assets/images/recept1.jpeg',
-                    height: 100, width: 100, fit: BoxFit.cover),
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  if (recept.favorite) new Icon(star, size: 20.0, color: Colors.yellow),
-                  Text(recept.preparingTime.toString() +
-                      "/" +
-                      recept.totalCookingTime.toString() +
-                      " minuten"),
-                  Text(recept.remark),
-                ],
-              )
-            ],
-          )
-        ],
-      )
-    );
-
-
-
+        onTap: () {
+          _openForm();
+        }, // Handle your callback
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            new Text(
+              _recept.name,
+              style: TextStyle(fontSize: 20),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                  alignment: Alignment.topLeft, // use aligment
+                  padding:
+                      EdgeInsets.only(left: 0, bottom: 0, right: 20, top: 0),
+                  child: Image.asset('assets/images/recept1.jpeg',
+                      height: 100, width: 100, fit: BoxFit.cover),
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    if (_recept.favorite)
+                      new Icon(star, size: 20.0, color: Colors.yellow),
+                    Text(_recept.preparingTime.toString() +
+                        "/" +
+                        _recept.totalCookingTime.toString() +
+                        " minuten"),
+                    Text(_recept.remark),
+                  ],
+                )
+              ],
+            )
+          ],
+        ));
   }
-
 }
-
-

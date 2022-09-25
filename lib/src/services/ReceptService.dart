@@ -15,26 +15,12 @@ import '../repositories/RecipesTagsRepository.dart';
 import '../GlobalState.dart';
 
 class ReceptService {
-  var _state = getIt<GlobalState>();
+  var _recipesRepository = getIt<RecipesRepository>();
 
-  Recept selectNextRecept(Recept recept){
-    int currentIndex = _state.filteredRecipes.indexOf(recept);
-    int newIndex = currentIndex+1;
-    if (newIndex<_state.filteredRecipes.length) {
-      return _state.filteredRecipes.elementAt(newIndex);
-    }
-    else{
-      return _state.filteredRecipes.last;
-    }
+
+  Future<void> saveRecept(Recept recept)  {
+    return _recipesRepository.saveRecept(recept);
   }
 
-  Recept selectPreviousRecept(Recept recept){
-    int currentIndex = _state.filteredRecipes.indexOf(recept);
-    if (currentIndex==0) return recept;
-    if (currentIndex>_state.filteredRecipes.length) {
-      return _state.filteredRecipes.last;
-    }
-    return _state.filteredRecipes.elementAt(currentIndex-1);
-  }
 
 }

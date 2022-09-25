@@ -1,15 +1,7 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:receptenapp/src/repositories/RecipesRepository.dart';
-import '../../../GetItDependencies.dart';
-import '../../../model/enriched/enrichedmodels.dart';
-import '../../../events/ReceptChangedEvent.dart';
-import '../../../model/recipes/v1/recept.dart';
-import '../../ingredientsapp/ingredients/IngredientDetailsPage.dart';
-import 'ReceptDetailsPage.dart';
-import 'package:event_bus/event_bus.dart';
 
+import '../../../model/enriched/enrichedmodels.dart';
+import '../../ingredientsapp/ingredients/IngredientDetailsPage.dart';
 
 class ReceptIngredientItemWidget extends StatefulWidget {
   ReceptIngredientItemWidget({Key? key, required this.ingredient})
@@ -22,46 +14,34 @@ class ReceptIngredientItemWidget extends StatefulWidget {
 }
 
 class _WidgetState extends State<ReceptIngredientItemWidget> {
-
   late EnrichedReceptIngredient ingredient;
 
   _WidgetState(EnrichedReceptIngredient ingredient) {
-    this.ingredient= ingredient;
+    this.ingredient = ingredient;
   }
 
   @override
-  void initState() {
-  }
+  void initState() {}
 
   _openForm() {
     Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) =>
-            IngredientDetailsPage(
-              title: 'Ingredient',
-              ingredient: ingredient.ingredient!,
-            )
-      )
-    );
+        context,
+        MaterialPageRoute(
+            builder: (context) => IngredientDetailsPage(
+                  title: 'Ingredient',
+                  ingredient: ingredient.ingredient!,
+                )));
   }
-
 
   @override
   Widget build(BuildContext context) {
-
     return InkWell(
-      onTap: () {_openForm();}, // Handle your callback
-      child:
-      new Text(
+      onTap: () {
+        _openForm();
+      }, // Handle your callback
+      child: new Text(
         ingredient.toTextString(),
       ),
     );
-
-
-
   }
-
 }
-
-

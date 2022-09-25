@@ -13,7 +13,11 @@ class IngredientService {
     return _ingredientsRepository.saveIngredient(ingredient).then((value) => {
       _eventBus.fire(IngredientChangedEvent(ingredient))
     });
-
   }
+
+  Future<Ingredient> createAndAddIngredient(String name) {
+    return _ingredientsRepository.createAndAddIngredient(name);
+  }
+
 
 }

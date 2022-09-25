@@ -1,18 +1,18 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
+import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
-import 'package:receptenapp/src/repositories/RecipesRepository.dart';
+
 import '../../../GetItDependencies.dart';
-import '../../../model/enriched/enrichedmodels.dart';
+import '../../../GlobalState.dart';
 import '../../../events/ReceptChangedEvent.dart';
+import '../../../model/enriched/enrichedmodels.dart';
 import '../../../model/recipes/v1/recept.dart';
 import '../../../services/Enricher.dart';
 import '../../../services/ReceptService.dart';
 import 'ReceptEditPage.dart';
-import 'package:event_bus/event_bus.dart';
-
 import 'ReceptIngredientItemWidget.dart';
-import '../../../GlobalState.dart';
 
 class ReceptDetailsPage extends StatefulWidget {
   ReceptDetailsPage({Key? key, required this.title, required this.recept})
@@ -27,51 +27,70 @@ class ReceptDetailsPage extends StatefulWidget {
 
 class _WidgetState extends State<ReceptDetailsPage> {
   static const IconData star = IconData(0xe5f9, fontFamily: 'MaterialIcons');
-  var recipesRepository = getIt<RecipesRepository>();
-  var uiReceptenGlobalState = getIt<GlobalState>();
+  var recipesService = getIt<ReceptService>();
+  var _globalState = getIt<GlobalState>();
 
-  late Recept recept;
-  late EnrichedRecept enrichedRecept;
-  var enricher = getIt<Enricher>();
-  var eventBus = getIt<EventBus>();
-  var receptService = getIt<ReceptService>();
+  late Recept _recept;
+  late EnrichedRecept _enrichedRecept;
+  var _enricher = getIt<Enricher>();
+  var _eventBus = getIt<EventBus>();
   StreamSubscription? _eventStreamSub;
 
   _WidgetState(Recept recept) {
-    this.enrichedRecept = enricher.enrichRecipe(recept);
-    this.recept = recept;
+    this._enrichedRecept = _enricher.enrichRecipe(recept);
+    this._recept = recept;
   }
 
-  void nextRecept() {
-    recept = receptService.selectNextRecept(recept);
-    this.enrichedRecept = enricher.enrichRecipe(recept);
-    this.recept = recept;
+  void _nextRecept() {
+    _recept = _getNextRecept(_recept);
+    this._enrichedRecept = _enricher.enrichRecipe(_recept);
+    this._recept = _recept;
     setState(() {});
   }
 
-  void prevRecept() {
-    recept = receptService.selectPreviousRecept(recept);
-    this.enrichedRecept = enricher.enrichRecipe(recept);
-    this.recept = recept;
+  void _prevRecept() {
+    _recept = _getPreviousRecept(_recept);
+    this._enrichedRecept = _enricher.enrichRecipe(_recept);
+    this._recept = _recept;
     setState(() {});
   }
 
-  void setFavorite(bool favorite){
-    recept.favorite = favorite;
-    recipesRepository.saveRecept(recept);
-    eventBus.fire(ReceptChangedEvent(recept.uuid));
+  Recept _getNextRecept(Recept recept){
+    int currentIndex = _globalState.filteredRecipes.indexOf(recept);
+    int newIndex = currentIndex+1;
+    if (newIndex<_globalState.filteredRecipes.length) {
+      return _globalState.filteredRecipes.elementAt(newIndex);
+    }
+    else{
+      return _globalState.filteredRecipes.last;
+    }
+  }
+
+  Recept _getPreviousRecept(Recept recept){
+    int currentIndex = _globalState.filteredRecipes.indexOf(recept);
+    if (currentIndex==0) return recept;
+    if (currentIndex>_globalState.filteredRecipes.length) {
+      return _globalState.filteredRecipes.last;
+    }
+    return _globalState.filteredRecipes.elementAt(currentIndex-1);
+  }
+
+
+  void _setFavorite(bool favorite){
+    _recept.favorite = favorite;
+    recipesService.saveRecept(_recept);
+    _eventBus.fire(ReceptChangedEvent(_recept));
   }
 
 
   @override
   void initState() {
-    _eventStreamSub = eventBus.on<ReceptChangedEvent>().listen((event) {
-      if (event.uuid == enrichedRecept.recept.uuid) {
+    _eventStreamSub = _eventBus.on<ReceptChangedEvent>().listen((event) {
+      if (event.recept.uuid == _enrichedRecept.recept.uuid) {
         setState(() {
-          Recept? updatedRecept =
-              recipesRepository.getReceptByUuid(enrichedRecept.recept.uuid);
+          Recept? updatedRecept = _globalState.recipes.firstWhereOrNull((element) => element.uuid==uuid);
           if (updatedRecept != null) {
-            enrichedRecept = enricher.enrichRecipe(updatedRecept);
+            _enrichedRecept = _enricher.enrichRecipe(updatedRecept);
           }
         });
       }
@@ -95,32 +114,32 @@ class _WidgetState extends State<ReceptDetailsPage> {
         TableRow(children: [
           Text("Favoriet"),
           Text(":"),
-          Text("${enrichedRecept.recept.favorite}"),
+          Text("${_enrichedRecept.recept.favorite}"),
         ]),
         TableRow(children: [
           Text("Voorbereidingstijd"),
           Text(":"),
-          Text("${enrichedRecept.recept.preparingTime}"),
+          Text("${_enrichedRecept.recept.preparingTime}"),
         ]),
         TableRow(children: [
           Text("Totale kooktijd"),
           Text(":"),
-          Text("${enrichedRecept.recept.totalCookingTime}"),
+          Text("${_enrichedRecept.recept.totalCookingTime}"),
         ]),
         TableRow(children: [
           Text("Kcal"),
           Text(":"),
-          Text("${enrichedRecept.nutritionalValues.kcal}"),
+          Text("${_enrichedRecept.nutritionalValues.kcal}"),
         ]),
         TableRow(children: [
           Text("Vet"),
           Text(":"),
-          Text("${enrichedRecept.nutritionalValues.fat}"),
+          Text("${_enrichedRecept.nutritionalValues.fat}"),
         ]),
         TableRow(children: [
           Text("Proteine"),
           Text(":"),
-          Text("${enrichedRecept.nutritionalValues.prot}"),
+          Text("${_enrichedRecept.nutritionalValues.prot}"),
         ]),
       ],
     );
@@ -142,10 +161,10 @@ class _WidgetState extends State<ReceptDetailsPage> {
                 return;
               }
               if (swipeDirection == 'left') {
-                nextRecept();
+                _nextRecept();
               }
               if (swipeDirection == 'right') {
-                prevRecept();
+                _prevRecept();
               }
             },
             child: SingleChildScrollView(
@@ -153,7 +172,7 @@ class _WidgetState extends State<ReceptDetailsPage> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(enrichedRecept.recept.name,
+                Text(_enrichedRecept.recept.name,
                     style: TextStyle(fontSize: 25.0)),
                 Container(
                   alignment: Alignment.topLeft, // use aligment
@@ -162,18 +181,18 @@ class _WidgetState extends State<ReceptDetailsPage> {
                   child: Image.asset('assets/images/recept1.jpeg',
                       height: 300, width: 300, fit: BoxFit.cover),
                 ),
-                if (recept.favorite) new Icon(star, size: 20.0, color: Colors.yellow),
+                if (_recept.favorite) new Icon(star, size: 20.0, color: Colors.yellow),
                 Text(''),
                 Text('Opmerkingen:',
                     style:
                         TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
-                Text(enrichedRecept.recept.remark),
+                Text(_enrichedRecept.recept.remark),
                 Text(''),
                 Text('Ingredienten:',
                     style:
                         TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
               ]+
-                  enrichedRecept.ingredienten.map((item) {
+                  _enrichedRecept.ingredienten.map((item) {
                     return Container(
                       child: Column(
                         children: [
@@ -196,7 +215,7 @@ class _WidgetState extends State<ReceptDetailsPage> {
                 Text('Bereiding:',
                     style:
                         TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
-                Text(enrichedRecept.recept.directions),
+                Text(_enrichedRecept.recept.directions),
                 Text(''),
                 Text('Details:',
                     style:
@@ -211,7 +230,7 @@ class _WidgetState extends State<ReceptDetailsPage> {
                 Text('Tags:',
                     style:
                         TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
-                Text("${enrichedRecept.tags.map((e) => e?.tag).join("\n")}"),
+                Text("${_enrichedRecept.tags.map((e) => e?.tag).join("\n")}"),
                 Text(''),
                 ElevatedButton(
                   child: Text('Bewerk'),
@@ -220,7 +239,7 @@ class _WidgetState extends State<ReceptDetailsPage> {
                       context,
                       MaterialPageRoute(
                           builder: (context) => ReceptEditPage(
-                              title: 'Edit', recept: enrichedRecept)),
+                              title: 'Edit', recept: _enrichedRecept)),
                     );
                   },
                 ),
@@ -232,21 +251,21 @@ class _WidgetState extends State<ReceptDetailsPage> {
                       context,
                       MaterialPageRoute(
                           builder: (context) => ReceptEditPage(
-                              title: 'Edit', recept: enrichedRecept)),
+                              title: 'Edit', recept: _enrichedRecept)),
                     );
                   },
                 ),
                 Text(''),
-                if (!recept.favorite) ElevatedButton(
+                if (!_recept.favorite) ElevatedButton(
                   child: Text('Voeg toe aan favorieten'),
                   onPressed: () {
-                    setFavorite(true);
+                    _setFavorite(true);
                   },
                 ),
-                if (recept.favorite) ElevatedButton(
+                if (_recept.favorite) ElevatedButton(
                   child: Text('Verwijder van favorieten'),
                   onPressed: () {
-                    setFavorite(false);
+                    _setFavorite(false);
                   },
                 ),
               ],

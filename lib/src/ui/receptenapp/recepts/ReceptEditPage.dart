@@ -1,11 +1,12 @@
 import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
-import 'package:receptenapp/src/repositories/RecipesRepository.dart';
+
 import '../../../GetItDependencies.dart';
-import '../../../model/enriched/enrichedmodels.dart';
 import '../../../events/ReceptChangedEvent.dart';
+import '../../../model/enriched/enrichedmodels.dart';
 import '../../../model/recipes/v1/recept.dart';
 import '../../../services/Enricher.dart';
+import '../../../services/ReceptService.dart';
 
 class ReceptEditPage extends StatefulWidget {
   ReceptEditPage({Key? key, required this.title, required this.recept}) : super(key: key) {}
@@ -20,7 +21,7 @@ class ReceptEditPage extends StatefulWidget {
 class _WidgetState extends State<ReceptEditPage> {
   late EnrichedRecept recept;
   late Recept newRecept;
-  var recipesRepository = getIt<RecipesRepository>();
+  var recipesService = getIt<ReceptService>();
   var enricher = getIt<Enricher>();
   var eventBus = getIt<EventBus>();
 
@@ -30,11 +31,10 @@ class _WidgetState extends State<ReceptEditPage> {
   }
 
   _saveForm() {
-    recipesRepository.saveRecept(newRecept);
-    eventBus.fire(ReceptChangedEvent(newRecept.uuid));
+    recipesService.saveRecept(newRecept);
+    eventBus.fire(ReceptChangedEvent(newRecept));
     Navigator.pop(context);
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -107,7 +107,6 @@ class _WidgetState extends State<ReceptEditPage> {
                   )
                 ],
               )
-
           ))
     ;
   }
