@@ -7,6 +7,7 @@ import 'package:receptenapp/src/ui/receptenapp/search/SearchRecipesPage.dart';
 import '../../GetItDependencies.dart';
 import '../../repositories/Repositories.dart';
 import '../../repositories/UserRepository.dart';
+import '../../services/GlobalStateService.dart';
 
 const DISABLE_AUTH = true;
 
@@ -21,6 +22,7 @@ class _MyAppState extends State<ReceptenApp> {
   late StreamSubscription<User?> user;
   var userRepository = getIt<UserRepository>();
   var repositories = getIt<Repositories>();
+  var globalStateService = getIt<GlobalStateService>();
 
   void initState() {
     super.initState();
@@ -46,6 +48,7 @@ class _MyAppState extends State<ReceptenApp> {
           if (snapshot.hasData || DISABLE_AUTH) {
             print("START AFTER AUTH");
             userRepository.setUser(snapshot.data);
+            globalStateService.init();
             repositories.initRepositories();
             return MaterialApp(
               title: 'Flutter Demo',

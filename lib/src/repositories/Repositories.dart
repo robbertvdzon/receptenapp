@@ -1,9 +1,12 @@
+import 'package:event_bus/event_bus.dart';
 import 'package:receptenapp/src/repositories/IngredientsRepository.dart';
 import 'package:receptenapp/src/repositories/ProductsRepository.dart';
 import 'package:receptenapp/src/repositories/RecipesRepository.dart';
 import 'package:receptenapp/src/repositories/IngredientTagsRepository.dart';
 import '../GetItDependencies.dart';
+import '../GlobalState.dart';
 import '../Toggles.dart';
+import '../events/RepositoriesLoadedEvent.dart';
 import 'RecipesTagsRepository.dart';
 import 'UserRepository.dart';
 
@@ -15,6 +18,7 @@ class Repositories {
   var _ingredientTagsRepository = getIt<IngredientTagsRepository>();
   var _recipesTagsRepository = getIt<RecipesTagsRepository>();
   var _userRepository = getIt<UserRepository>();
+  var _eventBus = getIt<EventBus>();
 
   void initRepositories() {
     var email = _userRepository.getUsersEmail();
@@ -26,6 +30,7 @@ class Repositories {
       _ingredientsRepository.init(email)
     ];
     Future.wait(futures).then((value) {
+      _eventBus.fire(RepositoriesLoadedEvent());
       if (PRELOAD_DATABASE_AT_STARTUP) {
         _recipesRepository.setSampleRecipes();
         _productsRepository.setSampleProducts();

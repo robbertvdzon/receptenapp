@@ -7,6 +7,7 @@ import '../../GetItDependencies.dart';
 import '../../Toggles.dart';
 import '../../repositories/Repositories.dart';
 import '../../repositories/UserRepository.dart';
+import '../../services/GlobalStateService.dart';
 import 'PlannerHomePage.dart';
 
 class PlannerApp extends StatefulWidget {
@@ -20,6 +21,7 @@ class _MyAppState extends State<PlannerApp> {
   late StreamSubscription<User?> user;
   var userRepository = getIt<UserRepository>();
   var repositories = getIt<Repositories>();
+  var globalStateService = getIt<GlobalStateService>();
 
   void initState() {
     super.initState();
@@ -45,6 +47,7 @@ class _MyAppState extends State<PlannerApp> {
           if (snapshot.hasData || DISABLE_AUTH) {
             print("START AFTER AUTH");
             userRepository.setUser(snapshot.data);
+            globalStateService.init();
             repositories.initRepositories();
             return MaterialApp(
               title: 'Flutter Demo',

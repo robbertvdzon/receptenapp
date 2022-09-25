@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutterfire_ui/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:receptenapp/src/services/GlobalStateService.dart';
 import '../../GetItDependencies.dart';
 import '../../Toggles.dart';
 import '../../repositories/Repositories.dart';
@@ -20,6 +21,7 @@ class _MainAppState extends State<MainApp> {
   late StreamSubscription<User?> user;
   var userRepository = getIt<UserRepository>();
   var repositories = getIt<Repositories>();
+  var globalStateService = getIt<GlobalStateService>();
 
   void initState() {
     super.initState();
@@ -45,6 +47,7 @@ class _MainAppState extends State<MainApp> {
           if (snapshot.hasData || DISABLE_AUTH) {
             print("START AFTER AUTH");
             userRepository.setUser(snapshot.data);
+            globalStateService.init();
             repositories.initRepositories();
             return MaterialApp(
               title: 'Flutter Demo',

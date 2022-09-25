@@ -10,6 +10,7 @@ import 'package:receptenapp/src/repositories/RecipesRepository.dart';
 import 'package:receptenapp/src/repositories/RecipesTagsRepository.dart';
 import 'package:receptenapp/src/repositories/Repositories.dart';
 import 'package:receptenapp/src/repositories/UserRepository.dart';
+import 'package:receptenapp/src/services/GlobalStateService.dart';
 import 'package:receptenapp/src/services/IngredientService.dart';
 import 'package:receptenapp/src/services/ProductsService.dart';
 import 'package:receptenapp/src/services/ReceptService.dart';
@@ -23,6 +24,8 @@ Future<void> setupDependencies() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   getIt.registerSingleton<FirebaseFirestore>(FirebaseFirestore.instance);
+  getIt.registerSingleton<EventBus>(EventBus());
+  getIt.registerSingleton<GlobalState>(GlobalState());
   getIt.registerSingleton<UserRepository>(UserRepository());
   getIt.registerSingleton<RecipesRepository>(RecipesRepository());
   getIt.registerSingleton<IngredientsRepository>(IngredientsRepository());
@@ -30,10 +33,9 @@ Future<void> setupDependencies() async {
   getIt.registerSingleton<IngredientTagsRepository>(IngredientTagsRepository());
   getIt.registerSingleton<RecipesTagsRepository>(RecipesTagsRepository());
   getIt.registerSingleton<Repositories>(Repositories());
-  getIt.registerSingleton<EventBus>(EventBus());
-  getIt.registerSingleton<GlobalState>(GlobalState());
   getIt.registerSingleton<ReceptService>(ReceptService());
   getIt.registerSingleton<IngredientService>(IngredientService());
   getIt.registerSingleton<ProductsService>(ProductsService());
+  getIt.registerSingleton<GlobalStateService>(GlobalStateService());
   getIt.registerSingleton<Enricher>(Enricher());
 }
