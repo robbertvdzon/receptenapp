@@ -38,7 +38,7 @@ class Enricher {
     recept.ingredients.forEach((receptIngredient) {
       var ingredient = _ingredientsRepository.getIngredientByName(receptIngredient.name);
       if (ingredient!=null) {
-        var productName = ingredient.nutrientName;
+        var productName = ingredient.productName;
         if (productName!=null) {
           var product = _productsRepository.getProductByName(productName);
           double weight = 0.0;
@@ -75,7 +75,7 @@ class Enricher {
   EnrichedIngredient enrichtIngredient(Ingredient ingredient) {
     var nutritionalValues = NutritionalValues();
 
-    var productName = ingredient.nutrientName;
+    var productName = ingredient.productName;
     if (productName!=null) {
       var product = _productsRepository.getProductByName(productName);
       nutritionalValues.kcal = product?.kcal ?? 0;
@@ -96,7 +96,7 @@ class Enricher {
     var recipes = _recipesRepository.getRecipes().recipes.where((element) => element.containsIngredient(ingredient.name)).toList();
 
     return EnrichedIngredient(ingredient.uuid, ingredient.name,ingredient.gramsPerPiece,
-        ingredient.nutrientName, nutritionalValues, tags, recipes);
+        ingredient.productName, nutritionalValues, tags, recipes);
   }
 
   EnrichedIngredientTag enrichtIngredientTag(IngredientTag tag) {

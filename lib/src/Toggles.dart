@@ -14,6 +14,6 @@ import 'package:receptenapp/src/services/ReceptService.dart';
 import '../firebase_options.dart';
 import 'GlobalState.dart';
 
-final bool PRELOAD_DATABASE_AT_STARTUP = false;
+final bool PRELOAD_DATABASE_AT_STARTUP = true;
 final bool DISABLE_AUTH = true;
 

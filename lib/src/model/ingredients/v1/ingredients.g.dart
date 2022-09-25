@@ -21,7 +21,7 @@ Ingredient _$IngredientFromJson(Map<String, dynamic> json) => Ingredient(
       json['name'] as String,
     )
       ..uuid = json['uuid'] as String
-      ..nutrientName = json['nutrientName'] as String?
+      ..productName = json['productName'] as String?
       ..gramsPerPiece = (json['gramsPerPiece'] as num).toDouble()
       ..tags = (json['tags'] as List<dynamic>).map((e) => e as String).toList();
 
@@ -29,7 +29,7 @@ Map<String, dynamic> _$IngredientToJson(Ingredient instance) =>
     <String, dynamic>{
       'uuid': instance.uuid,
       'name': instance.name,
-      'nutrientName': instance.nutrientName,
+      'productName': instance.productName,
       'gramsPerPiece': instance.gramsPerPiece,
       'tags': instance.tags,
     };

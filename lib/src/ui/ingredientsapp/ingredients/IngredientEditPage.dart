@@ -124,7 +124,7 @@ class _WidgetState extends State<IngredientEditPage> {
               items: categories,
               onChanged: (String? newValue) {
                 setState(() {
-                  newIngredient.nutrientName = newValue;
+                  newIngredient.productName = newValue;
                 });
               },
               selectedItem: "${ingredient.nutrientName ?? ''}",

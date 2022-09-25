@@ -28,8 +28,7 @@ class IngredientDetailsPage extends StatefulWidget {
 class _WidgetState extends State<IngredientDetailsPage> {
   late EnrichedIngredient enrichedIngredient;
   late Ingredient ingredient;
-  var ingredientsRepository = getIt<IngredientsRepository>();
-  var nutrientsRepository = getIt<ProductsRepository>();
+  var productsRepository = getIt<ProductsRepository>();
   var enricher = getIt<Enricher>();
 
   _WidgetState(Ingredient ingredient) {
@@ -38,8 +37,8 @@ class _WidgetState extends State<IngredientDetailsPage> {
   }
 
   void _openProdut(){
-    if (ingredient.nutrientName==null) return;
-    var product = nutrientsRepository.getProductByName(ingredient.nutrientName!);
+    if (ingredient.productName==null) return;
+    var product = productsRepository.getProductByName(ingredient.productName!);
     if (product==null) return;
     Navigator.push(
         context,

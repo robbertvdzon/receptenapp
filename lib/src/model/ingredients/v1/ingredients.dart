@@ -19,7 +19,7 @@ class Ingredients {
 class Ingredient {
   String uuid = Uuid().v1();
   String name;
-  String? nutrientName;
+  String? productName;
   double gramsPerPiece = 0;
   List<String> tags = List.empty();
 
@@ -35,8 +35,8 @@ class Ingredient {
   }
 
   String getDisplayNutrientName() {
-    if (nutrientName==null) return "";
-    return "[$nutrientName]";
+    if (productName==null) return "";
+    return "[$productName]";
   }
 }
 

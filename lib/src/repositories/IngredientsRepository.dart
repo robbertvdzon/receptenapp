@@ -98,10 +98,10 @@ class IngredientsRepository {
     final hamburger = Ingredient("hamburger");
     final brood = Ingredient("brood");
     final sojasaus = Ingredient("sojasaus");
-    sojasaus.nutrientName = "Ketjap zout";
+    sojasaus.productName = "Ketjap zout";
     sojasaus.tags = ["houdbaar","potje"];
     final gember = Ingredient("gember");
-    gember.nutrientName = "Gemberwortel";
+    gember.productName = "Gemberwortel";
     gember.tags = ["houdbaar", "biologisch"];
     gember.gramsPerPiece = 25;
     return Ingredients([patat, hamburger, brood, sojasaus, gember]);

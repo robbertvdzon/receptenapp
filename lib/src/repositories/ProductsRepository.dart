@@ -28,7 +28,7 @@ class ProductsRepository {
 
   Products getProducts() {
     if (cachedProducts == null) throw Exception("Repository not initialized");
-    Set<String?> allProductsFromIngredients = _ingredientsRepository.getIngredients().ingredients.map((e) => e.nutrientName).toSet();
+    Set<String?> allProductsFromIngredients = _ingredientsRepository.getIngredients().ingredients.map((e) => e.productName).toSet();
     var combinedProducts = cachedProducts!.products;
     allProductsFromIngredients.forEach((product) {
       if (combinedProducts.where((element) => element.name==product).isEmpty){
