@@ -1,8 +1,6 @@
-import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
 
 import '../../../GetItDependencies.dart';
-import '../../../events/ReceptChangedEvent.dart';
 import '../../../model/enriched/enrichedmodels.dart';
 import '../../../model/recipes/v1/recept.dart';
 import '../../../services/RecipesService.dart';
@@ -21,17 +19,16 @@ class _WidgetState extends State<ReceptEditPage> {
   late EnrichedRecept _recept;
   late Recept _newRecept;
   var _recipesService = getIt<RecipesService>();
-  var _eventBus = getIt<EventBus>();
 
   _WidgetState(EnrichedRecept recept) {
     this._recept = recept;
     this._newRecept = recept.recept;
   }
 
-  _saveForm() {
-    _recipesService.saveRecept(_newRecept);
-    _eventBus.fire(ReceptChangedEvent(_newRecept));
-    Navigator.pop(context);
+  _saveRecept() {
+    _recipesService
+        .saveRecept(_newRecept)
+        .whenComplete(() => Navigator.pop(context));
   }
 
   @override
@@ -100,7 +97,7 @@ class _WidgetState extends State<ReceptEditPage> {
                   ElevatedButton(
                     child: Text('SAVE!'),
                     onPressed: () {
-                      _saveForm();
+                      _saveRecept();
                     },
                   )
                 ],

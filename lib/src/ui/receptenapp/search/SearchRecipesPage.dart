@@ -1,13 +1,19 @@
 import 'dart:async';
 
+import 'package:event_bus/event_bus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:receptenapp/src/services/Enricher.dart';
+import 'package:receptenapp/src/services/RecipesService.dart';
 
 import '../../../GetItDependencies.dart';
+import '../../../events/ReceptCreatedEvent.dart';
+import '../../../model/enriched/enrichedmodels.dart';
 import '../../../model/recipes/v1/recept.dart';
 import '../../../repositories/ProductsRepository.dart';
 import '../../../repositories/RecipesRepository.dart';
 import '../../../services/AppStateService.dart';
+import '../recepts/ReceptEditPage.dart';
 import '../recepts/ReceptItemWidget.dart';
 import '../recepttags/RecipesTagsPage.dart';
 
@@ -21,122 +27,85 @@ class SearchRecipesPage extends StatefulWidget {
 }
 
 class _SearchRecipesPageState extends State<SearchRecipesPage> {
-  List<Recept> recipes = List.empty();
-
-  // List<Recept> filteredRecipes = List.empty();
-  List<String> products = List.empty();
-
-  TextEditingController _textFieldController = TextEditingController();
   TextEditingController _filterTextFieldController = TextEditingController();
-  var _recipesRepository = getIt<RecipesRepository>();
-  var _productsRepository = getIt<ProductsRepository>();
   var _appStateService = getIt<AppStateService>();
+  var _enricher = getIt<Enricher>();
+  var _eventBus = getIt<EventBus>();
   String _filter = "";
   bool? _filterOnFavorite = false;
-  String _valueText = "";
+  StreamSubscription? _eventStreamSub;
 
   @override
   void initState() {
     super.initState();
-    recipes = _recipesRepository.getRecipes().recipes;
-    recipes.sort((a, b) => a.name.compareTo(b.name));
+    _filterRecipes();
+    _eventStreamSub = _eventBus.on<ReceptCreatedEvent>().listen((event) => _processEvent(event));
+  }
 
-    _appStateService.setFilteredRecipes(recipes
-        .where((element) =>
-            element.name != null && element.name!.contains(_filter))
-        .toList());
-    products = _productsRepository
-        .getProducts()
-        .products
-        .map((e) => e.name ?? "")
-        .toList();
+  @override
+  void dispose() {
+    super.dispose();
+    _eventStreamSub?.cancel();
+  }
+
+  void _processEvent(ReceptCreatedEvent event) {
+      setState(() {
+        _filter = event.recept.name;
+        _filterRecipes();
+      });
   }
 
   void _updateFilter(String filter) {
     setState(() {
       _filter = filter;
-      _filterProducts();
+      _filterRecipes();
     });
   }
 
   void _updateFilterOnFavorite(bool? filterOnFavorite) {
     setState(() {
       _filterOnFavorite = filterOnFavorite;
-      _filterProducts();
+      _filterRecipes();
     });
   }
 
-  void addProduct(String name) {
-    _recipesRepository.createAndAddRecept(name).then((value) => {
-          setState(() {
-            recipes = _recipesRepository.getRecipes().recipes;
-            _appStateService.setFilteredRecipes(recipes
-                .where((element) =>
-                    element.name != null && element.name!.contains(_filter))
-                .toList());
-          })
-        });
+  void _createNewRecept() {
+    Recept newRecept = new Recept(List.empty(), "Nieuw recept");
+    EnrichedRecept enrichedNewRecept = _enricher.enrichRecipe(newRecept);
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) =>
+                ReceptEditPage(
+                    title: 'Nieuw recept', recept: enrichedNewRecept)),
+      );
   }
 
-  void _filterProducts() {
+  void _filterRecipes() {
     bool filterOnFavorite = _filterOnFavorite == true;
 
     // TODO: dit kan vast in 1 query!
+    List<Recept> recipes = _getSortedListOrRecipes();
     if (filterOnFavorite) {
       _appStateService.setFilteredRecipes(recipes
           .where((element) =>
-              element.favorite &&
-              element.name != null &&
-              element.name.toLowerCase().contains(_filter.toLowerCase()))
+      element.favorite &&
+          element.name != null &&
+          element.name.toLowerCase().contains(_filter.toLowerCase()))
           .toList());
     } else {
       _appStateService.setFilteredRecipes(recipes
           .where((element) =>
-              element.name != null &&
-              element.name.toLowerCase().contains(_filter.toLowerCase()))
+      element.name != null &&
+          element.name.toLowerCase().contains(_filter.toLowerCase()))
           .toList());
     }
   }
 
-  Future<void> _displayTextInputDialog(BuildContext context) async {
-    return showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text('TextField in Dialog'),
-            content: TextField(
-              onChanged: (value) {
-                setState(() {
-                  _valueText = value;
-                });
-              },
-              controller: _textFieldController,
-              decoration: InputDecoration(hintText: "Text Field in Dialog"),
-            ),
-            actions: <Widget>[
-              FlatButton(
-                color: Colors.red,
-                textColor: Colors.white,
-                child: Text('CANCEL'),
-                onPressed: () {
-                  setState(() {
-                    Navigator.pop(context);
-                  });
-                },
-              ),
-              FlatButton(
-                color: Colors.green,
-                textColor: Colors.white,
-                child: Text('OK'),
-                onPressed: () {
-                  addProduct(_valueText);
-                  _updateFilter(_valueText);
-                  Navigator.pop(context);
-                },
-              ),
-            ],
-          );
-        });
+  List<Recept> _getSortedListOrRecipes() {
+    List<Recept> recipes = List.of(_appStateService.getRecipes());
+    recipes.sort((a, b) => a.name.compareTo(b.name));
+    return recipes;
   }
 
   @override
@@ -186,7 +155,9 @@ class _SearchRecipesPageState extends State<SearchRecipesPage> {
                   decoration: InputDecoration(
                       border: InputBorder.none,
                       labelText:
-                          'Quickfilter: (${_appStateService.getFilteredRecipes().length} recepten)'),
+                      'Quickfilter: (${_appStateService
+                          .getFilteredRecipes()
+                          .length} recepten)'),
                   autofocus: true,
                   controller: _filterTextFieldController..text = '$_filter',
                   onChanged: (text) => {_updateFilter(text)},
@@ -232,9 +203,7 @@ class _SearchRecipesPageState extends State<SearchRecipesPage> {
 
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // _filterTextFieldController.text ="bla";
-          // _incrementCounter(_filterTextFieldController);
-          _displayTextInputDialog(context);
+          _createNewRecept();
         },
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.

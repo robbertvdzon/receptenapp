@@ -41,6 +41,12 @@ class RecipesRepository {
     return saveRecipes(recipes);
   }
 
+  Future<void> addRecept(Recept recept) async {
+    var recipes = getRecipes();
+    recipes.recipes.add(recept);
+    return saveRecipes(recipes);
+  }
+
   Future<void> saveRecipes(Recipes recipes) async {
     if (usersCollection == null) throw Exception("Repository not initialized");
     final Map<String, dynamic> jsonMap = recipes.toJson();
@@ -53,13 +59,13 @@ class RecipesRepository {
         .then((data) => cachedRecipes = recipes);
   }
 
-  Future<Recept> createAndAddRecept(String name) async {
-    return _loadRecipes().then((recipes) {
-      final recept = Recept(List.empty(),name);
-      recipes.recipes.add(recept);
-      return saveRecipes(recipes).then((value) => recept);
-    });
-  }
+  // Future<Recept> createAndAddRecept(String name) async {
+  //   return _loadRecipes().then((recipes) {
+  //     final recept = Recept(List.empty(),name);
+  //     recipes.recipes.add(recept);
+  //     return saveRecipes(recipes).then((value) => recept);
+  //   });
+  // }
 
   Future<Recipes> _loadRecipes() async {
     if (usersCollection == null) throw Exception("Repository not initialized");

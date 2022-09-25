@@ -20,7 +20,7 @@ class ReceptItemWidget extends StatefulWidget {
 
 class _WidgetState extends State<ReceptItemWidget> {
   late Recept _recept;
-  var _eventBus = getIt<EventBus>();
+  final _eventBus = getIt<EventBus>();
   StreamSubscription? _eventStreamSub;
 
   _WidgetState(Recept recept) {
@@ -29,13 +29,15 @@ class _WidgetState extends State<ReceptItemWidget> {
 
   @override
   void initState() {
-    _eventStreamSub = _eventBus.on<ReceptChangedEvent>().listen((event) {
-      if (event.recept.uuid == _recept.uuid) {
-        setState(() {
-          _recept = event.recept;
-        });
-      }
-    });
+    _eventStreamSub = _eventBus.on<ReceptChangedEvent>().listen((event) => _processEvent(event));
+  }
+
+  void _processEvent(ReceptChangedEvent event) {
+    if (event.recept.uuid == _recept.uuid) {
+      setState(() {
+        _recept = event.recept;
+      });
+    }
   }
 
   @override
@@ -44,7 +46,7 @@ class _WidgetState extends State<ReceptItemWidget> {
     _eventStreamSub?.cancel();
   }
 
-  _openForm() {
+  _openRecept() {
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -57,7 +59,7 @@ class _WidgetState extends State<ReceptItemWidget> {
   Widget build(BuildContext context) {
     return InkWell(
         onTap: () {
-          _openForm();
+          _openRecept();
         }, // Handle your callback
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,

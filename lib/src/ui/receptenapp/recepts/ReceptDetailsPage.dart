@@ -30,7 +30,6 @@ class _WidgetState extends State<ReceptDetailsPage> {
   var _recipesService = getIt<RecipesService>();
   var _appStateService = getIt<AppStateService>();
 
-  late Recept _recept;
   late EnrichedRecept _enrichedRecept;
   var _enricher = getIt<Enricher>();
   var _eventBus = getIt<EventBus>();
@@ -38,20 +37,28 @@ class _WidgetState extends State<ReceptDetailsPage> {
 
   _WidgetState(Recept recept) {
     this._enrichedRecept = _enricher.enrichRecipe(recept);
-    this._recept = recept;
+  }
+
+  @override
+  void initState() {
+    _eventStreamSub = _eventBus.on<ReceptChangedEvent>().listen((event) => _processEvent(event));
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _eventStreamSub?.cancel();
   }
 
   void _nextRecept() {
-    _recept = _getNextRecept(_recept);
-    this._enrichedRecept = _enricher.enrichRecipe(_recept);
-    this._recept = _recept;
+    Recept newRecept = _getNextRecept(_enrichedRecept.recept);
+    this._enrichedRecept = _enricher.enrichRecipe(newRecept);
     setState(() {});
   }
 
   void _prevRecept() {
-    _recept = _getPreviousRecept(_recept);
-    this._enrichedRecept = _enricher.enrichRecipe(_recept);
-    this._recept = _recept;
+    Recept newRecept = _getPreviousRecept(_enrichedRecept.recept);
+    this._enrichedRecept = _enricher.enrichRecipe(newRecept);
     setState(() {});
   }
 
@@ -75,32 +82,22 @@ class _WidgetState extends State<ReceptDetailsPage> {
     return _appStateService.getFilteredRecipes().elementAt(currentIndex-1);
   }
 
-
   void _setFavorite(bool favorite){
-    _recept.favorite = favorite;
-    _recipesService.saveRecept(_recept);
-    _eventBus.fire(ReceptChangedEvent(_recept));
+    Recept recept = _enrichedRecept.recept;
+    recept.favorite = favorite;
+    _recipesService.saveRecept(recept);
+    _eventBus.fire(ReceptChangedEvent(recept));
   }
 
-
-  @override
-  void initState() {
-    _eventStreamSub = _eventBus.on<ReceptChangedEvent>().listen((event) {
-      if (event.recept.uuid == _enrichedRecept.recept.uuid) {
-        setState(() {
-          Recept? updatedRecept = _appStateService.getRecipes().firstWhereOrNull((element) => element.uuid==uuid);
-          if (updatedRecept != null) {
-            _enrichedRecept = _enricher.enrichRecipe(updatedRecept);
-          }
-        });
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _eventStreamSub?.cancel();
+  void _processEvent(ReceptChangedEvent event) {
+    if (event.recept.uuid == _enrichedRecept.recept.uuid) {
+      setState(() {
+        Recept? updatedRecept = _appStateService.getRecipes().firstWhereOrNull((element) => element.uuid==uuid);
+        if (updatedRecept != null) {
+          _enrichedRecept = _enricher.enrichRecipe(updatedRecept);
+        }
+      });
+    }
   }
 
   Table tableWithValues() {
@@ -181,7 +178,7 @@ class _WidgetState extends State<ReceptDetailsPage> {
                   child: Image.asset('assets/images/recept1.jpeg',
                       height: 300, width: 300, fit: BoxFit.cover),
                 ),
-                if (_recept.favorite) new Icon(ICON_YELLOW_STAR, size: 20.0, color: Colors.yellow),
+                if (_enrichedRecept.recept.favorite) new Icon(ICON_YELLOW_STAR, size: 20.0, color: Colors.yellow),
                 Text(''),
                 Text('Opmerkingen:',
                     style:
@@ -256,13 +253,13 @@ class _WidgetState extends State<ReceptDetailsPage> {
                   },
                 ),
                 Text(''),
-                if (!_recept.favorite) ElevatedButton(
+                if (!_enrichedRecept.recept.favorite) ElevatedButton(
                   child: Text('Voeg toe aan favorieten'),
                   onPressed: () {
                     _setFavorite(true);
                   },
                 ),
-                if (_recept.favorite) ElevatedButton(
+                if (_enrichedRecept.recept.favorite) ElevatedButton(
                   child: Text('Verwijder van favorieten'),
                   onPressed: () {
                     _setFavorite(false);
