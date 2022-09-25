@@ -1,8 +1,10 @@
 import 'dart:async';
 
+import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
 import 'package:receptenapp/src/GlobalState.dart';
 import 'package:receptenapp/src/model/ingredients/v1/ingredients.dart';
+
 import '../../../GetItDependencies.dart';
 import '../../../events/IngredientChangedEvent.dart';
 import '../../../model/enriched/enrichedmodels.dart';
@@ -33,6 +35,7 @@ class _WidgetState extends State<IngredientDetailsPage> {
   var _productsService = getIt<ProductsService>();
   var _enricher = getIt<Enricher>();
   var _globalState = getIt<GlobalState>();
+  var _eventBus = getIt<EventBus>();
   StreamSubscription? _eventStreamSub;
 
   _WidgetState(Ingredient ingredient) {
@@ -46,7 +49,7 @@ class _WidgetState extends State<IngredientDetailsPage> {
   }
 
   void _handleEvents() {
-    _eventStreamSub = _globalState.eventBus.on<IngredientChangedEvent>().listen((event) {
+    _eventStreamSub = _eventBus.on<IngredientChangedEvent>().listen((event) {
       if (event.ingredient.uuid == _enrichedIngredient.uuid) {
         setState(() {
           _enrichedIngredient = _enricher.enrichtIngredient(event.ingredient);

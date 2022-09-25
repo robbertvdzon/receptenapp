@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:event_bus/event_bus.dart';
 import 'package:receptenapp/src/repositories/IngredientTagsRepository.dart';
 import 'package:receptenapp/src/repositories/IngredientsRepository.dart';
 import '../events/RepositoriesLoadedEvent.dart';
@@ -12,6 +13,7 @@ import '../repositories/UserRepository.dart';
 class GlobalStateService {
   StreamSubscription? _eventStreamSub;
   var _state = getIt<GlobalState>();
+  var _eventBus = getIt<EventBus>();
   var _ingredientsRepository = getIt<IngredientsRepository>();
   var _productsRepository = getIt<ProductsRepository>();
   var _recipesRepository = getIt<RecipesRepository>();
@@ -20,7 +22,7 @@ class GlobalStateService {
   var _userRepository = getIt<UserRepository>();
 
   void init(){
-    _eventStreamSub = _state.eventBus.on<RepositoriesLoadedEvent>().listen((event) {
+    _eventStreamSub = _eventBus.on<RepositoriesLoadedEvent>().listen((event) {
       _loadFromStore();
     });
   }

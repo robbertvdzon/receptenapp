@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../GetItDependencies.dart';
 import '../../../model/products/v1/products.dart';
-import '../../../repositories/ProductsRepository.dart';
 import 'ProductDetailsPage.dart';
 
 class ProductItemWidget extends StatefulWidget {
@@ -14,36 +12,11 @@ class ProductItemWidget extends StatefulWidget {
 }
 
 class _WidgetState extends State<ProductItemWidget> {
-  late Product product;
-  late Product newProduct;
-  var productsRepository = getIt<ProductsRepository>();
+  late Product _product;
 
 
   _WidgetState(Product product) {
-    this.product = product;
-    this.newProduct = product;
-  }
-
-  _saveForm(){
-    var baseIngredients = productsRepository.getProducts();
-
-    baseIngredients.products.where((element) => element.name==product.name).forEach((element) {
-      element.name = newProduct.name;
-      element.quantity = newProduct.quantity;
-      element.category = newProduct.category;
-      element.nevoCode = newProduct.nevoCode;
-      element.kcal = newProduct.kcal;
-      element.prot = newProduct.prot;
-      element.nt = newProduct.nt;
-      element.fat = newProduct.fat;
-      element.sugar = newProduct.sugar;
-      element.na = newProduct.na;
-      element.k = newProduct.k;
-      element.fe = newProduct.fe;
-      element.mg = newProduct.mg;
-      element.customProduct = newProduct.customProduct;
-    });
-    productsRepository.saveProducts(baseIngredients);
+    this._product = product;
   }
 
   _openForm() {
@@ -51,10 +24,9 @@ class _WidgetState extends State<ProductItemWidget> {
       context,
       MaterialPageRoute(
           builder: (context) =>
-              ProductDetailsPage(title: 'Product', product: product)),
+              ProductDetailsPage(title: 'Product', product: _product)),
     );
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +40,7 @@ class _WidgetState extends State<ProductItemWidget> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Row(children: <Widget>[
-              new Text(product.name??""),
+              new Text(_product.name??""),
             ])
           ],
         )

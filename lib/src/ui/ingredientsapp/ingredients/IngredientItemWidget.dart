@@ -1,8 +1,9 @@
 import 'dart:async';
 
+import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
+
 import '../../../GetItDependencies.dart';
-import '../../../GlobalState.dart';
 import '../../../events/IngredientChangedEvent.dart';
 import '../../../model/ingredients/v1/ingredients.dart';
 import 'IngredientDetailsPage.dart';
@@ -13,7 +14,7 @@ class IngredientItemWidget extends StatefulWidget {
       : super(key: key) {}
 
   final Ingredient ingredient;
-  final List<String> categories; 
+  final List<String> categories;
 
   @override
   State<IngredientItemWidget> createState() =>
@@ -21,12 +22,12 @@ class IngredientItemWidget extends StatefulWidget {
 }
 
 class _WidgetState extends State<IngredientItemWidget> {
-  late Ingredient ingredient;
-  var _globalState = getIt<GlobalState>();
+  late Ingredient _ingredient;
+  var _eventBus = getIt<EventBus>();
   StreamSubscription? _eventStreamSub;
 
   _WidgetState(Ingredient ingredient, List<String> categories) {
-    this.ingredient = ingredient;
+    this._ingredient = ingredient;
   }
 
 
@@ -36,10 +37,10 @@ class _WidgetState extends State<IngredientItemWidget> {
   }
 
   void _handleEvents() {
-    _eventStreamSub = _globalState.eventBus.on<IngredientChangedEvent>().listen((event) {
-      if (event.ingredient.uuid == ingredient.uuid) {
+    _eventStreamSub = _eventBus.on<IngredientChangedEvent>().listen((event) {
+      if (event.ingredient.uuid == _ingredient.uuid) {
         setState(() {
-          ingredient = event.ingredient;
+          _ingredient = event.ingredient;
         });
       }
     });
@@ -57,7 +58,7 @@ class _WidgetState extends State<IngredientItemWidget> {
       MaterialPageRoute(
           builder: (context) => IngredientDetailsPage(
                 title: 'Ingredient',
-                ingredient: ingredient
+                ingredient: _ingredient
               )),
     );
   }
@@ -74,7 +75,7 @@ class _WidgetState extends State<IngredientItemWidget> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Row(children: <Widget>[
-              new Text(ingredient.name+" ${ingredient.getDisplayProductName()}"),
+              new Text(_ingredient.name+" ${_ingredient.getDisplayProductName()}"),
             ])
           ],
         )

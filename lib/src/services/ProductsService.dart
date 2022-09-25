@@ -9,7 +9,24 @@ class ProductsService {
   var _productsRepository = getIt<ProductsRepository>();
 
   Product? getProductByName (String name) {
-    return _productsRepository.getProducts().products.firstWhereOrNull((element) => element.name==name);
+    return getProducts().products.firstWhereOrNull((element) => element.name==name);
+  }
+
+  Products getProducts() {
+    return _productsRepository.getProducts();
+  }
+
+  Future<void> saveProduct(Product product) {
+    return _productsRepository.saveProduct(product);
+  }
+
+
+  Future<void> saveProducts(Products products) {
+    return _productsRepository.saveProducts(products);
+  }
+
+  Future<Product> createAndAddProduct(String name) {
+    return _productsRepository.createAndAddProduct(name);
   }
 
 }

@@ -3,6 +3,7 @@ import 'dart:async';
 import '../../../GetItDependencies.dart';
 import '../../../model/products/v1/products.dart';
 import '../../../repositories/ProductsRepository.dart';
+import '../../../services/ProductsService.dart';
 import 'ProductItemWidget.dart';
 
 class SearchProductsPage extends StatefulWidget {
@@ -15,19 +16,19 @@ class SearchProductsPage extends StatefulWidget {
 }
 
 class _SearchProductsPageState extends State<SearchProductsPage> {
-  Products products = Products(List.empty());
-  List<Product> filteredProducts = List.empty();
+  Products _products = Products(List.empty());
+  List<Product> _filteredProducts = List.empty();
   TextEditingController _textFieldController = TextEditingController();
   TextEditingController _filterTextFieldController = TextEditingController();
-  var productsRepository = getIt<ProductsRepository>();
+  var _productsService = getIt<ProductsService>();
   String _filter = "";
-  String codeDialog ="";
-  String valueText = "";
+  String _codeDialog ="";
+  String _valueText = "";
 
   @override
   void initState() {
-    products = productsRepository.getProducts();
-    filteredProducts = products.products.where((element) => element.name!=null && element.name!.contains(_filter)).toList();
+    _products = _productsService.getProducts();
+    _filteredProducts = _products.products.where((element) => element.name!=null && element.name!.contains(_filter)).toList();
   }
 
   void _updateFilter(String filter) {
@@ -38,17 +39,17 @@ class _SearchProductsPageState extends State<SearchProductsPage> {
   }
 
   void addProduct(String name) {
-    productsRepository.createAndAddProduct(name).then((value) => {
+    _productsService.createAndAddProduct(name).then((value) => {
       setState(() {
-        products = productsRepository.getProducts();
-        filteredProducts = products.products.where((element) => element.name!=null && element.name!.contains(_filter)).toList();
+        _products = _productsService.getProducts();
+        _filteredProducts = _products.products.where((element) => element.name!=null && element.name!.contains(_filter)).toList();
       })
     });
 
   }
 
   void _filterProducts() {
-    filteredProducts = products.products.where((element) => element.name!=null && element.name!.toLowerCase().contains(_filter.toLowerCase())).toList();
+    _filteredProducts = _products.products.where((element) => element.name!=null && element.name!.toLowerCase().contains(_filter.toLowerCase())).toList();
   }
 
   Future<void> _displayTextInputDialog(BuildContext context) async {
@@ -60,7 +61,7 @@ class _SearchProductsPageState extends State<SearchProductsPage> {
             content: TextField(
               onChanged: (value) {
                 setState(() {
-                  valueText = value;
+                  _valueText = value;
                 });
               },
               controller: _textFieldController,
@@ -82,8 +83,8 @@ class _SearchProductsPageState extends State<SearchProductsPage> {
                 textColor: Colors.white,
                 child: Text('OK'),
                 onPressed: () {
-                  addProduct(valueText);
-                  _updateFilter(valueText);
+                  addProduct(_valueText);
+                  _updateFilter(_valueText);
                   Navigator.pop(context);
                 },
               ),
@@ -107,7 +108,7 @@ class _SearchProductsPageState extends State<SearchProductsPage> {
                 width: 500,
                 child:
                 TextFormField(key: Key(_filter.toString()),
-                  decoration: InputDecoration(border: InputBorder.none, labelText: 'Filter: (${filteredProducts.length} ingredienten)'),
+                  decoration: InputDecoration(border: InputBorder.none, labelText: 'Filter: (${_filteredProducts.length} ingredienten)'),
                   autofocus: true,
                   controller: _filterTextFieldController..text = '$_filter',
                   onChanged: (text) => {_updateFilter(text)},
@@ -117,7 +118,7 @@ class _SearchProductsPageState extends State<SearchProductsPage> {
               height: 750,
               width: 500,
               child: ListView(
-                children: filteredProducts.map((item) {
+                children: _filteredProducts.map((item) {
                   return Container(
                     child:
                     Column(

@@ -19,13 +19,13 @@ class SearchIngredientsPage extends StatefulWidget {
 }
 
 class _SearchIngredientsPageState extends State<SearchIngredientsPage> {
-  List<Ingredient> ingredients = List.empty();
-  List<Ingredient> filteredIngredients = List.empty();
-  List<String> nutricients = List.empty();
+  List<Ingredient> _ingredients = List.empty();
+  List<Ingredient> _filteredIngredients = List.empty();
+  List<String> _products = List.empty();
 
   TextEditingController _textFieldController = TextEditingController();
   TextEditingController _filterTextFieldController = TextEditingController();
-  var ingredientsRepository = getIt<IngredientsRepository>();
+  var _ingredientsRepository = getIt<IngredientsRepository>();
   var productsRepository = getIt<ProductsRepository>();
   String _filter = "";
   String codeDialog = "";
@@ -34,14 +34,14 @@ class _SearchIngredientsPageState extends State<SearchIngredientsPage> {
   @override
   void initState() {
     super.initState();
-    ingredients = ingredientsRepository.getIngredients().ingredients;
-    ingredients.sort((a, b) => a.name.compareTo(b.name));
+    _ingredients = _ingredientsRepository.getIngredients().ingredients;
+    _ingredients.sort((a, b) => a.name.compareTo(b.name));
 
-    filteredIngredients = ingredients
+    _filteredIngredients = _ingredients
         .where((element) =>
     element.name != null && element.name.contains(_filter))
         .toList();
-    nutricients = productsRepository
+    _products = productsRepository
         .getProducts()
         .products
         .map((e) => e.name ?? "")
@@ -56,10 +56,10 @@ class _SearchIngredientsPageState extends State<SearchIngredientsPage> {
   }
 
   void addProduct(String name) {
-    ingredientsRepository.createAndAddIngredient(name).then((value) => {
+    _ingredientsRepository.createAndAddIngredient(name).then((value) => {
           setState(() {
-            ingredients = ingredientsRepository.getIngredients().ingredients;
-            filteredIngredients = ingredients
+            _ingredients = _ingredientsRepository.getIngredients().ingredients;
+            _filteredIngredients = _ingredients
                 .where((element) =>
                     element.name != null && element.name!.contains(_filter))
                 .toList();
@@ -68,7 +68,7 @@ class _SearchIngredientsPageState extends State<SearchIngredientsPage> {
   }
 
   void _filterProducts() {
-    filteredIngredients = ingredients
+    _filteredIngredients = _ingredients
         .where((element) =>
             element.name != null &&
             element.name!.toLowerCase().contains(_filter.toLowerCase()))
@@ -165,7 +165,7 @@ class _SearchIngredientsPageState extends State<SearchIngredientsPage> {
                   decoration: InputDecoration(
                       border: InputBorder.none,
                       labelText:
-                      'Filter: (${filteredIngredients.length} ingredienten)'),
+                      'Filter: (${_filteredIngredients.length} ingredienten)'),
                   autofocus: true,
                   controller: _filterTextFieldController..text = '$_filter',
                   onChanged: (text) => {_updateFilter(text)},
@@ -175,7 +175,7 @@ class _SearchIngredientsPageState extends State<SearchIngredientsPage> {
               height: 750,
               width: 500,
               child: ListView(
-                children: filteredIngredients.map((item) {
+                children: _filteredIngredients.map((item) {
                   return Container(
                     child: Column(
                       children: [
@@ -186,7 +186,7 @@ class _SearchIngredientsPageState extends State<SearchIngredientsPage> {
                           alignment: Alignment.center,
                           child: IngredientItemWidget(
                               ingredient: item,
-                              categories: nutricients,
+                              categories: _products,
                               key: ObjectKey(item)),
                         ),
                       ],

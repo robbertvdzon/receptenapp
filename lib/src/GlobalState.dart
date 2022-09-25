@@ -20,8 +20,4 @@ class GlobalState {
   // filter data
   List<Recept> filteredRecipes = List.empty();
 
-  // eventBus
-  var eventBus = getIt<EventBus>();
-
-  
 }
