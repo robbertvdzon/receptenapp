@@ -11,7 +11,7 @@ import 'ReceptEditPage.dart';
 import 'package:event_bus/event_bus.dart';
 
 import 'ReceptIngredientItemWidget.dart';
-import 'UIRecepenGlobalState.dart';
+import '../../state/UIRecepenGlobalState.dart';
 
 class ReceptDetailsPage extends StatefulWidget {
   ReceptDetailsPage({Key? key, required this.title, required this.recept})
@@ -41,9 +41,9 @@ class _WidgetState extends State<ReceptDetailsPage> {
   }
 
   void nextRecept() {
-    uiReceptenGlobalState.selectedRecept = recept;
-    uiReceptenGlobalState.selectNextRecept();
-    Recept? newRecept = uiReceptenGlobalState.selectedRecept;
+    // uiReceptenGlobalState.selectedRecept = recept;
+    recept = uiReceptenGlobalState.selectNextRecept(recept);
+    Recept? newRecept = recept;
     if (newRecept != null) {
       this.enrichedRecept = enricher.enrichRecipe(newRecept);
       this.recept = newRecept;
@@ -52,9 +52,8 @@ class _WidgetState extends State<ReceptDetailsPage> {
   }
 
   void prevRecept() {
-    uiReceptenGlobalState.selectedRecept = recept;
-    uiReceptenGlobalState.selectPreviousRecept();
-    Recept? newRecept = uiReceptenGlobalState.selectedRecept;
+    recept = uiReceptenGlobalState.selectPreviousRecept(recept);
+    Recept? newRecept = recept;
     if (newRecept != null) {
       this.enrichedRecept = enricher.enrichRecipe(newRecept);
       this.recept = newRecept;

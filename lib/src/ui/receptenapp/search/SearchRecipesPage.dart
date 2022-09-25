@@ -6,7 +6,7 @@ import '../../../model/recipes/v1/recept.dart';
 import '../../../services/repositories/ProductsRepository.dart';
 import '../../../services/repositories/RecipesRepository.dart';
 import '../recepts/ReceptItemWidget.dart';
-import '../recepts/UIRecepenGlobalState.dart';
+import '../../state/UIRecepenGlobalState.dart';
 import '../recepttags/RecipesTagsPage.dart';
 
 class SearchRecipesPage extends StatefulWidget {
