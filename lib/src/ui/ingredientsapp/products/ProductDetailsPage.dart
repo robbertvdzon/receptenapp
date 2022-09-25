@@ -28,9 +28,7 @@ class _WidgetState extends State<ProductDetailsPage> {
   _WidgetState(Product product) {
     this._product = product;
     _eventStreamSub = _eventBus.on<ProductChangedEvent>().listen((event) => handleEvent(event));
-
   }
-
 
   void handleEvent(ProductChangedEvent event) {
     if (event.product.name == _product.name) {

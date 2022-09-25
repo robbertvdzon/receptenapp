@@ -19,7 +19,7 @@ class _WidgetState extends State<ReceptTagItemWidget> {
     this._receptTag = receptTag;
   }
 
-  _openForm() {
+  _openReceptTag() {
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -34,7 +34,7 @@ class _WidgetState extends State<ReceptTagItemWidget> {
       children: <Widget>[
         new TextButton(
           onPressed: () {
-            _openForm();
+            _openReceptTag();
           },
           child: new Text(_receptTag.tag??""),
         )

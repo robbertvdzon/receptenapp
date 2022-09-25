@@ -58,7 +58,7 @@ class _WidgetState extends State<IngredientDetailsPage> {
     _eventStreamSub?.cancel();
   }
 
-  void _openIngredient() {
+  void _openProduct() {
     if (_ingredient.productName == null) return;
     var product = _productsService.getProductByName(_ingredient.productName!);
     if (product == null) return;
@@ -114,7 +114,7 @@ class _WidgetState extends State<IngredientDetailsPage> {
           Text(":"),
           InkWell(
             onTap: () {
-              _openIngredient();
+              _openProduct();
             }, // Handle your callback
             child: Text("${_enrichedIngredient.productName}"),
           )

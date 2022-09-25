@@ -5,11 +5,10 @@ import 'package:flutterfire_ui/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:receptenapp/src/ui/receptenapp/search/SearchRecipesPage.dart';
 import '../../GetItDependencies.dart';
+import '../../Toggles.dart';
 import '../../repositories/Repositories.dart';
 import '../../repositories/UserRepository.dart';
 import '../../services/AppStateService.dart';
-
-const DISABLE_AUTH = true;
 
 class ReceptenApp extends StatefulWidget {
   ReceptenApp({Key? key}) : super(key: key) {}
@@ -50,7 +49,7 @@ class _MyAppState extends State<ReceptenApp> {
             _appStateService.init();
             _repositories.initRepositories();
             return MaterialApp(
-              title: 'Flutter Demo',
+              title: 'Gutz',
               theme: ThemeData(
                 brightness: Brightness.dark,
                 primarySwatch: Colors.blue,

@@ -47,6 +47,4 @@ class _WidgetState extends State<ProductItemWidget> {
     );
   }
 
-
-
 }

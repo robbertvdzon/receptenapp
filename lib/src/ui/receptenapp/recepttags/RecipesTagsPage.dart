@@ -49,9 +49,7 @@ class _PageState extends State<RecipesTagsPage> {
                           ReceptTagItemWidget(receptTag: item, key: ObjectKey(item)),
                         ),
                       ],
-
                     ),
-
                     margin: EdgeInsets.all(0),
                     padding: EdgeInsets.all(0),
                     // color: Colors.green[100],

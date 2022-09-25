@@ -32,17 +32,15 @@ class _WidgetState extends State<IngredientItemWidget> {
 
   @override
   void initState() {
-    _handleEvents();
+    _eventStreamSub = _eventBus.on<IngredientChangedEvent>().listen((event) => processEvent(event));
   }
 
-  void _handleEvents() {
-    _eventStreamSub = _eventBus.on<IngredientChangedEvent>().listen((event) {
-      if (event.ingredient.uuid == _ingredient.uuid) {
-        setState(() {
-          _ingredient = event.ingredient;
-        });
-      }
-    });
+  void processEvent(IngredientChangedEvent event) {
+    if (event.ingredient.uuid == _ingredient.uuid) {
+      setState(() {
+        _ingredient = event.ingredient;
+      });
+    }
   }
 
   @override

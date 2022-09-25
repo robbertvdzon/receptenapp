@@ -1,12 +1,12 @@
+import 'dart:async';
+
 import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
-import 'dart:async';
+
 import '../../../GetItDependencies.dart';
 import '../../../events/ProductCreatedEvent.dart';
 import '../../../model/products/v1/products.dart';
-import '../../../repositories/ProductsRepository.dart';
 import '../../../services/AppStateService.dart';
-import '../../../services/ProductsService.dart';
 import 'ProductEditPage.dart';
 import 'ProductItemWidget.dart';
 
@@ -64,7 +64,6 @@ class _SearchProductsPageState extends State<SearchProductsPage> {
     );
   }
 
-
   void _filterProducts() {
     List<Product> products = _getSortedListOfProducts();
     _filteredProducts = products.where((element) => element.name!=null && element.name!.toLowerCase().contains(_filter.toLowerCase())).toList();
@@ -116,9 +115,7 @@ class _SearchProductsPageState extends State<SearchProductsPage> {
                         ProductItemWidget(product: item, key: ObjectKey(item)),
                         ),
                       ],
-
                   ),
-
                     margin: EdgeInsets.all(0),
                     padding: EdgeInsets.all(0),
                     // color: Colors.green[100],

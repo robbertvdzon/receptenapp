@@ -32,18 +32,18 @@ class _WidgetState extends State<ReceptItemWidget> {
     _eventStreamSub = _eventBus.on<ReceptChangedEvent>().listen((event) => _processEvent(event));
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+    _eventStreamSub?.cancel();
+  }
+
   void _processEvent(ReceptChangedEvent event) {
     if (event.recept.uuid == _recept.uuid) {
       setState(() {
         _recept = event.recept;
       });
     }
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _eventStreamSub?.cancel();
   }
 
   _openRecept() {

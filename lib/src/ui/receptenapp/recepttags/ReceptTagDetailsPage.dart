@@ -24,7 +24,6 @@ class _WidgetState extends State<ReceptTagDetailsPage> {
   }
   @override
   Widget build(BuildContext context) {
-
     return
       Scaffold(
           appBar: AppBar(
@@ -45,11 +44,8 @@ class _WidgetState extends State<ReceptTagDetailsPage> {
 
                 ],
               )
-
-          ))
-    ;
+          ));
   }
-
 }
 
 

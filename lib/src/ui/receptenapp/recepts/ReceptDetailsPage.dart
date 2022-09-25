@@ -50,6 +50,17 @@ class _WidgetState extends State<ReceptDetailsPage> {
     _eventStreamSub?.cancel();
   }
 
+  void _processEvent(ReceptChangedEvent event) {
+    if (event.recept.uuid == _enrichedRecept.recept.uuid) {
+      setState(() {
+        Recept? updatedRecept = _appStateService.getRecipes().firstWhereOrNull((element) => element.uuid==uuid);
+        if (updatedRecept != null) {
+          _enrichedRecept = _enricher.enrichRecipe(updatedRecept);
+        }
+      });
+    }
+  }
+
   void _nextRecept() {
     Recept newRecept = _getNextRecept(_enrichedRecept.recept);
     this._enrichedRecept = _enricher.enrichRecipe(newRecept);
@@ -87,17 +98,6 @@ class _WidgetState extends State<ReceptDetailsPage> {
     recept.favorite = favorite;
     _recipesService.saveRecept(recept);
     _eventBus.fire(ReceptChangedEvent(recept));
-  }
-
-  void _processEvent(ReceptChangedEvent event) {
-    if (event.recept.uuid == _enrichedRecept.recept.uuid) {
-      setState(() {
-        Recept? updatedRecept = _appStateService.getRecipes().firstWhereOrNull((element) => element.uuid==uuid);
-        if (updatedRecept != null) {
-          _enrichedRecept = _enricher.enrichRecipe(updatedRecept);
-        }
-      });
-    }
   }
 
   Table tableWithValues() {
