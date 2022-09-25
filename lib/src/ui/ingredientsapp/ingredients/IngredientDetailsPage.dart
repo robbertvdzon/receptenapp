@@ -14,18 +14,14 @@ import 'IngredientEditPage.dart';
 
 class IngredientDetailsPage extends StatefulWidget {
   IngredientDetailsPage(
-      {Key? key,
-      required this.title,
-      required this.ingredient}
-      )
+      {Key? key, required this.title, required this.ingredient})
       : super(key: key) {}
 
   final Ingredient ingredient;
   final String title;
 
   @override
-  State<IngredientDetailsPage> createState() =>
-      _WidgetState(ingredient);
+  State<IngredientDetailsPage> createState() => _WidgetState(ingredient);
 }
 
 class _WidgetState extends State<IngredientDetailsPage> {
@@ -43,17 +39,17 @@ class _WidgetState extends State<IngredientDetailsPage> {
 
   @override
   void initState() {
-    _handleEvents();
+    _eventStreamSub = _eventBus
+        .on<IngredientChangedEvent>()
+        .listen((event) => handleEvent(event));
   }
 
-  void _handleEvents() {
-    _eventStreamSub = _eventBus.on<IngredientChangedEvent>().listen((event) {
-      if (event.ingredient.uuid == _enrichedIngredient.uuid) {
-        setState(() {
-          _enrichedIngredient = _enricher.enrichtIngredient(event.ingredient);
-        });
-      }
-    });
+  void handleEvent(IngredientChangedEvent event) {
+    if (event.ingredient.uuid == _enrichedIngredient.uuid) {
+      setState(() {
+        _enrichedIngredient = _enricher.enrichtIngredient(event.ingredient);
+      });
+    }
   }
 
   @override
@@ -62,20 +58,17 @@ class _WidgetState extends State<IngredientDetailsPage> {
     _eventStreamSub?.cancel();
   }
 
-  void _openProdut(){
-    if (_ingredient.productName==null) return;
+  void _openIngredient() {
+    if (_ingredient.productName == null) return;
     var product = _productsService.getProductByName(_ingredient.productName!);
-    if (product==null) return;
+    if (product == null) return;
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) =>
-                ProductDetailsPage(
+            builder: (context) => ProductDetailsPage(
                   title: 'Product',
                   product: product,
-                )
-        )
-    );
+                )));
   }
 
   Table tableWithValues() {
@@ -119,11 +112,12 @@ class _WidgetState extends State<IngredientDetailsPage> {
         TableRow(children: [
           Text("product"),
           Text(":"),
-            InkWell(
-            onTap: () {_openProdut();}, // Handle your callback
-            child:
-            Text( "${_enrichedIngredient.productName}"),
-            )
+          InkWell(
+            onTap: () {
+              _openIngredient();
+            }, // Handle your callback
+            child: Text("${_enrichedIngredient.productName}"),
+          )
         ]),
       ],
     );
@@ -138,6 +132,8 @@ class _WidgetState extends State<IngredientDetailsPage> {
         body: Center(
             child: SingleChildScrollView(
                 child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             tableWithValues(),
             ElevatedButton(

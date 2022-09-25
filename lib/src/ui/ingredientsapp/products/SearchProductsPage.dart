@@ -1,9 +1,13 @@
+import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import '../../../GetItDependencies.dart';
+import '../../../events/ProductCreatedEvent.dart';
 import '../../../model/products/v1/products.dart';
 import '../../../repositories/ProductsRepository.dart';
+import '../../../services/AppStateService.dart';
 import '../../../services/ProductsService.dart';
+import 'ProductEditPage.dart';
 import 'ProductItemWidget.dart';
 
 class SearchProductsPage extends StatefulWidget {
@@ -16,19 +20,30 @@ class SearchProductsPage extends StatefulWidget {
 }
 
 class _SearchProductsPageState extends State<SearchProductsPage> {
-  Products _products = Products(List.empty());
+  var _appStateService = getIt<AppStateService>();
+  var _eventBus = getIt<EventBus>();
   List<Product> _filteredProducts = List.empty();
-  TextEditingController _textFieldController = TextEditingController();
-  TextEditingController _filterTextFieldController = TextEditingController();
-  var _productsService = getIt<ProductsService>();
   String _filter = "";
-  String _codeDialog ="";
-  String _valueText = "";
+  StreamSubscription? _eventStreamSub;
 
   @override
   void initState() {
-    _products = _productsService.getProducts();
-    _filteredProducts = _products.products.where((element) => element.name!=null && element.name!.contains(_filter)).toList();
+    super.initState();
+    _filterProducts();
+    _eventStreamSub = _eventBus.on<ProductCreatedEvent>().listen((event) => _processEvent(event));
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _eventStreamSub?.cancel();
+  }
+
+  void _processEvent(ProductCreatedEvent event) {
+    setState(() {
+      _filter = event.product.name??"";
+      _filterProducts();
+    });
   }
 
   void _updateFilter(String filter) {
@@ -38,60 +53,29 @@ class _SearchProductsPageState extends State<SearchProductsPage> {
     });
   }
 
-  void addProduct(String name) {
-    _productsService.createAndAddProduct(name).then((value) => {
-      setState(() {
-        _products = _productsService.getProducts();
-        _filteredProducts = _products.products.where((element) => element.name!=null && element.name!.contains(_filter)).toList();
-      })
-    });
-
+  void _createNewProduct(){
+    Product newproduct = new Product("Nieuw product");
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) =>
+              ProductEditPage(
+                  title: 'Nieuw product', product: newproduct)),
+    );
   }
+
 
   void _filterProducts() {
-    _filteredProducts = _products.products.where((element) => element.name!=null && element.name!.toLowerCase().contains(_filter.toLowerCase())).toList();
+    List<Product> products = _getSortedListOfProducts();
+    _filteredProducts = products.where((element) => element.name!=null && element.name!.toLowerCase().contains(_filter.toLowerCase())).toList();
   }
 
-  Future<void> _displayTextInputDialog(BuildContext context) async {
-    return showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text('TextField in Dialog'),
-            content: TextField(
-              onChanged: (value) {
-                setState(() {
-                  _valueText = value;
-                });
-              },
-              controller: _textFieldController,
-              decoration: InputDecoration(hintText: "Text Field in Dialog"),
-            ),
-            actions: <Widget>[
-              FlatButton(
-                color: Colors.red,
-                textColor: Colors.white,
-                child: Text('CANCEL'),
-                onPressed: () {
-                  setState(() {
-                    Navigator.pop(context);
-                  });
-                },
-              ),
-              FlatButton(
-                color: Colors.green,
-                textColor: Colors.white,
-                child: Text('OK'),
-                onPressed: () {
-                  addProduct(_valueText);
-                  _updateFilter(_valueText);
-                  Navigator.pop(context);
-                },
-              ),
-            ],
-          );
-        });
+  List<Product> _getSortedListOfProducts() {
+    List<Product> products = List.of(_appStateService.getProducts());
+    products.sort((a, b) => (a.name??"").toLowerCase().compareTo((b.name??"").toLowerCase()));
+    return products;
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -110,7 +94,7 @@ class _SearchProductsPageState extends State<SearchProductsPage> {
                 TextFormField(key: Key(_filter.toString()),
                   decoration: InputDecoration(border: InputBorder.none, labelText: 'Filter: (${_filteredProducts.length} ingredienten)'),
                   autofocus: true,
-                  controller: _filterTextFieldController..text = '$_filter',
+                  controller: TextEditingController()..text = '$_filter',
                   onChanged: (text) => {_updateFilter(text)},
                 )
             ),
@@ -147,9 +131,7 @@ class _SearchProductsPageState extends State<SearchProductsPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // _filterTextFieldController.text ="bla";
-          // _incrementCounter(_filterTextFieldController);
-          _displayTextInputDialog(context);
+          _createNewProduct();
         },
         tooltip: 'Add product',
         child: const Icon(Icons.add),

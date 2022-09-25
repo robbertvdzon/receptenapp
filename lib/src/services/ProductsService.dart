@@ -1,12 +1,15 @@
-import 'dart:convert';
+import 'package:collection/collection.dart';
+import 'package:event_bus/event_bus.dart';
 
+import '../GetItDependencies.dart';
+import '../events/ProductChangedEvent.dart';
+import '../events/ProductCreatedEvent.dart';
 import '../model/products/v1/products.dart';
 import '../repositories/ProductsRepository.dart';
-import '../GetItDependencies.dart';
-import 'package:collection/collection.dart';
 
 class ProductsService {
   var _productsRepository = getIt<ProductsRepository>();
+  var _eventBus = getIt<EventBus>();
 
   Product? getProductByName (String name) {
     return getProducts().products.firstWhereOrNull((element) => element.name==name);
@@ -17,16 +20,22 @@ class ProductsService {
   }
 
   Future<void> saveProduct(Product product) {
-    return _productsRepository.saveProduct(product);
-  }
-
-
-  Future<void> saveProducts(Products products) {
-    return _productsRepository.saveProducts(products);
-  }
-
-  Future<Product> createAndAddProduct(String name) {
-    return _productsRepository.createAndAddProduct(name);
+    // TODO: Dit gaat dus niet goed bij het renamen van een product! Is er niet een ander ID veld dat ik hiervoor kan gebruiken? Of een eigen UUID aanmaken?
+    Product? originalProduct = _productsRepository.getProductByName(product.name??"");
+    if (originalProduct==null){
+      // add product
+      return _productsRepository
+          .addProduct(product).then((value) => {
+        _eventBus.fire(ProductCreatedEvent(product))
+      });
+    }
+    else{
+      // save product
+      return _productsRepository
+          .saveProduct(product).then((value) => {
+        _eventBus.fire(ProductChangedEvent(product))
+      });
+    }
   }
 
 }

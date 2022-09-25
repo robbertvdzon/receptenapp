@@ -81,7 +81,7 @@ class _SearchRecipesPageState extends State<SearchRecipesPage> {
     bool filterOnFavorite = _filterOnFavorite == true;
 
     // TODO: dit kan vast in 1 query!
-    List<Recept> recipes = _getSortedListOrRecipes();
+    List<Recept> recipes = _getSortedListOfRecipes();
     if (filterOnFavorite) {
       _appStateService.setFilteredRecipes(recipes
           .where((element) =>
@@ -98,7 +98,7 @@ class _SearchRecipesPageState extends State<SearchRecipesPage> {
     }
   }
 
-  List<Recept> _getSortedListOrRecipes() {
+  List<Recept> _getSortedListOfRecipes() {
     List<Recept> recipes = List.of(_appStateService.getRecipes());
     recipes.sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
     return recipes;
