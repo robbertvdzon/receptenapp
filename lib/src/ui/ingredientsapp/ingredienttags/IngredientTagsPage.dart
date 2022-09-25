@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../global.dart';
+import '../../../GetItDependencies.dart';
 import '../../../model/ingredients/v1/ingredientTags.dart';
 import '../../../repositories/IngredientTagsRepository.dart';
 import '../../ingredientsapp/ingredienttags/IngredientTagItemWidget.dart';

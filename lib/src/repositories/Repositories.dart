@@ -2,8 +2,8 @@ import 'package:receptenapp/src/repositories/IngredientsRepository.dart';
 import 'package:receptenapp/src/repositories/ProductsRepository.dart';
 import 'package:receptenapp/src/repositories/RecipesRepository.dart';
 import 'package:receptenapp/src/repositories/IngredientTagsRepository.dart';
-
-import '../global.dart';
+import '../GetItDependencies.dart';
+import '../Toggles.dart';
 import 'RecipesTagsRepository.dart';
 import 'UserRepository.dart';
 

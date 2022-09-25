@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import '../../global.dart';
+import '../../GetItDependencies.dart';
 import '../../repositories/UserRepository.dart';
 import '../ingredientsapp/ingredienttags/IngredientTagsPage.dart';
 

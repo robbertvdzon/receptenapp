@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:receptenapp/src/ui/plannerapp/PlannerHomePage.dart';
-import '../../global.dart';
+import '../../GetItDependencies.dart';
 import '../../repositories/UserRepository.dart';
 import '../diaryapp/DiaryHomePage.dart';
 import '../ingredientsapp/search/SearchIngredientsPage.dart';

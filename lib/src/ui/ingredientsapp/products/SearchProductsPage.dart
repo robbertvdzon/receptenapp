@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
-import '../../../global.dart';
+import '../../../GetItDependencies.dart';
 import '../../../model/products/v1/products.dart';
 import '../../../repositories/ProductsRepository.dart';
 import 'ProductItemWidget.dart';

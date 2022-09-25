@@ -6,7 +6,7 @@ import 'package:receptenapp/src/repositories/IngredientsRepository.dart';
 import '../model/recipes/v1/receptTags.dart';
 import '../repositories/ProductsRepository.dart';
 
-import '../global.dart';
+import '../GetItDependencies.dart';
 import '../model/enriched/enrichedmodels.dart';
 import '../model/ingredients/v1/ingredients.dart';
 import '../model/recipes/v1/recept.dart';

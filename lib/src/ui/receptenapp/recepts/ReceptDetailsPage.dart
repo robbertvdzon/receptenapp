@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:receptenapp/src/repositories/RecipesRepository.dart';
-import '../../../global.dart';
+import '../../../GetItDependencies.dart';
 import '../../../model/enriched/enrichedmodels.dart';
 import '../../../model/events/ReceptChangedEvent.dart';
 import '../../../model/recipes/v1/recept.dart';
@@ -12,7 +12,7 @@ import 'ReceptEditPage.dart';
 import 'package:event_bus/event_bus.dart';
 
 import 'ReceptIngredientItemWidget.dart';
-import '../../UIRecepenGlobalState.dart';
+import '../../../GlobalState.dart';
 
 class ReceptDetailsPage extends StatefulWidget {
   ReceptDetailsPage({Key? key, required this.title, required this.recept})
@@ -28,7 +28,7 @@ class ReceptDetailsPage extends StatefulWidget {
 class _WidgetState extends State<ReceptDetailsPage> {
   static const IconData star = IconData(0xe5f9, fontFamily: 'MaterialIcons');
   var recipesRepository = getIt<RecipesRepository>();
-  var uiReceptenGlobalState = getIt<UIReceptenGlobalState>();
+  var uiReceptenGlobalState = getIt<GlobalState>();
 
   late Recept recept;
   late EnrichedRecept enrichedRecept;

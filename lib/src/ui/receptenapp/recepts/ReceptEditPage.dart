@@ -1,7 +1,7 @@
 import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
 import 'package:receptenapp/src/repositories/RecipesRepository.dart';
-import '../../../global.dart';
+import '../../../GetItDependencies.dart';
 import '../../../model/enriched/enrichedmodels.dart';
 import '../../../model/events/ReceptChangedEvent.dart';
 import '../../../model/recipes/v1/recept.dart';

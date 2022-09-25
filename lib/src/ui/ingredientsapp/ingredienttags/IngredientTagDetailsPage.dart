@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../global.dart';
+import '../../../GetItDependencies.dart';
 import '../../../model/enriched/enrichedmodels.dart';
 import '../../../model/ingredients/v1/ingredientTags.dart';
 import '../../../services/Enricher.dart';

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:receptenapp/src/global.dart';
+import 'package:receptenapp/src/GetItDependencies.dart';
 import 'package:receptenapp/src/ui/receptenapp/ReceptenApp.dart';
 import 'dart:async';
 

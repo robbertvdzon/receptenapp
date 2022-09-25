@@ -1,12 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
-import '../../../global.dart';
+import '../../../GetItDependencies.dart';
 import '../../../model/recipes/v1/recept.dart';
 import '../../../repositories/ProductsRepository.dart';
 import '../../../repositories/RecipesRepository.dart';
 import '../recepts/ReceptItemWidget.dart';
-import '../../UIRecepenGlobalState.dart';
+import '../../../GlobalState.dart';
 import '../recepttags/RecipesTagsPage.dart';
 
 class SearchRecipesPage extends StatefulWidget {
@@ -28,7 +28,7 @@ class _SearchRecipesPageState extends State<SearchRecipesPage> {
   TextEditingController _filterTextFieldController = TextEditingController();
   var recipesRepository = getIt<RecipesRepository>();
   var nutrientsRepository = getIt<ProductsRepository>();
-  var uiReceptenGlobalState = getIt<UIReceptenGlobalState>();
+  var uiReceptenGlobalState = getIt<GlobalState>();
   String _filter = "";
   bool? _filterOnFavorite = false;
   String codeDialog = "";

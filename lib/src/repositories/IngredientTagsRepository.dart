@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
-import '../global.dart';
+import '../GetItDependencies.dart';
 import '../model/ingredients/v1/ingredientTags.dart';
 import 'IngredientsRepository.dart';
 

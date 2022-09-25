@@ -11,12 +11,8 @@ import 'package:receptenapp/src/repositories/RecipesTagsRepository.dart';
 import 'package:receptenapp/src/repositories/Repositories.dart';
 import 'package:receptenapp/src/repositories/UserRepository.dart';
 import 'package:receptenapp/src/services/ReceptService.dart';
-import 'package:receptenapp/src/ui/UIRecepenGlobalState.dart';
-
 import '../firebase_options.dart';
-
-final bool PRELOAD_DATABASE_AT_STARTUP = false;
-final bool DISABLE_AUTH = true;
+import 'GlobalState.dart';
 
 final getIt = GetIt.instance;
 
@@ -34,6 +30,6 @@ Future<void> setupDependencies() async {
   getIt.registerSingleton<Repositories>(Repositories());
   getIt.registerSingleton<Enricher>(Enricher());
   getIt.registerSingleton<EventBus>(EventBus());
-  getIt.registerSingleton<UIReceptenGlobalState>(UIReceptenGlobalState());
+  getIt.registerSingleton<GlobalState>(GlobalState());
   getIt.registerSingleton<ReceptService>(ReceptService());
 }

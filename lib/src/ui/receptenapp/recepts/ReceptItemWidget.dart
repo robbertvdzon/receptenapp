@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:receptenapp/src/repositories/RecipesRepository.dart';
-import '../../../global.dart';
+import '../../../GetItDependencies.dart';
 import '../../../model/events/ReceptChangedEvent.dart';
 import '../../../model/recipes/v1/recept.dart';
 import 'ReceptDetailsPage.dart';

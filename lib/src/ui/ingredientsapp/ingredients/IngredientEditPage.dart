@@ -1,7 +1,7 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:receptenapp/src/model/ingredients/v1/ingredients.dart';
-import '../../../global.dart';
+import '../../../GetItDependencies.dart';
 import '../../../model/enriched/enrichedmodels.dart';
 import '../../../services/Enricher.dart';
 import '../../../repositories/IngredientsRepository.dart';

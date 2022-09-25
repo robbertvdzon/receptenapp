@@ -6,16 +6,16 @@ import 'package:receptenapp/src/repositories/IngredientsRepository.dart';
 import '../model/recipes/v1/receptTags.dart';
 import '../repositories/ProductsRepository.dart';
 
-import '../global.dart';
+import '../GetItDependencies.dart';
 import '../model/enriched/enrichedmodels.dart';
 import '../model/ingredients/v1/ingredients.dart';
 import '../model/recipes/v1/recept.dart';
 import '../repositories/RecipesRepository.dart';
 import '../repositories/RecipesTagsRepository.dart';
-import '../ui/UIRecepenGlobalState.dart';
+import '../GlobalState.dart';
 
 class ReceptService {
-  var _state = getIt<UIReceptenGlobalState>();
+  var _state = getIt<GlobalState>();
 
   Recept selectNextRecept(Recept recept){
     int currentIndex = _state.filteredRecipes.indexOf(recept);

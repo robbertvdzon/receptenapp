@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
 import 'package:receptenapp/src/repositories/RecipesRepository.dart';
 
-import '../global.dart';
+import '../GetItDependencies.dart';
 import '../model/recipes/v1/receptTags.dart';
 
 class RecipesTagsRepository {
