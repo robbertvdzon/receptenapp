@@ -12,12 +12,11 @@ import '../model/products/v1/products.dart';
 
 
 class ProductsRepository {
-  final String _DOCNAME = "products";
-  final String _KEY = "v1";
   String? usersCollection = null;
-
   Products? cachedProducts = null;
 
+  final _DOCNAME = "products";
+  final _KEY = "v1";
   var _db = getIt<FirebaseFirestore>();
   var _ingredientsRepository = getIt<IngredientsRepository>();
 

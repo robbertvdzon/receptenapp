@@ -7,12 +7,11 @@ import '../model/ingredients/v1/ingredientTags.dart';
 import 'IngredientsRepository.dart';
 
 class IngredientTagsRepository {
-  final String _DOCNAME = "ingredienttags";
-  final String _KEY = "v1";
   String? usersCollection = null;
-
   IngredientTags? cachedTags = null;
 
+  final _DOCNAME = "ingredienttags";
+  final _KEY = "v1";
   var _db = getIt<FirebaseFirestore>();
   var _ingredientsRepository = getIt<IngredientsRepository>();
 

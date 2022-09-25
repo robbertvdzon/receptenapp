@@ -17,10 +17,10 @@ import '../GlobalState.dart';
 
 class IngredientService {
   var _state = getIt<GlobalState>();
-  var ingredientsRepository = getIt<IngredientsRepository>();
+  var _ingredientsRepository = getIt<IngredientsRepository>();
 
   Future<void> saveIngredient(Ingredient ingredient) async {
-    return ingredientsRepository.saveIngredient(ingredient).then((value) => {
+    return _ingredientsRepository.saveIngredient(ingredient).then((value) => {
       _state.eventBus.fire(IngredientChangedEvent(ingredient))
     });
 

@@ -8,12 +8,11 @@ import 'RecipesRepository.dart';
 
 
 class IngredientsRepository {
-  final String _DOCNAME = "ingredients";
-  final String _KEY = "v1";
   String? usersCollection = null;
-
   Ingredients? cachedIngredients = null;
 
+  final _DOCNAME = "ingredients";
+  final _KEY = "v1";
   var _db = getIt<FirebaseFirestore>();
   var _recipesRepository = getIt<RecipesRepository>();
 

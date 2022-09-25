@@ -11,7 +11,6 @@ import '../repositories/UserRepository.dart';
 
 class GlobalStateService {
   StreamSubscription? _eventStreamSub;
-
   var _state = getIt<GlobalState>();
   var _ingredientsRepository = getIt<IngredientsRepository>();
   var _productsRepository = getIt<ProductsRepository>();

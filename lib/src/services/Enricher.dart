@@ -16,7 +16,6 @@ import 'ProductsService.dart';
 
 class Enricher {
   var _ingredientsRepository = getIt<IngredientsRepository>();
-  var _productsRepository = getIt<ProductsRepository>();
   var _ingredientTagsRepository = getIt<IngredientTagsRepository>();
   var _recipesTagsRepository = getIt<RecipesTagsRepository>();
   var _recipesRepository = getIt<RecipesRepository>();

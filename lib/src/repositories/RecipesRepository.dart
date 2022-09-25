@@ -6,12 +6,11 @@ import '../GetItDependencies.dart';
 import '../model/recipes/v1/recept.dart';
 
 class RecipesRepository {
-  final String _DOCNAME = "recipes";
-  final String _KEY = "v1";
   String? usersCollection = null;
-
   Recipes? cachedRecipes = null;
 
+  final String _DOCNAME = "recipes";
+  final String _KEY = "v1";
   var _db = getIt<FirebaseFirestore>();
 
   Future<Recipes> init(String email) {

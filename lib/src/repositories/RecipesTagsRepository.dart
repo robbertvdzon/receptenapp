@@ -8,12 +8,11 @@ import '../GetItDependencies.dart';
 import '../model/recipes/v1/receptTags.dart';
 
 class RecipesTagsRepository {
-  final String _DOCNAME = "recipestags";
-  final String _KEY = "v1";
   String? usersCollection = null;
-
   ReceptTags? cachedTags = null;
 
+  final _DOCNAME = "recipestags";
+  final _KEY = "v1";
   var _db = getIt<FirebaseFirestore>();
   var _recipesRepository = getIt<RecipesRepository>();
 

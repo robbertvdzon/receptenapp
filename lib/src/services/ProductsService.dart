@@ -6,10 +6,10 @@ import '../GetItDependencies.dart';
 import 'package:collection/collection.dart';
 
 class ProductsService {
-  var productsRepository = getIt<ProductsRepository>();
+  var _productsRepository = getIt<ProductsRepository>();
 
   Product? getProductByName (String name) {
-    return productsRepository.getProducts().products.firstWhereOrNull((element) => element.name==name);
+    return _productsRepository.getProducts().products.firstWhereOrNull((element) => element.name==name);
   }
 
 }
