@@ -5,7 +5,6 @@ import '../../../GetItDependencies.dart';
 import '../../../events/ReceptChangedEvent.dart';
 import '../../../model/enriched/enrichedmodels.dart';
 import '../../../model/recipes/v1/recept.dart';
-import '../../../services/Enricher.dart';
 import '../../../services/ReceptService.dart';
 
 class ReceptEditPage extends StatefulWidget {
@@ -19,20 +18,19 @@ class ReceptEditPage extends StatefulWidget {
 }
 
 class _WidgetState extends State<ReceptEditPage> {
-  late EnrichedRecept recept;
-  late Recept newRecept;
-  var recipesService = getIt<ReceptService>();
-  var enricher = getIt<Enricher>();
-  var eventBus = getIt<EventBus>();
+  late EnrichedRecept _recept;
+  late Recept _newRecept;
+  var _recipesService = getIt<ReceptService>();
+  var _eventBus = getIt<EventBus>();
 
   _WidgetState(EnrichedRecept recept) {
-    this.recept = recept;
-    this.newRecept = recept.recept;
+    this._recept = recept;
+    this._newRecept = recept.recept;
   }
 
   _saveForm() {
-    recipesService.saveRecept(newRecept);
-    eventBus.fire(ReceptChangedEvent(newRecept));
+    _recipesService.saveRecept(_newRecept);
+    _eventBus.fire(ReceptChangedEvent(_newRecept));
     Navigator.pop(context);
   }
 
@@ -49,55 +47,55 @@ class _WidgetState extends State<ReceptEditPage> {
                 children: <Widget>[
                   TextFormField(
                     decoration: InputDecoration(label: Text('uuid:')),
-                    initialValue: "${recept.recept.uuid}",
+                    initialValue: "${_recept.recept.uuid}",
                   ),
                   TextFormField(
                     decoration: InputDecoration(label: Text('Name:')),
-                    initialValue: "${recept.recept.name}",
+                    initialValue: "${_recept.recept.name}",
                     onChanged: (text) {
-                      newRecept.name = text;
+                      _newRecept.name = text;
                     },
                   ),
                   TextFormField(
                     decoration: InputDecoration(label: Text('Opmerking:')),
-                    initialValue: "${recept.recept.remark}",
+                    initialValue: "${_recept.recept.remark}",
                     onChanged: (text) {
-                      newRecept.remark = text;
+                      _newRecept.remark = text;
                     },
                   ),
                   TextFormField(
                     decoration: InputDecoration(label: Text('Voorbereidingstijd:')),
-                    initialValue: "${recept.recept.preparingTime}",
+                    initialValue: "${_recept.recept.preparingTime}",
                     onChanged: (text) {
-                      newRecept.preparingTime = int.parse(text);
+                      _newRecept.preparingTime = int.parse(text);
                     },
                   ),
                   TextFormField(
                     decoration: InputDecoration(label: Text('Totale kooktijd:')),
-                    initialValue: "${recept.recept.totalCookingTime}",
+                    initialValue: "${_recept.recept.totalCookingTime}",
                     onChanged: (text) {
-                      newRecept.totalCookingTime = int.parse(text);
+                      _newRecept.totalCookingTime = int.parse(text);
                     },
                   ),
                   TextFormField(
                     decoration: InputDecoration(label: Text('Nt:')),
-                    initialValue: "${recept.nutritionalValues.nt}",
+                    initialValue: "${_recept.nutritionalValues.nt}",
                   ),
                   TextFormField(
                     decoration: InputDecoration(label: Text('Kcal:')),
-                    initialValue: "${recept.nutritionalValues.kcal}",
+                    initialValue: "${_recept.nutritionalValues.kcal}",
                   ),
                   TextFormField(
                     decoration: InputDecoration(label: Text('Fat:')),
-                    initialValue: "${recept.nutritionalValues.fat}",
+                    initialValue: "${_recept.nutritionalValues.fat}",
                   ),
                   TextFormField(
                     decoration: InputDecoration(label: Text('Ingredients:')),
-                    initialValue: "${recept.ingredienten.map((e) => e?.toTextString()).join(",")}",
+                    initialValue: "${_recept.ingredienten.map((e) => e?.toTextString()).join(",")}",
                   ),
                   TextFormField(
                     decoration: InputDecoration(label: Text('Tags:')),
-                    initialValue: "${recept.tags.map((e) => e?.tag).join(",")}",
+                    initialValue: "${_recept.tags.map((e) => e?.tag).join(",")}",
                   ),
                   ElevatedButton(
                     child: Text('SAVE!'),

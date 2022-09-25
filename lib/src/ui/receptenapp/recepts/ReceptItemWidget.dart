@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import '../../../GetItDependencies.dart';
 import '../../../events/ReceptChangedEvent.dart';
 import '../../../model/recipes/v1/recept.dart';
+import '../../Icons.dart';
 import 'ReceptDetailsPage.dart';
 
 class ReceptItemWidget extends StatefulWidget {
@@ -18,8 +19,6 @@ class ReceptItemWidget extends StatefulWidget {
 }
 
 class _WidgetState extends State<ReceptItemWidget> {
-  static const IconData star = IconData(0xe5f9, fontFamily: 'MaterialIcons');
-
   late Recept _recept;
   var _eventBus = getIt<EventBus>();
   StreamSubscription? _eventStreamSub;
@@ -84,7 +83,7 @@ class _WidgetState extends State<ReceptItemWidget> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     if (_recept.favorite)
-                      new Icon(star, size: 20.0, color: Colors.yellow),
+                      new Icon(ICON_YELLOW_STAR, size: 20.0, color: Colors.yellow),
                     Text(_recept.preparingTime.toString() +
                         "/" +
                         _recept.totalCookingTime.toString() +

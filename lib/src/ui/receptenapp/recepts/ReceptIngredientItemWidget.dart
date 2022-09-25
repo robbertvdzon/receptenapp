@@ -14,10 +14,10 @@ class ReceptIngredientItemWidget extends StatefulWidget {
 }
 
 class _WidgetState extends State<ReceptIngredientItemWidget> {
-  late EnrichedReceptIngredient ingredient;
+  late EnrichedReceptIngredient _ingredient;
 
   _WidgetState(EnrichedReceptIngredient ingredient) {
-    this.ingredient = ingredient;
+    this._ingredient = ingredient;
   }
 
   @override
@@ -29,7 +29,7 @@ class _WidgetState extends State<ReceptIngredientItemWidget> {
         MaterialPageRoute(
             builder: (context) => IngredientDetailsPage(
                   title: 'Ingredient',
-                  ingredient: ingredient.ingredient!,
+                  ingredient: _ingredient.ingredient!,
                 )));
   }
 
@@ -40,7 +40,7 @@ class _WidgetState extends State<ReceptIngredientItemWidget> {
         _openForm();
       }, // Handle your callback
       child: new Text(
-        ingredient.toTextString(),
+        _ingredient.toTextString(),
       ),
     );
   }

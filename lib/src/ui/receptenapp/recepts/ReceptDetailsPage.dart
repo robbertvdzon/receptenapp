@@ -11,6 +11,7 @@ import '../../../model/enriched/enrichedmodels.dart';
 import '../../../model/recipes/v1/recept.dart';
 import '../../../services/Enricher.dart';
 import '../../../services/ReceptService.dart';
+import '../../Icons.dart';
 import 'ReceptEditPage.dart';
 import 'ReceptIngredientItemWidget.dart';
 
@@ -26,8 +27,7 @@ class ReceptDetailsPage extends StatefulWidget {
 }
 
 class _WidgetState extends State<ReceptDetailsPage> {
-  static const IconData star = IconData(0xe5f9, fontFamily: 'MaterialIcons');
-  var recipesService = getIt<ReceptService>();
+  var _recipesService = getIt<ReceptService>();
   var _globalState = getIt<GlobalState>();
 
   late Recept _recept;
@@ -78,7 +78,7 @@ class _WidgetState extends State<ReceptDetailsPage> {
 
   void _setFavorite(bool favorite){
     _recept.favorite = favorite;
-    recipesService.saveRecept(_recept);
+    _recipesService.saveRecept(_recept);
     _eventBus.fire(ReceptChangedEvent(_recept));
   }
 
@@ -181,7 +181,7 @@ class _WidgetState extends State<ReceptDetailsPage> {
                   child: Image.asset('assets/images/recept1.jpeg',
                       height: 300, width: 300, fit: BoxFit.cover),
                 ),
-                if (_recept.favorite) new Icon(star, size: 20.0, color: Colors.yellow),
+                if (_recept.favorite) new Icon(ICON_YELLOW_STAR, size: 20.0, color: Colors.yellow),
                 Text(''),
                 Text('Opmerkingen:',
                     style:
