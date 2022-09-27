@@ -10,10 +10,7 @@ import '../shoppingapp/ShoppingHomePage.dart';
 import '../statisticsapp/StatisticsHomePage.dart';
 
 class AllAppHomePage extends StatefulWidget {
-
-  AllAppHomePage({Key? key, required this.title})
-      : super(key: key) {
-  }
+  AllAppHomePage({Key? key, required this.title}) : super(key: key) {}
 
   final String title;
 
@@ -21,18 +18,22 @@ class AllAppHomePage extends StatefulWidget {
   State<AllAppHomePage> createState() => _AllAppHomePageState();
 }
 
-
 class _AllAppHomePageState extends State<AllAppHomePage> {
   var userRepository = getIt<UserRepository>();
 
-  _AllAppHomePageState() {
-  }
+  _AllAppHomePageState() {}
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Container(
+          alignment: Alignment.topLeft, // use aligment
+          margin: new EdgeInsets.symmetric(horizontal: 5.0, vertical: 5.0),
+          child: Image.asset("assets/images/gutz.png",
+              height: 60, width: 60, fit: BoxFit.cover),
+        ),
         actions: [
           Text(
             'user: ${userRepository.getUsersEmail()}',
@@ -47,57 +48,53 @@ class _AllAppHomePageState extends State<AllAppHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  buildElevatedButton(context, SearchRecipesPage(title: 'Recepten'), "assets/images/recipes.png"),
-                  buildElevatedButton(context, PlannerHomePage(title: 'planner'), "assets/images/planner.png"),
-                ]
-            ),
-            Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  buildElevatedButton(context, ShoppingHomePage(title: 'Boodschappen'), "assets/images/shopping.png"),
-                  buildElevatedButton(context, SearchIngredientsPage(title: 'Ingredienten'), "assets/images/ingredients.png"),
-                ]
-            ),
-            Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  buildElevatedButton(context, DiaryHomePage(title: 'Dagbook'), "assets/images/diary.png"),
-                  buildElevatedButton(context, StatisticsHomePage(title: 'Statistieken'), "assets/images/statistics.png"),
-                ]
-            ),
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+              buildElevatedButton(context, SearchRecipesPage(title: 'Recepten'),
+                  "assets/images/recepten.png"),
+              buildElevatedButton(context, PlannerHomePage(title: 'planner'),
+                  "assets/images/planner.png"),
+            ]),
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+              buildElevatedButton(
+                  context,
+                  ShoppingHomePage(title: 'Boodschappen'),
+                  "assets/images/boodschappen.png"),
+              buildElevatedButton(
+                  context,
+                  SearchIngredientsPage(title: 'Ingredienten'),
+                  "assets/images/ingredienten.png"),
+            ]),
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+              buildElevatedButton(context, DiaryHomePage(title: 'Dagbook'),
+                  "assets/images/dagboek.png"),
+              buildElevatedButton(
+                  context,
+                  StatisticsHomePage(title: 'Statistieken'),
+                  "assets/images/statistieken.png"),
+            ]),
           ],
         ),
       ),
     );
   }
 
-  ElevatedButton buildElevatedButton(BuildContext context, StatefulWidget widget, String imageName) {
-    return ElevatedButton(
-                  style: ElevatedButton.styleFrom(primary: Colors.black),
-                  child:
-                  Container(
-                    alignment: Alignment.center,// use aligment
-                    child: Image.asset(imageName,
-                        height: 150,
-                        width: 150,
-                        fit: BoxFit.cover),
-                  )
-                  ,
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) {
-                            StatefulWidget ingredientsPage = widget;
-                            return ingredientsPage;
-                          }),
-                    );
-                  },
-                );
+  GestureDetector buildElevatedButton(
+      BuildContext context, StatefulWidget widget, String imageName) {
+    return new GestureDetector(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) {
+              StatefulWidget ingredientsPage = widget;
+              return ingredientsPage;
+            }),
+          );
+        },
+        child: Container(
+          alignment: Alignment.center, // use aligment
+          margin: new EdgeInsets.symmetric(horizontal: 5.0, vertical: 5.0),
+          child: Image.asset(imageName,
+              height: 150, width: 150, fit: BoxFit.cover),
+        ));
   }
-
 }
-

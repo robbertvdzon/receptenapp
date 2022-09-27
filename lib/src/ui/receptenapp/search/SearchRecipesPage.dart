@@ -110,32 +110,46 @@ class _SearchRecipesPageState extends State<SearchRecipesPage> {
       appBar: AppBar(
         title: Text(widget.title),
         actions: [
-          ElevatedButton(
-            child: Text('Zoek'),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => RecipesTagsPage(title: 'Zoek')),
-              );
-            },
+          PopupMenuButton(
+            // add icon, by default "3 dot" icon
+            // icon: Icon(Icons.book)
+              itemBuilder: (context){
+                return [
+                  PopupMenuItem<int>(
+                    value: 0,
+                    child: Text("Zoek"),
+                  ),
+
+                  PopupMenuItem<int>(
+                    value: 1,
+                    child: Text("Recept tags"),
+                  ),
+
+                  PopupMenuItem<int>(
+                    value: 2,
+                    child: Text("Uitloggen"),
+                  ),
+                ];
+              },
+              onSelected:(value){
+                if(value == 0){
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => RecipesTagsPage(title: 'Zoek')),
+                  );
+                }else if(value == 1){
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            RecipesTagsPage(title: 'Recipes tags')),
+                  );
+                }else if(value == 2){
+                  FirebaseAuth.instance.signOut();
+                }
+              }
           ),
-          SizedBox(width: 10),
-          ElevatedButton(
-            child: Text('Recipes tags'),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        RecipesTagsPage(title: 'Recipes tags')),
-              );
-            },
-          ),
-          SizedBox(width: 10),
-          IconButton(
-              onPressed: () => FirebaseAuth.instance.signOut(),
-              icon: Icon(Icons.logout))
         ],
       ),
       body: Center(
@@ -154,7 +168,7 @@ class _SearchRecipesPageState extends State<SearchRecipesPage> {
                       'Quickfilter: (${_appStateService
                           .getFilteredRecipes()
                           .length} recepten)'),
-                  autofocus: true,
+                  // autofocus: true,
                   controller: TextEditingController()..text = '$_filter',
                   onChanged: (text) => {_updateFilter(text)},
                 )),

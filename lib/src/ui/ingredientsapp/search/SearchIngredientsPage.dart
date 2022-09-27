@@ -88,6 +88,7 @@ class _SearchIngredientsPageState extends State<SearchIngredientsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       appBar: AppBar(
         title: Text(widget.title),
         actions: [

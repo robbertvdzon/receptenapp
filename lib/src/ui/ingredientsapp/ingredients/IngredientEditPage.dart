@@ -1,4 +1,5 @@
 import 'package:dropdown_search/dropdown_search.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:receptenapp/src/model/ingredients/v1/ingredients.dart';
 

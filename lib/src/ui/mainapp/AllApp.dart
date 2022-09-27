@@ -51,6 +51,7 @@ class _MainAppState extends State<MainApp> {
             return MaterialApp(
               title: 'Flutter Demo',
               theme: ThemeData(
+                scaffoldBackgroundColor: Colors.blueGrey,
                 brightness: Brightness.dark,
                 primarySwatch: Colors.blue,
               ),

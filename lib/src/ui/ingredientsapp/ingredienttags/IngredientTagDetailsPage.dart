@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../../GetItDependencies.dart';
 import '../../../model/enriched/enrichedmodels.dart';
@@ -26,6 +27,7 @@ class _WidgetState extends State<IngredientTagDetailsPage> {
 
     return
       Scaffold(
+
           appBar: AppBar(
             title: Text(widget.title),
           ),

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../../GetItDependencies.dart';
 import '../../../model/products/v1/products.dart';

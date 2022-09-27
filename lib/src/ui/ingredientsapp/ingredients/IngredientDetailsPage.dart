@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:event_bus/event_bus.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:receptenapp/src/model/ingredients/v1/ingredients.dart';
 

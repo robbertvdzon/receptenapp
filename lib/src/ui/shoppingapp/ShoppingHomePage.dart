@@ -26,6 +26,7 @@ class _ShoppingHomePageState extends State<ShoppingHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       appBar: AppBar(
         title: Text(widget.title),
         actions: [

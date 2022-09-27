@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../../../GetItDependencies.dart';
@@ -26,6 +27,7 @@ class _WidgetState extends State<ReceptTagDetailsPage> {
   Widget build(BuildContext context) {
     return
       Scaffold(
+
           appBar: AppBar(
             title: Text(widget.title),
           ),

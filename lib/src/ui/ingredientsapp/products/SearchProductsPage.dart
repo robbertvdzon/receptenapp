@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:event_bus/event_bus.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../../../GetItDependencies.dart';
@@ -78,6 +79,7 @@ class _SearchProductsPageState extends State<SearchProductsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       appBar: AppBar(
         title: Text(widget.title),
       ),

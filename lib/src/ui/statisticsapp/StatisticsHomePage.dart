@@ -26,6 +26,7 @@ class _StatisticsHomePageState extends State<StatisticsHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       appBar: AppBar(
         title: Text(widget.title),
         actions: [

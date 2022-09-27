@@ -26,6 +26,7 @@ class _PlannerHomePageState extends State<PlannerHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       appBar: AppBar(
         title: Text(widget.title),
         actions: [
