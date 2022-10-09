@@ -21,10 +21,13 @@ class Recipes {
 class Recept {
   String uuid = Uuid().v1();
   String name;
+  String localImageName = "";
   String directions = "";
   String remark = "";
   int totalCookingTime = 0;
   int preparingTime = 0;
+  int dateAdded = 0;
+  int nrPersons = 0;
   bool favorite = false;
 
   List<ReceptIngredient> ingredients;
@@ -50,12 +53,10 @@ class Recept {
 class ReceptIngredient {
   String name;
   // ReceptIngredientAmount amount; TODO: use interface!
-  ReceptIngredientAmountGrams? amountGrams = null;
-  ReceptIngredientAmountItems? amountItems = null;
+  ReceptIngredientAmount? amount = null;
 
-  ReceptIngredient(this.name, {ReceptIngredientAmountGrams? amountGrams: null, ReceptIngredientAmountItems? amountItems: null}){
-    this.amountGrams = amountGrams;
-    this.amountItems = amountItems;
+  ReceptIngredient(this.name, {ReceptIngredientAmount? amount: null}){
+    this.amount = amount;
   }
 
   factory ReceptIngredient.fromJson(Map<String, dynamic> json) =>
@@ -64,28 +65,15 @@ class ReceptIngredient {
   Map<String, dynamic> toJson() => _$ReceptIngredientToJson(this);
 }
 
-abstract class ReceptIngredientAmount {}
-
 @JsonSerializable()
-class ReceptIngredientAmountGrams implements ReceptIngredientAmount{
-  double grams = 0;
+class ReceptIngredientAmount{
+  double nrUnit = 0;
+  String unit = "";
 
-  ReceptIngredientAmountGrams(this.grams);
+  ReceptIngredientAmount(this.nrUnit, this.unit);
 
-  factory ReceptIngredientAmountGrams.fromJson(Map<String, dynamic> json) =>
-      _$ReceptIngredientAmountGramsFromJson(json);
+  factory ReceptIngredientAmount.fromJson(Map<String, dynamic> json) =>
+      _$ReceptIngredientAmountFromJson(json);
 
-  Map<String, dynamic> toJson() => _$ReceptIngredientAmountGramsToJson(this);
-}
-
-@JsonSerializable()
-class ReceptIngredientAmountItems implements ReceptIngredientAmount{
-  double items = 0;
-
-  ReceptIngredientAmountItems(this.items);
-
-  factory ReceptIngredientAmountItems.fromJson(Map<String, dynamic> json) =>
-      _$ReceptIngredientAmountItemsFromJson(json);
-
-  Map<String, dynamic> toJson() => _$ReceptIngredientAmountItemsToJson(this);
+  Map<String, dynamic> toJson() => _$ReceptIngredientAmountToJson(this);
 }

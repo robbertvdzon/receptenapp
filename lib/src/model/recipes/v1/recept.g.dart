@@ -23,20 +23,26 @@ Recept _$ReceptFromJson(Map<String, dynamic> json) => Recept(
       json['name'] as String,
     )
       ..uuid = json['uuid'] as String
+      ..localImageName = json['localImageName'] as String
       ..directions = json['directions'] as String
       ..remark = json['remark'] as String
       ..totalCookingTime = json['totalCookingTime'] as int
       ..preparingTime = json['preparingTime'] as int
+      ..dateAdded = json['dateAdded'] as int
+      ..nrPersons = json['nrPersons'] as int
       ..favorite = json['favorite'] as bool
       ..tags = (json['tags'] as List<dynamic>).map((e) => e as String).toList();
 
 Map<String, dynamic> _$ReceptToJson(Recept instance) => <String, dynamic>{
       'uuid': instance.uuid,
       'name': instance.name,
+      'localImageName': instance.localImageName,
       'directions': instance.directions,
       'remark': instance.remark,
       'totalCookingTime': instance.totalCookingTime,
       'preparingTime': instance.preparingTime,
+      'dateAdded': instance.dateAdded,
+      'nrPersons': instance.nrPersons,
       'favorite': instance.favorite,
       'ingredients': instance.ingredients,
       'tags': instance.tags,
@@ -45,43 +51,28 @@ Map<String, dynamic> _$ReceptToJson(Recept instance) => <String, dynamic>{
 ReceptIngredient _$ReceptIngredientFromJson(Map<String, dynamic> json) =>
     ReceptIngredient(
       json['name'] as String,
-      amountGrams: json['amountGrams'] == null
+      amount: json['amount'] == null
           ? null
-          : ReceptIngredientAmountGrams.fromJson(
-              json['amountGrams'] as Map<String, dynamic>),
-      amountItems: json['amountItems'] == null
-          ? null
-          : ReceptIngredientAmountItems.fromJson(
-              json['amountItems'] as Map<String, dynamic>),
+          : ReceptIngredientAmount.fromJson(
+              json['amount'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$ReceptIngredientToJson(ReceptIngredient instance) =>
     <String, dynamic>{
       'name': instance.name,
-      'amountGrams': instance.amountGrams,
-      'amountItems': instance.amountItems,
+      'amount': instance.amount,
     };
 
-ReceptIngredientAmountGrams _$ReceptIngredientAmountGramsFromJson(
+ReceptIngredientAmount _$ReceptIngredientAmountFromJson(
         Map<String, dynamic> json) =>
-    ReceptIngredientAmountGrams(
-      (json['grams'] as num).toDouble(),
+    ReceptIngredientAmount(
+      (json['nrUnit'] as num).toDouble(),
+      json['unit'] as String,
     );
 
-Map<String, dynamic> _$ReceptIngredientAmountGramsToJson(
-        ReceptIngredientAmountGrams instance) =>
+Map<String, dynamic> _$ReceptIngredientAmountToJson(
+        ReceptIngredientAmount instance) =>
     <String, dynamic>{
-      'grams': instance.grams,
-    };
-
-ReceptIngredientAmountItems _$ReceptIngredientAmountItemsFromJson(
-        Map<String, dynamic> json) =>
-    ReceptIngredientAmountItems(
-      (json['items'] as num).toDouble(),
-    );
-
-Map<String, dynamic> _$ReceptIngredientAmountItemsToJson(
-        ReceptIngredientAmountItems instance) =>
-    <String, dynamic>{
-      'items': instance.items,
+      'nrUnit': instance.nrUnit,
+      'unit': instance.unit,
     };

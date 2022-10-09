@@ -79,28 +79,28 @@ class RecipesRepository {
   }
   
   Recipes _createSample() {
-    final patat = ReceptIngredient("patat", amountGrams: ReceptIngredientAmountGrams(200));
-    final hamburger = ReceptIngredient("hamburger", amountGrams: ReceptIngredientAmountGrams(200));
-    final brood = ReceptIngredient("brood", amountGrams: ReceptIngredientAmountGrams(200));
-    final boter = ReceptIngredient("boter", amountGrams: ReceptIngredientAmountGrams(200));
-    final kaas = ReceptIngredient("kaas", amountGrams: ReceptIngredientAmountGrams(200));
+    final patat = ReceptIngredient("patat", amount: ReceptIngredientAmount(200,"g"));
+    final hamburger = ReceptIngredient("hamburger", amount: ReceptIngredientAmount(200,"g"));
+    final brood = ReceptIngredient("brood", amount: ReceptIngredientAmount(200,"g"));
+    final boter = ReceptIngredient("boter", amount: ReceptIngredientAmount(200,"g"));
+    final kaas = ReceptIngredient("kaas", amount: ReceptIngredientAmount(200,"g"));
     final hamburgermenu = Recept([patat, hamburger, brood], "Broodje hamburger");
     hamburgermenu.tags = ["zuivel","vlees","avondeten"];
     final broodjeKaas = Recept([brood, boter, kaas], "kaas broodje");
     broodjeKaas.tags = ["zuivel","vegatarisch","avondeten"];
 //
     final noedelsoep = Recept([
-      ReceptIngredient("gember", amountItems: ReceptIngredientAmountItems(0.1)),
-      ReceptIngredient("knoflook", amountItems: ReceptIngredientAmountItems(1)),
-      ReceptIngredient("eiernoedels", amountGrams: ReceptIngredientAmountGrams(200)),
-      ReceptIngredient("zonnebloemolie", amountGrams: ReceptIngredientAmountGrams(50)),
-      ReceptIngredient("water", amountGrams: ReceptIngredientAmountGrams(200)),
-      ReceptIngredient("groentebouillontabletten", amountGrams: ReceptIngredientAmountGrams(30)),
-      ReceptIngredient("sojasaus", amountGrams: ReceptIngredientAmountGrams(20)),
-      ReceptIngredient("rijstazijn", amountGrams: ReceptIngredientAmountGrams(100)),
-      ReceptIngredient("shitakes", amountGrams: ReceptIngredientAmountGrams(200)),
-      ReceptIngredient("paksoi", amountItems:  ReceptIngredientAmountItems(1.5)),
-      ReceptIngredient("sesamzaad", amountGrams: ReceptIngredientAmountGrams(15))
+      ReceptIngredient("gember", amount: ReceptIngredientAmount(0.1,"stuks")),
+      ReceptIngredient("knoflook", amount: ReceptIngredientAmount(1,"stuks")),
+      ReceptIngredient("eiernoedels", amount: ReceptIngredientAmount(200,"g")),
+      ReceptIngredient("zonnebloemolie", amount: ReceptIngredientAmount(50,"g")),
+      ReceptIngredient("water", amount: ReceptIngredientAmount(200,"g")),
+      ReceptIngredient("groentebouillontabletten", amount: ReceptIngredientAmount(30,"g")),
+      ReceptIngredient("sojasaus", amount: ReceptIngredientAmount(20,"g")),
+      ReceptIngredient("rijstazijn", amount: ReceptIngredientAmount(100,"g")),
+      ReceptIngredient("shitakes", amount: ReceptIngredientAmount(200,"g")),
+      ReceptIngredient("paksoi", amount:  ReceptIngredientAmount(1.5,"stuks")),
+      ReceptIngredient("sesamzaad", amount: ReceptIngredientAmount(15,"g"))
     ], "Noedelsoep met shiitake en paksoi");
     noedelsoep.directions = "Snijd de gember in dunne plakjes.\nSnijd de knoflook.\nKook de noedels..................";
     noedelsoep.tags = ["vlees","soep","avondeten"];
@@ -109,15 +109,15 @@ class RecipesRepository {
     noedelsoep.totalCookingTime = 45;
 //
     final gnocchi = Recept([
-      ReceptIngredient("amandelschaafsel", amountGrams: ReceptIngredientAmountGrams(10)),
-      ReceptIngredient("olijfolie", amountItems: ReceptIngredientAmountItems(1)),
-      ReceptIngredient("gnocchi", amountGrams: ReceptIngredientAmountGrams(1000)),
-      ReceptIngredient("knoflook", amountItems: ReceptIngredientAmountItems(2)),
-      ReceptIngredient("wilde spinazie", amountGrams: ReceptIngredientAmountGrams(400)),
-      ReceptIngredient("hüttenkäse kaas", amountGrams: ReceptIngredientAmountGrams(200)),
-      ReceptIngredient("verse basilicum", amountGrams: ReceptIngredientAmountGrams(20)),
-      ReceptIngredient("Pecorino Romano", amountGrams: ReceptIngredientAmountGrams(100)),
-      ReceptIngredient("cherrytomaten", amountGrams: ReceptIngredientAmountGrams(250)),
+      ReceptIngredient("amandelschaafsel", amount: ReceptIngredientAmount(10,"g")),
+      ReceptIngredient("olijfolie", amount: ReceptIngredientAmount(1,"stuks")),
+      ReceptIngredient("gnocchi", amount: ReceptIngredientAmount(1000,"g")),
+      ReceptIngredient("knoflook", amount: ReceptIngredientAmount(2,"stuks")),
+      ReceptIngredient("wilde spinazie", amount: ReceptIngredientAmount(400,"g")),
+      ReceptIngredient("hüttenkäse kaas", amount: ReceptIngredientAmount(200,"g")),
+      ReceptIngredient("verse basilicum", amount: ReceptIngredientAmount(20,"g")),
+      ReceptIngredient("Pecorino Romano", amount: ReceptIngredientAmount(100,"g")),
+      ReceptIngredient("cherrytomaten", amount: ReceptIngredientAmount(250,"g")),
     ], "Gnoccchi met bassilliccum en tomaat");
     gnocchi.directions = "Verhit een koekenpan zonder olie of boter en rooster het amandelschaafsel 2 min.\nLaat afkoelen op een bord.\nVerhit 2/3 van de olie in de koekenpan en bak de gnocchi in 10 min. op middelhoog vuur goudbruin en gaar.\nSchep regelmatig om.\n\nSnijd ondertussen de knoflook fijn.\nVerhit de rest van de olie in een hapjespan en fruit de knoflook 30 sec.\nVoeg de spinazie in delen toe en laat al omscheppend slinken.\nMeng de hüttenkäse met peper door het spinaziemengsel en warm 2 min. mee.\nScheur de baslicumblaadjes in stukken en rasp de Pecorino Romano.\nSchep het basilicum, 2/3 van de Pecorino en gnocchi door de spinazie.\nHalveer de tomaten en voeg toe en bestrooi met het amandelschaafsel en de rest van de Pecorino.\n\nVariatietip:    Vervang voor een extra hartig accent het amandelschaafsel eens door 2 el kappertjes.";
     gnocchi.tags = ["vlees","soep","avondeten"];

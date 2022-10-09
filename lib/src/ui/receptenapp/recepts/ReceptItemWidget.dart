@@ -77,7 +77,7 @@ class _WidgetState extends State<ReceptItemWidget> {
                   alignment: Alignment.topLeft, // use aligment
                   padding:
                       EdgeInsets.only(left: 0, bottom: 0, right: 20, top: 0),
-                  child: Image.asset('assets/images/recept1.jpeg',
+                  child: Image.asset('assets/images/recipes/'+_recept.localImageName,
                       height: 100, width: 100, fit: BoxFit.cover),
                 ),
                 Column(
@@ -89,7 +89,7 @@ class _WidgetState extends State<ReceptItemWidget> {
                     Text(_recept.preparingTime.toString() +
                         "/" +
                         _recept.totalCookingTime.toString() +
-                        " minuten"),
+                        " minuten "),
                     Text(_recept.remark),
                   ],
                 )

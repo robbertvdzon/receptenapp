@@ -16,18 +16,14 @@ class EnrichedRecept {
 class EnrichedReceptIngredient {
   String name;
   Ingredient? ingredient;
-  ReceptIngredientAmountGrams? amountGrams = null;
-  ReceptIngredientAmountItems? amountItems = null;
+  ReceptIngredientAmount? amount = null;
   NutritionalValues nutritionalValues;
 
-  EnrichedReceptIngredient(this.name, this.ingredient, this.amountGrams, this.amountItems, this.nutritionalValues);
+  EnrichedReceptIngredient(this.name, this.ingredient, this.amount, this.nutritionalValues);
 
   String toTextString() {
-    if (amountGrams!=null){
-      return "${amountGrams!.grams} gram ${name}";
-    }
-    if (amountItems!=null){
-      return "${amountItems!.items} ${name}(s)";
+    if (amount!=null){
+      return "${amount!.nrUnit} ${amount!.unit} ${name}";
     }
     return "unkown amount!!";
   }

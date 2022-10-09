@@ -29,8 +29,7 @@ class Enricher {
     return EnrichedReceptIngredient(
         receptIngredient.name,
         ingredient,
-        receptIngredient.amountGrams,
-        receptIngredient.amountItems,
+        receptIngredient.amount,
         nutritionalValues);
   }
 
@@ -43,11 +42,9 @@ class Enricher {
         if (productName!=null) {
           var product = _productsService.getProductByName(productName);
           double weight = 0.0;
-          if (receptIngredient.amountItems!=null){
-            weight = receptIngredient.amountItems!.items * ingredient.gramsPerPiece;
-          }
-          if (receptIngredient.amountGrams!=null){
-            weight = receptIngredient.amountGrams!.grams;
+          if (receptIngredient.amount!=null) {
+            // TODO: CALCULATE REAL WEIGHT BASED ON UNIT TYPE
+            weight = receptIngredient.amount!.nrUnit * ingredient.gramsPerPiece;
           }
           nutritionalValues.kcal += weight*(product?.kcal??0)/100;
           nutritionalValues.prot += weight*(product?.prot??0)/100;

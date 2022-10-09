@@ -176,7 +176,7 @@ class _WidgetState extends State<ReceptDetailsPage> {
                   alignment: Alignment.topLeft, // use aligment
                   padding:
                       EdgeInsets.only(left: 0, bottom: 0, right: 20, top: 0),
-                  child: Image.asset('assets/images/recept1.jpeg',
+                  child: Image.asset('assets/images/recipes/'+_enrichedRecept.recept.localImageName,
                       height: 300, width: 300, fit: BoxFit.cover),
                 ),
                 if (_enrichedRecept.recept.favorite) new Icon(ICON_YELLOW_STAR, size: 20.0, color: Colors.yellow),
