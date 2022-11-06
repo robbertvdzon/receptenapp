@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:pasteboard/pasteboard.dart';
 
 import '../../../GetItDependencies.dart';
 import '../../../model/enriched/enrichedmodels.dart';
@@ -25,6 +27,7 @@ class ReceptEditPage extends StatefulWidget {
 class _WidgetState extends State<ReceptEditPage> {
   late EnrichedRecept _recept;
   late Recept _newRecept;
+  String _textValue = '';
   String? importImageFromUrl = null;
   var _recipesService = getIt<RecipesService>();
 
@@ -67,6 +70,21 @@ class _WidgetState extends State<ReceptEditPage> {
           (error, stackTrace) =>
               print(error.toString() + " " + stackTrace.toString()));
       print("--03");
+    }
+  }
+
+
+  void _getClipboard() async {
+    Uint8List? bytes = await Pasteboard.image;
+    if (bytes!=null){
+      var data = base64Encode(bytes!);
+      _textValue = data;
+      this._newRecept.base64Image80pixels = data;
+      _saveRecept();
+
+    }
+    else{
+      _textValue = "No image found on clipboard";
     }
   }
 
@@ -164,7 +182,16 @@ class _WidgetState extends State<ReceptEditPage> {
               onPressed: () {
                 _updateImageData();
               },
-            )
+            ),
+
+            ElevatedButton(
+              child: Text('Get Data'),
+              onPressed: () {
+                _getClipboard();
+              },
+            ),
+            Text('Clipboard Value : $_textValue'),
+
           ],
         )));
   }
