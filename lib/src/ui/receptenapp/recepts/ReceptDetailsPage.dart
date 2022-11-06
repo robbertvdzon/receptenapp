@@ -55,7 +55,7 @@ class _WidgetState extends State<ReceptDetailsPage> {
   void _processEvent(ReceptChangedEvent event) {
     if (event.recept.uuid == _enrichedRecept.recept.uuid) {
       setState(() {
-        Recept? updatedRecept = _appStateService.getRecipes().firstWhereOrNull((element) => element.uuid==uuid);
+        Recept? updatedRecept = _appStateService.getRecipes().firstWhereOrNull((element) => element.uuid==_enrichedRecept.recept.uuid);
         if (updatedRecept != null) {
           _enrichedRecept = _enricher.enrichRecipe(updatedRecept);
         }
