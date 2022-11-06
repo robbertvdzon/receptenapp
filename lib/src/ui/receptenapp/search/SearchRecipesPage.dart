@@ -188,13 +188,13 @@ class _SearchRecipesPageState extends State<SearchRecipesPage> {
               height: 750,
               width: 500,
               child: ListView(
-                children: _appStateService.getFilteredRecipes().map((item) {
+                children: _appStateService.getEnrichedFilteredRecipes().map((item) {
                   return Container(
                     child: Column(
                       children: [
                         Container(
                           constraints: BoxConstraints.expand(
-                            height: 150.0,
+                            height: 170.0,
                           ),
                           alignment: Alignment.center,
                           child: ReceptItemWidget(

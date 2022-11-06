@@ -21,7 +21,7 @@ class ReceptDetailsPage extends StatefulWidget {
   ReceptDetailsPage({Key? key, required this.title, required this.recept})
       : super(key: key) {}
 
-  final Recept recept;
+  final EnrichedRecept recept;
   final String title;
 
   @override
@@ -37,8 +37,8 @@ class _WidgetState extends State<ReceptDetailsPage> {
   var _eventBus = getIt<EventBus>();
   StreamSubscription? _eventStreamSub;
 
-  _WidgetState(Recept recept) {
-    this._enrichedRecept = _enricher.enrichRecipe(recept);
+  _WidgetState(EnrichedRecept recept) {
+    this._enrichedRecept = recept;
   }
 
   @override
@@ -177,8 +177,9 @@ class _WidgetState extends State<ReceptDetailsPage> {
                   alignment: Alignment.topLeft, // use aligment
                   padding:
                       EdgeInsets.only(left: 0, bottom: 0, right: 20, top: 0),
-                  child: Image.asset('assets/images/recipes/'+_enrichedRecept.recept.localImageName,
-                      height: 300, width: 300, fit: BoxFit.cover),
+                  child: _enrichedRecept.image300x300
+                  // child: Image.asset('assets/images/recipes/'+_enrichedRecept.recept.localImageName,
+                  //     height: 300, width: 300, fit: BoxFit.cover),
                 ),
                 if (_enrichedRecept.recept.favorite) new Icon(ICON_YELLOW_STAR, size: 20.0, color: Colors.yellow),
                 Text(''),

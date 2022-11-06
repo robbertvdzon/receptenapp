@@ -35,6 +35,6 @@ Future<void> setupDependencies() async {
   getIt.registerSingleton<RecipesService>(RecipesService());
   getIt.registerSingleton<IngredientsService>(IngredientsService());
   getIt.registerSingleton<ProductsService>(ProductsService());
-  getIt.registerSingleton<AppStateService>(AppStateService());
   getIt.registerSingleton<Enricher>(Enricher());
+  getIt.registerSingleton<AppStateService>(AppStateService());
 }

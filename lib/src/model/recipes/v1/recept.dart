@@ -3,7 +3,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'dart:convert';
 import 'dart:typed_data';
 import 'package:flutter/widgets.dart';
-import '../../../ui/receptenapp/recepts/ImageTool.dart';
+import '../../../services/ImageTool.dart';
 import 'package:http/http.dart' as http;
 
 part 'recept.g.dart';
@@ -27,7 +27,7 @@ class Recept {
   String uuid = Uuid().v1();
   String name;
   String localImageName = "";
-  String? base64Image80pixels = null;
+  String? base64Image = null;
   String directions = "";
   String remark = "";
   int totalCookingTime = 0;

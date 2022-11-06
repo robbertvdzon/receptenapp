@@ -47,12 +47,12 @@ class _WidgetState extends State<ReceptItemWidgetCard> {
   }
 
   _openRecept() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) =>
-              ReceptDetailsPage(title: 'Recept', recept: _recept)),
-    );
+    // Navigator.push(
+    //   context,
+    //   MaterialPageRoute(
+    //       builder: (context) =>
+              // ReceptDetailsPage(title: 'Recept', recept: _recept)),
+    // );
   }
 
   @override

@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:receptenapp/src/repositories/IngredientTagsRepository.dart';
 import 'package:receptenapp/src/repositories/IngredientsRepository.dart';
 import '../events/RepositoriesLoadedEvent.dart';
+import '../model/enriched/enrichedmodels.dart';
 import '../model/ingredients/v1/ingredientTags.dart';
 import '../model/ingredients/v1/ingredients.dart';
 import '../model/products/v1/products.dart';
@@ -14,6 +15,7 @@ import '../GetItDependencies.dart';
 import '../repositories/RecipesRepository.dart';
 import '../repositories/RecipesTagsRepository.dart';
 import '../repositories/UserRepository.dart';
+import 'Enricher.dart';
 
 class AppStateService {
   // stamdata
@@ -35,6 +37,7 @@ class AppStateService {
   var _ingredientTagsRepository = getIt<IngredientTagsRepository>();
   var _recipesTagsRepository = getIt<RecipesTagsRepository>();
   var _userRepository = getIt<UserRepository>();
+  var _enricher = getIt<Enricher>();
 
   void init(){
     _eventStreamSub = _eventBus.on<RepositoriesLoadedEvent>().listen((event) {
@@ -50,6 +53,7 @@ class AppStateService {
   User? getUser() => user;
 
   List<Recept> getFilteredRecipes() => filteredRecipes;
+  List<EnrichedRecept> getEnrichedFilteredRecipes() => filteredRecipes.map((recipe) => _enricher.enrichRecipe(recipe)).toList();
   setFilteredRecipes(List<Recept> recipes) {
     filteredRecipes = recipes;
   }
