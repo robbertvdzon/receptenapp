@@ -24,6 +24,7 @@ Recept _$ReceptFromJson(Map<String, dynamic> json) => Recept(
     )
       ..uuid = json['uuid'] as String
       ..localImageName = json['localImageName'] as String
+      ..base64Image80pixels = json['base64Image80pixels'] as String?
       ..directions = json['directions'] as String
       ..remark = json['remark'] as String
       ..totalCookingTime = json['totalCookingTime'] as int
@@ -37,6 +38,7 @@ Map<String, dynamic> _$ReceptToJson(Recept instance) => <String, dynamic>{
       'uuid': instance.uuid,
       'name': instance.name,
       'localImageName': instance.localImageName,
+      'base64Image80pixels': instance.base64Image80pixels,
       'directions': instance.directions,
       'remark': instance.remark,
       'totalCookingTime': instance.totalCookingTime,
