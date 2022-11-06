@@ -4,6 +4,7 @@ import 'package:collection/collection.dart';
 import 'package:event_bus/event_bus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../../../GetItDependencies.dart';
 import '../../../events/ReceptChangedEvent.dart';
@@ -185,6 +186,16 @@ class _WidgetState extends State<ReceptDetailsPage> {
                     style:
                         TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
                 Text(_enrichedRecept.recept.remark),
+                Text(''),
+                Text('Toegevoegd op:',
+                    style:
+                    TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
+                Text(DateFormat('yyyy-MM-dd').format(DateTime.fromMillisecondsSinceEpoch(_enrichedRecept.recept.dateAdded)).toString()),
+                Text(''),
+                Text('Aantal personen:',
+                    style:
+                    TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
+                Text(_enrichedRecept.recept.nrPersons.toString()),
                 Text(''),
                 Text('Ingredienten:',
                     style:

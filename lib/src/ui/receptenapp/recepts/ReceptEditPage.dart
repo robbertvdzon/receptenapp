@@ -77,6 +77,13 @@ class _WidgetState extends State<ReceptEditPage> {
                     },
                   ),
                   TextFormField(
+                    decoration: InputDecoration(label: Text('Aantal personen:')),
+                    initialValue: "${_recept.recept.nrPersons}",
+                    onChanged: (text) {
+                      _newRecept.nrPersons = int.parse(text);
+                    },
+                  ),
+                  TextFormField(
                     decoration: InputDecoration(label: Text('Nt:')),
                     initialValue: "${_recept.nutritionalValues.nt}",
                   ),
