@@ -27,8 +27,6 @@ class ReceptEditPage extends StatefulWidget {
 class _WidgetState extends State<ReceptEditPage> {
   late EnrichedRecept _recept;
   late Recept _newRecept;
-  String _textValue = '';
-  String? importImageFromUrl = null;
   var _recipesService = getIt<RecipesService>();
 
   _WidgetState(EnrichedRecept recept) {
@@ -42,49 +40,26 @@ class _WidgetState extends State<ReceptEditPage> {
         .whenComplete(() => Navigator.pop(context));
   }
 
-  Future<Uint8List> networkImageToBase64(String imageUrl) async {
-    var uri = Uri.parse(imageUrl);
-    print(uri);
-    http.Response response = await http.get(uri);
-    Uint8List r = response.bodyBytes;
-    return r;
-  }
+  // storeImage(Uint8List value) {
+  //   print("--1");
+  //   String base64Image = base64Encode(value);
+  //   print("--2");
+  //   var resizedBase64String = resizeImage(base64Image);
+  //   print("--3");
+  //   this._newRecept.base64Image80pixels = resizedBase64String;
+  //   print("--4");
+  //   _saveRecept();
+  // }
 
-  storeImage(Uint8List value) {
-    print("--1");
-    String base64Image = base64Encode(value);
-    print("--2");
-    var resizedBase64String = resizeImage(base64Image);
-    print("--3");
-    this._newRecept.base64Image80pixels = resizedBase64String;
-    print("--4");
-    _saveRecept();
-  }
-
-  void _updateImageData() {
-    if (importImageFromUrl != null) {
-      print("--01");
-      Future<Uint8List> imageBytes = networkImageToBase64(importImageFromUrl!);
-      print("--02");
-      imageBytes.then((value) => storeImage(value)).onError(
-          (error, stackTrace) =>
-              print(error.toString() + " " + stackTrace.toString()));
-      print("--03");
-    }
-  }
 
 
   void _getClipboard() async {
     Uint8List? bytes = await Pasteboard.image;
     if (bytes!=null){
       var data = base64Encode(bytes!);
-      _textValue = data;
       this._newRecept.base64Image80pixels = data;
       _saveRecept();
 
-    }
-    else{
-      _textValue = "No image found on clipboard";
     }
   }
 
@@ -170,27 +145,12 @@ class _WidgetState extends State<ReceptEditPage> {
                 _saveRecept();
               },
             ),
-            TextFormField(
-              decoration: InputDecoration(label: Text('Image from url:')),
-              initialValue: "",
-              onChanged: (text) {
-                importImageFromUrl = text;
-              },
-            ),
             ElevatedButton(
-              child: Text('Update image'),
-              onPressed: () {
-                _updateImageData();
-              },
-            ),
-
-            ElevatedButton(
-              child: Text('Get Data'),
+              child: Text('Load imafe from clipboard'),
               onPressed: () {
                 _getClipboard();
               },
-            ),
-            Text('Clipboard Value : $_textValue'),
+            )
 
           ],
         )));
