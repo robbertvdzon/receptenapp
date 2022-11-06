@@ -13,6 +13,7 @@ import '../../../services/AppStateService.dart';
 import '../recepts/ReceptEditPage.dart';
 import '../recepts/ReceptItemWidget.dart';
 import '../recepttags/RecipesTagsPage.dart';
+import 'SearchRecipesPage2.dart';
 
 class SearchRecipesPage extends StatefulWidget {
   SearchRecipesPage({Key? key, required this.title}) : super(key: key) {}
@@ -136,7 +137,7 @@ class _SearchRecipesPageState extends State<SearchRecipesPage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => RecipesTagsPage(title: 'Zoek')),
+                        builder: (context) => SearchRecipesPage2(title: 'Zoek')),
                   );
                 }else if(value == 1){
                   Navigator.push(
