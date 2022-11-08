@@ -177,7 +177,8 @@ class _WidgetState extends State<ReceptDetailsPage> {
                   alignment: Alignment.topLeft, // use aligment
                   padding:
                       EdgeInsets.only(left: 0, bottom: 0, right: 20, top: 0),
-                  child: _enrichedRecept.image300x300
+                  child: _enrichedRecept.image120x120
+                  // child: _enrichedRecept.image300x300
                   // child: Image.asset('assets/images/recipes/'+_enrichedRecept.recept.localImageName,
                   //     height: 300, width: 300, fit: BoxFit.cover),
                 ),
