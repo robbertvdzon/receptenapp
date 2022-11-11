@@ -1,8 +1,6 @@
 import 'dart:async';
-
 import 'package:collection/collection.dart';
 import 'package:event_bus/event_bus.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -12,6 +10,7 @@ import '../../../model/enriched/enrichedmodels.dart';
 import '../../../model/recipes/v1/recept.dart';
 import '../../../services/AppStateService.dart';
 import '../../../services/Enricher.dart';
+import '../../../services/ImageStorageService.dart';
 import '../../../services/RecipesService.dart';
 import '../../Icons.dart';
 import 'ReceptEditPage.dart';
@@ -35,7 +34,10 @@ class _WidgetState extends State<ReceptDetailsPage> {
   late EnrichedRecept _enrichedRecept;
   var _enricher = getIt<Enricher>();
   var _eventBus = getIt<EventBus>();
+  var _imageStorageService = getIt<ImageStorageService>();
+
   StreamSubscription? _eventStreamSub;
+  Image? receptImage = null;
 
   _WidgetState(EnrichedRecept recept) {
     this._enrichedRecept = recept;
@@ -58,6 +60,7 @@ class _WidgetState extends State<ReceptDetailsPage> {
         Recept? updatedRecept = _appStateService.getRecipes().firstWhereOrNull((element) => element.uuid==_enrichedRecept.recept.uuid);
         if (updatedRecept != null) {
           _enrichedRecept = _enricher.enrichRecipe(updatedRecept);
+          receptImage = null;
         }
       });
     }
@@ -147,6 +150,23 @@ class _WidgetState extends State<ReceptDetailsPage> {
   @override
   Widget build(BuildContext context) {
     String? swipeDirection;
+
+
+    if (receptImage==null) {
+      final Future<Image> data = _imageStorageService.get300x300(_enrichedRecept.recept.uuid);
+      data.then((value) =>
+          setState(() {
+            receptImage = value;
+          })
+      ).catchError((e) =>
+          setState(() {
+            print("ERRORR:");
+            print(e);
+          })
+      );
+    }
+    var img = receptImage != null ? receptImage : Image.asset("assets/images/loading300x300.jpg", height: 300, width: 300, fit: BoxFit.cover);
+
     return Scaffold(
         appBar: AppBar(
           title: Text(widget.title),
@@ -177,10 +197,7 @@ class _WidgetState extends State<ReceptDetailsPage> {
                   alignment: Alignment.topLeft, // use aligment
                   padding:
                       EdgeInsets.only(left: 0, bottom: 0, right: 20, top: 0),
-                  child: _enrichedRecept.image120x120
-                  // child: _enrichedRecept.image300x300
-                  // child: Image.asset('assets/images/recipes/'+_enrichedRecept.recept.localImageName,
-                  //     height: 300, width: 300, fit: BoxFit.cover),
+                  child: img
                 ),
                 if (_enrichedRecept.recept.favorite) new Icon(ICON_YELLOW_STAR, size: 20.0, color: Colors.yellow),
                 Text(''),

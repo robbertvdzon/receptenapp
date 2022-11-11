@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 import '../../../GetItDependencies.dart';
 import '../../../events/ReceptChangedEvent.dart';
 import '../../../model/recipes/v1/recept.dart';
+import '../../../services/ImageStorageService.dart';
 import '../../Icons.dart';
-import 'ReceptDetailsPage.dart';
 
 class ReceptItemWidgetCard extends StatefulWidget {
   ReceptItemWidgetCard({Key? key, required this.recept}) : super(key: key) {}
@@ -21,7 +21,9 @@ class ReceptItemWidgetCard extends StatefulWidget {
 class _WidgetState extends State<ReceptItemWidgetCard> {
   late Recept _recept;
   final _eventBus = getIt<EventBus>();
+  var _imageStorageService = getIt<ImageStorageService>();
   StreamSubscription? _eventStreamSub;
+  Image? receptImage = null;
 
   _WidgetState(Recept recept) {
     this._recept = recept;
@@ -42,6 +44,7 @@ class _WidgetState extends State<ReceptItemWidgetCard> {
     if (event.recept.uuid == _recept.uuid) {
       setState(() {
         _recept = event.recept;
+        receptImage = null;
       });
     }
   }
@@ -57,6 +60,21 @@ class _WidgetState extends State<ReceptItemWidgetCard> {
 
   @override
   Widget build(BuildContext context) {
+
+    if (receptImage==null) {
+      final Future<Image> data = _imageStorageService.get300x300(_recept.uuid);
+      data.then((value) =>
+          setState(() {
+            receptImage = value;
+          })
+      ).catchError((e) =>
+          setState(() {
+            print("ERRORR:");
+            print(e);
+          })
+      );
+    }
+    var img = receptImage != null ? receptImage : Image.asset("assets/images/loading120x120.jpg", height: 120, width: 120, fit: BoxFit.cover);
     return InkWell(
         onTap: () {
           _openRecept();
@@ -77,8 +95,7 @@ class _WidgetState extends State<ReceptItemWidgetCard> {
                   alignment: Alignment.topLeft, // use aligment
                   padding:
                       EdgeInsets.only(left: 0, bottom: 0, right: 20, top: 0),
-                  child: Image.asset('assets/images/recipes/'+_recept.localImageName,
-                      height: 300, width: 300, fit: BoxFit.cover),
+                  child: img
                 ),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.start,

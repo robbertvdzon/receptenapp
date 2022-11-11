@@ -67,9 +67,7 @@ class Enricher {
 
     var enrichedIngredients =
         recept.ingredients.map((e) => enrichtReceptIngredient(e)).toList();
-    var image120x120 = getImage(recept.base64Image120x120);
-    var image300x300 = getImage(recept.base64Image300x300);
-    var result = EnrichedRecept(recept,image120x120, image300x300, nutritionalValues, enrichedIngredients, tags);
+    var result = EnrichedRecept(recept,nutritionalValues, enrichedIngredients, tags);
     return result;
   }
 

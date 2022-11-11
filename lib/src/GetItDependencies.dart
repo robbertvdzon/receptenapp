@@ -11,6 +11,7 @@ import 'package:receptenapp/src/repositories/Repositories.dart';
 import 'package:receptenapp/src/repositories/UserRepository.dart';
 import 'package:receptenapp/src/services/AppStateService.dart';
 import 'package:receptenapp/src/services/Enricher.dart';
+import 'package:receptenapp/src/services/ImageStorageService.dart';
 import 'package:receptenapp/src/services/IngredientsService.dart';
 import 'package:receptenapp/src/services/ProductsService.dart';
 import 'package:receptenapp/src/services/RecipesService.dart';
@@ -37,4 +38,5 @@ Future<void> setupDependencies() async {
   getIt.registerSingleton<ProductsService>(ProductsService());
   getIt.registerSingleton<Enricher>(Enricher());
   getIt.registerSingleton<AppStateService>(AppStateService());
+  getIt.registerSingleton<ImageStorageService>(ImageStorageService());
 }

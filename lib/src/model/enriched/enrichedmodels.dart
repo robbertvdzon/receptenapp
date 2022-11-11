@@ -1,5 +1,4 @@
 
-import 'package:flutter/widgets.dart';
 import 'package:receptenapp/src/model/recipes/v1/receptTags.dart';
 
 import '../ingredients/v1/ingredientTags.dart';
@@ -8,12 +7,10 @@ import '../recipes/v1/recept.dart';
 
 class EnrichedRecept {
   Recept recept;
-  Image image120x120;
-  Image image300x300;
   NutritionalValues nutritionalValues;
   List<EnrichedReceptIngredient> ingredienten;
   List<ReceptTag?> tags;
-  EnrichedRecept(this.recept, this.image120x120, this.image300x300, this.nutritionalValues, this.ingredienten, this.tags);
+  EnrichedRecept(this.recept, this.nutritionalValues, this.ingredienten, this.tags);
 }
 
 class EnrichedReceptIngredient {
