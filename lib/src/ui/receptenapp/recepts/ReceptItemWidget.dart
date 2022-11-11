@@ -82,7 +82,7 @@ class _WidgetState extends State<ReceptItemWidget> {
     }
     var img = receptImage != null
         ? receptImage
-        : Image.asset("assets/images/loading120x120.jpg",
+        : Image.asset("assets/images/transparant120x120.png",
             height: 120, width: 120, fit: BoxFit.cover);
 
     return InkWell(

@@ -162,7 +162,7 @@ class _WidgetState extends State<ReceptDetailsPage> {
           print(e)
       );
     }
-    var img = receptImage != null ? receptImage : Image.asset("assets/images/loading300x300.jpg", height: 300, width: 300, fit: BoxFit.cover);
+    var img = receptImage != null ? receptImage : Image.asset("assets/images/transparant300x300.png", height: 300, width: 300, fit: BoxFit.cover);
 
     return Scaffold(
         appBar: AppBar(
