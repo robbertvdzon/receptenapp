@@ -185,7 +185,7 @@ class _SearchRecipesPageState extends State<SearchRecipesPage> {
                   },
                 )),
             SizedBox(
-              height: 750,
+              height: 650,
               width: 500,
               child: ListView(
                 children: _appStateService.getEnrichedFilteredRecipes().map((item) {

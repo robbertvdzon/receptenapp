@@ -35,7 +35,9 @@ class _WidgetState extends State<ReceptItemWidget> {
 
   @override
   void initState() {
-    _eventStreamSub = _eventBus.on<ReceptChangedEvent>().listen((event) => _processEvent(event));
+    _eventStreamSub = _eventBus
+        .on<ReceptChangedEvent>()
+        .listen((event) => _processEvent(event));
   }
 
   @override
@@ -62,18 +64,26 @@ class _WidgetState extends State<ReceptItemWidget> {
     );
   }
 
+  void loadImage(Image value) {
+    if (this.mounted) {
+      setState(() {
+        receptImage = value;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    if (receptImage==null) {
-      final Future<Image> data = _imageStorageService.get120x120(_recept.recept.uuid);
-      data.then((value) =>
-          setState(() {
-            receptImage = value;
-          })
-      );
+    if (receptImage == null) {
+      final Future<Image> data =
+          _imageStorageService.get120x120(_recept.recept.uuid);
+      data.then((Image value) => loadImage(value));
+      data.then((Image value) => loadImage(value));
     }
-    var img = receptImage != null ? receptImage : Image.asset("assets/images/loading120x120.jpg", height: 120, width: 120, fit: BoxFit.cover);
-
+    var img = receptImage != null
+        ? receptImage
+        : Image.asset("assets/images/loading120x120.jpg",
+            height: 120, width: 120, fit: BoxFit.cover);
 
     return InkWell(
         onTap: () {
@@ -92,17 +102,17 @@ class _WidgetState extends State<ReceptItemWidget> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Container(
-                  alignment: Alignment.topLeft, // use aligment
-                  padding:
-                      EdgeInsets.only(left: 0, bottom: 0, right: 20, top: 0),
-                  child: img
-                ),
+                    alignment: Alignment.topLeft, // use aligment
+                    padding:
+                        EdgeInsets.only(left: 0, bottom: 0, right: 20, top: 0),
+                    child: img),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     if (_recept.recept.favorite)
-                      new Icon(ICON_YELLOW_STAR, size: 20.0, color: Colors.yellow),
+                      new Icon(ICON_YELLOW_STAR,
+                          size: 20.0, color: Colors.yellow),
                     Text(_recept.recept.preparingTime.toString() +
                         "/" +
                         _recept.recept.totalCookingTime.toString() +

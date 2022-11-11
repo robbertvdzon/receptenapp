@@ -92,10 +92,7 @@ class _WidgetState extends State<ReceptEditPage> {
             receptImage = value;
           })
       ).catchError((e) =>
-          setState(() {
-            print("ERRORR:");
-            print(e);
-          })
+          print(e)
       );
     }
 

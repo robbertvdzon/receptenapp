@@ -159,10 +159,7 @@ class _WidgetState extends State<ReceptDetailsPage> {
             receptImage = value;
           })
       ).catchError((e) =>
-          setState(() {
-            print("ERRORR:");
-            print(e);
-          })
+          print(e)
       );
     }
     var img = receptImage != null ? receptImage : Image.asset("assets/images/loading300x300.jpg", height: 300, width: 300, fit: BoxFit.cover);

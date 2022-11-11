@@ -68,10 +68,7 @@ class _WidgetState extends State<ReceptItemWidgetCard> {
             receptImage = value;
           })
       ).catchError((e) =>
-          setState(() {
-            print("ERRORR:");
-            print(e);
-          })
+            print(e)
       );
     }
     var img = receptImage != null ? receptImage : Image.asset("assets/images/loading120x120.jpg", height: 120, width: 120, fit: BoxFit.cover);
