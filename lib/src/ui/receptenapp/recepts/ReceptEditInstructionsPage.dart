@@ -16,18 +16,18 @@ import '../../../services/RecipesService.dart';
 import 'dart:typed_data';
 import 'package:flutter/widgets.dart';
 
-class ReceptEditPage extends StatefulWidget {
-  ReceptEditPage({Key? key, required this.title, required this.recept})
+class ReceptEditInstructionsPage extends StatefulWidget {
+  ReceptEditInstructionsPage({Key? key, required this.title, required this.recept})
       : super(key: key) {}
 
   final EnrichedRecept recept;
   final String title;
 
   @override
-  State<ReceptEditPage> createState() => _WidgetState(recept);
+  State<ReceptEditInstructionsPage> createState() => _WidgetState(recept);
 }
 
-class _WidgetState extends State<ReceptEditPage> {
+class _WidgetState extends State<ReceptEditInstructionsPage> {
   late EnrichedRecept _recept;
   late Recept _newRecept;
   var _recipesService = getIt<RecipesService>();
@@ -75,16 +75,6 @@ class _WidgetState extends State<ReceptEditPage> {
     _eventStreamSub?.cancel();
   }
 
-
-  void _getClipboard() async {
-    Uint8List? bytes = await Pasteboard.image;
-    if (bytes != null) {
-      _imageStorageService.storeImage(this._recept.recept.uuid, bytes).whenComplete(() =>
-          _eventBus.fire(ReceptChangedEvent(this._recept.recept))
-      );
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     _textEditingController.text = _recept.recept.directions;
@@ -115,68 +105,6 @@ class _WidgetState extends State<ReceptEditPage> {
               padding: EdgeInsets.only(left: 0, bottom: 0, right: 20, top: 0),
               child: img
             ),
-            ElevatedButton(
-              child: Text('Load image from clipboard'),
-              onPressed: () {
-                _getClipboard();
-              },
-            ),
-            TextFormField(
-              decoration: InputDecoration(label: Text('Name:')),
-              initialValue: "${_recept.recept.name}",
-              onChanged: (text) {
-                _newRecept.name = text;
-              },
-            ),
-            TextFormField(
-              decoration: InputDecoration(label: Text('Opmerking:')),
-              initialValue: "${_recept.recept.remark}",
-              onChanged: (text) {
-                _newRecept.remark = text;
-              },
-            ),
-            TextFormField(
-              decoration: InputDecoration(label: Text('Voorbereidingstijd:')),
-              initialValue: "${_recept.recept.preparingTime}",
-              onChanged: (text) {
-                _newRecept.preparingTime = int.parse(text);
-              },
-            ),
-            TextFormField(
-              decoration: InputDecoration(label: Text('Totale kooktijd:')),
-              initialValue: "${_recept.recept.totalCookingTime}",
-              onChanged: (text) {
-                _newRecept.totalCookingTime = int.parse(text);
-              },
-            ),
-            TextFormField(
-              decoration: InputDecoration(label: Text('Aantal personen:')),
-              initialValue: "${_recept.recept.nrPersons}",
-              onChanged: (text) {
-                _newRecept.nrPersons = int.parse(text);
-              },
-            ),
-            TextFormField(
-              decoration: InputDecoration(label: Text('Nt:')),
-              initialValue: "${_recept.nutritionalValues.nt}",
-            ),
-            TextFormField(
-              decoration: InputDecoration(label: Text('Kcal:')),
-              initialValue: "${_recept.nutritionalValues.kcal}",
-            ),
-            TextFormField(
-              decoration: InputDecoration(label: Text('Fat:')),
-              initialValue: "${_recept.nutritionalValues.fat}",
-            ),
-            TextFormField(
-              decoration: InputDecoration(label: Text('Ingredients:')),
-              initialValue:
-                  "${_recept.ingredienten.map((e) => e?.toTextString()).join(",")}",
-            ),
-            TextFormField(
-              decoration: InputDecoration(label: Text('Tags:')),
-              initialValue: "${_recept.tags.map((e) => e?.tag).join(",")}",
-            ),
             TextField(
               controller: _textEditingController,
               keyboardType: TextInputType.multiline,
@@ -184,7 +112,7 @@ class _WidgetState extends State<ReceptEditPage> {
               maxLines: 10,// when user presses enter it will adapt to it
             ),
             ElevatedButton(
-              child: Text('SAVE!'),
+              child: Text('Save'),
               onPressed: () {
                 _saveRecept();
               },

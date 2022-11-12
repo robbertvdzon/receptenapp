@@ -10,7 +10,7 @@ import '../../../events/ReceptCreatedEvent.dart';
 import '../../../model/enriched/enrichedmodels.dart';
 import '../../../model/recipes/v1/recept.dart';
 import '../../../services/AppStateService.dart';
-import '../recepts/ReceptEditPage.dart';
+import '../recepts/ReceptEditDetailsPage.dart';
 import '../recepts/ReceptItemWidget.dart';
 import '../recepttags/RecipesTagsPage.dart';
 import 'SearchRecipesPage2.dart';
@@ -73,7 +73,7 @@ class _SearchRecipesPageState extends State<SearchRecipesPage> {
         context,
         MaterialPageRoute(
             builder: (context) =>
-                ReceptEditPage(
+                ReceptEditDetailsPage(
                     title: 'Nieuw recept', recept: enrichedNewRecept)),
       );
   }
