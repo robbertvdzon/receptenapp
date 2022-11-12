@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:typed_data';
+
 import 'package:collection/collection.dart';
 import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
@@ -16,9 +17,9 @@ import '../../../services/Enricher.dart';
 import '../../../services/ImageStorageService.dart';
 import '../../../services/RecipesService.dart';
 import '../../Icons.dart';
+import 'ReceptEditDetailsPage.dart';
 import 'ReceptEditIngredientsPage.dart';
 import 'ReceptEditInstructionsPage.dart';
-import 'ReceptEditDetailsPage.dart';
 import 'ReceptEditTagsPage.dart';
 import 'ReceptIngredientItemWidget.dart';
 
@@ -77,13 +78,15 @@ class _WidgetState extends State<ReceptDetailsPage> {
 
   void _nextRecept() {
     Recept newRecept = _getNextRecept(_enrichedRecept.recept);
-    this._enrichedRecept = _enricher.enrichRecipe(newRecept);
+    _enrichedRecept = _enricher.enrichRecipe(newRecept);
+    receptImage = null;
     setState(() {});
   }
 
   void _prevRecept() {
     Recept newRecept = _getPreviousRecept(_enrichedRecept.recept);
-    this._enrichedRecept = _enricher.enrichRecipe(newRecept);
+    _enrichedRecept = _enricher.enrichRecipe(newRecept);
+    receptImage = null;
     setState(() {});
   }
 
@@ -110,15 +113,12 @@ class _WidgetState extends State<ReceptDetailsPage> {
     Recept recept = _enrichedRecept.recept;
     recept.favorite = favorite;
     _recipesService.saveRecept(recept);
-    _eventBus.fire(ReceptChangedEvent(recept));
   }
 
-  void updateImageFromClipboard() async{
+  void updateImageFromClipboard() async {
     Uint8List? bytes = await Pasteboard.image;
     if (bytes != null) {
-      _imageStorageService.storeImage(this._enrichedRecept.recept.uuid, bytes).whenComplete(() =>
-          _eventBus.fire(ReceptChangedEvent(this._enrichedRecept.recept))
-      );
+      _imageStorageService.storeImage(this._enrichedRecept.recept, bytes);
     }
   }
 
@@ -194,75 +194,65 @@ Markdown is the **best**!
           title: Text(widget.title),
           actions: [
             PopupMenuButton(
-              // add icon, by default "3 dot" icon
-              // icon: Icon(Icons.book)
-                itemBuilder: (context){
-                  return [
-                    PopupMenuItem<int>(
-                      value: 0,
-                      child: Text("Edit recept details"),
-                    ),
-
-                    PopupMenuItem<int>(
-                      value: 1,
-                      child: Text("Edit ingredients"),
-                    ),
-
-                    PopupMenuItem<int>(
-                      value: 2,
-                      child: Text("Edit instructions"),
-                    ),
-
-                    PopupMenuItem<int>(
-                      value: 3,
-                      child: Text("Edit tags"),
-                    ),
-
-                    PopupMenuItem<int>(
-                      value: 4,
-                      child: Text("Update image from clipboard"),
-                    ),
-                  ];
-                },
-                onSelected:(value){
-                  if(value == 0){
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ReceptEditDetailsPage(
-                              title: 'Edit', recept: _enrichedRecept)),
-                    );
-                  }else if(value == 1){
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              ReceptEditIngredientsPage(
-                                  title: 'Edit', recept: _enrichedRecept)),
-                    );
-                  }else if(value == 2){
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              ReceptEditInstructionsPage(
-                                  title: 'Edit', recept: _enrichedRecept)),
-                    );
-                  }else if(value == 3){
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              ReceptEditTagsPage(
-                                  title: 'Edit', recept: _enrichedRecept)),
-                    );
-                  }else if(value == 4){
-                    updateImageFromClipboard();
-                  }
-                }
-            ),
+                // add icon, by default "3 dot" icon
+                // icon: Icon(Icons.book)
+                itemBuilder: (context) {
+              return [
+                PopupMenuItem<int>(
+                  value: 0,
+                  child: Text("Edit recept details"),
+                ),
+                PopupMenuItem<int>(
+                  value: 1,
+                  child: Text("Edit ingredients"),
+                ),
+                PopupMenuItem<int>(
+                  value: 2,
+                  child: Text("Edit instructions"),
+                ),
+                PopupMenuItem<int>(
+                  value: 3,
+                  child: Text("Edit tags"),
+                ),
+                PopupMenuItem<int>(
+                  value: 4,
+                  child: Text("Update image from clipboard"),
+                ),
+              ];
+            }, onSelected: (value) {
+              if (value == 0) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ReceptEditDetailsPage(
+                          title: 'Edit', recept: _enrichedRecept)),
+                );
+              } else if (value == 1) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ReceptEditIngredientsPage(
+                          title: 'Edit', recept: _enrichedRecept)),
+                );
+              } else if (value == 2) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ReceptEditInstructionsPage(
+                          title: 'Edit', recept: _enrichedRecept)),
+                );
+              } else if (value == 3) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ReceptEditTagsPage(
+                          title: 'Edit', recept: _enrichedRecept)),
+                );
+              } else if (value == 4) {
+                updateImageFromClipboard();
+              }
+            }),
           ],
-
         ),
         body: GestureDetector(
             onPanUpdate: (details) {
@@ -294,6 +284,33 @@ Markdown is the **best**!
                     if (_enrichedRecept.recept.favorite)
                       new Icon(ICON_YELLOW_STAR,
                           size: 20.0, color: Colors.yellow),
+                    Text(''),
+                    ElevatedButton(
+                      child: Text('Voeg toe aan planner'),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ReceptEditDetailsPage(
+                                  title: 'Edit', recept: _enrichedRecept)),
+                        );
+                      },
+                    ),
+                    Text(''),
+                    if (!_enrichedRecept.recept.favorite)
+                      ElevatedButton(
+                        child: Text('Voeg toe aan favorieten'),
+                        onPressed: () {
+                          _setFavorite(true);
+                        },
+                      ),
+                    if (_enrichedRecept.recept.favorite)
+                      ElevatedButton(
+                        child: Text('Verwijder van favorieten'),
+                        onPressed: () {
+                          _setFavorite(false);
+                        },
+                      ),
                     Text(''),
                     Text('Opmerkingen:',
                         style: TextStyle(
@@ -341,7 +358,7 @@ Markdown is the **best**!
                         style: TextStyle(
                             fontSize: 20.0, fontWeight: FontWeight.bold)),
                     MarkdownBody(
-                      data: _enrichedRecept.recept.directions,
+                      data: _enrichedRecept.recept.instructions ?? "",
                     ),
                     Text(''),
                     Text('Details:',
@@ -359,45 +376,6 @@ Markdown is the **best**!
                             fontSize: 20.0, fontWeight: FontWeight.bold)),
                     Text(
                         "${_enrichedRecept.tags.map((e) => e?.tag).join("\n")}"),
-                    Text(''),
-                    ElevatedButton(
-                      child: Text('Bewerk'),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ReceptEditDetailsPage(
-                                  title: 'Edit', recept: _enrichedRecept)),
-                        );
-                      },
-                    ),
-                    Text(''),
-                    ElevatedButton(
-                      child: Text('Voeg toe aan planner'),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ReceptEditDetailsPage(
-                                  title: 'Edit', recept: _enrichedRecept)),
-                        );
-                      },
-                    ),
-                    Text(''),
-                    if (!_enrichedRecept.recept.favorite)
-                      ElevatedButton(
-                        child: Text('Voeg toe aan favorieten'),
-                        onPressed: () {
-                          _setFavorite(true);
-                        },
-                      ),
-                    if (_enrichedRecept.recept.favorite)
-                      ElevatedButton(
-                        child: Text('Verwijder van favorieten'),
-                        onPressed: () {
-                          _setFavorite(false);
-                        },
-                      ),
                   ],
             ))));
   }

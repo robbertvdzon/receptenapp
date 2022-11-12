@@ -21,7 +21,7 @@ class Recipes {
 class Recept {
   String uuid = Uuid().v1();
   String name;
-  String directions = "";
+  String instructions = "";
   String remark = "";
   int totalCookingTime = 0;
   int preparingTime = 0;

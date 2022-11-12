@@ -39,7 +39,7 @@ class _WidgetState extends State<ReceptEditInstructionsPage> {
   }
 
   _saveRecept() {
-    _newRecept.directions =  _textEditingController.text;
+    _newRecept.instructions =  _textEditingController.text;
     _recipesService
         .saveRecept(_newRecept)
         .whenComplete(() => Navigator.pop(context));
@@ -47,7 +47,7 @@ class _WidgetState extends State<ReceptEditInstructionsPage> {
 
   @override
   Widget build(BuildContext context) {
-    _textEditingController.text = _recept.recept.directions;
+    _textEditingController.text = _recept.recept.instructions;
 
     return Scaffold(
         appBar: AppBar(
