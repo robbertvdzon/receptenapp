@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:collection/collection.dart';
 import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:intl/intl.dart';
 
 import '../../../GetItDependencies.dart';
@@ -45,7 +46,9 @@ class _WidgetState extends State<ReceptDetailsPage> {
 
   @override
   void initState() {
-    _eventStreamSub = _eventBus.on<ReceptChangedEvent>().listen((event) => _processEvent(event));
+    _eventStreamSub = _eventBus
+        .on<ReceptChangedEvent>()
+        .listen((event) => _processEvent(event));
   }
 
   @override
@@ -57,7 +60,8 @@ class _WidgetState extends State<ReceptDetailsPage> {
   void _processEvent(ReceptChangedEvent event) {
     if (event.recept.uuid == _enrichedRecept.recept.uuid) {
       setState(() {
-        Recept? updatedRecept = _appStateService.getRecipes().firstWhereOrNull((element) => element.uuid==_enrichedRecept.recept.uuid);
+        Recept? updatedRecept = _appStateService.getRecipes().firstWhereOrNull(
+            (element) => element.uuid == _enrichedRecept.recept.uuid);
         if (updatedRecept != null) {
           _enrichedRecept = _enricher.enrichRecipe(updatedRecept);
           receptImage = null;
@@ -78,27 +82,26 @@ class _WidgetState extends State<ReceptDetailsPage> {
     setState(() {});
   }
 
-  Recept _getNextRecept(Recept recept){
+  Recept _getNextRecept(Recept recept) {
     int currentIndex = _appStateService.getFilteredRecipes().indexOf(recept);
-    int newIndex = currentIndex+1;
-    if (newIndex<_appStateService.getFilteredRecipes().length) {
+    int newIndex = currentIndex + 1;
+    if (newIndex < _appStateService.getFilteredRecipes().length) {
       return _appStateService.getFilteredRecipes().elementAt(newIndex);
-    }
-    else{
+    } else {
       return _appStateService.getFilteredRecipes().last;
     }
   }
 
-  Recept _getPreviousRecept(Recept recept){
+  Recept _getPreviousRecept(Recept recept) {
     int currentIndex = _appStateService.getFilteredRecipes().indexOf(recept);
-    if (currentIndex==0) return recept;
-    if (currentIndex>_appStateService.getFilteredRecipes().length) {
+    if (currentIndex == 0) return recept;
+    if (currentIndex > _appStateService.getFilteredRecipes().length) {
       return _appStateService.getFilteredRecipes().last;
     }
-    return _appStateService.getFilteredRecipes().elementAt(currentIndex-1);
+    return _appStateService.getFilteredRecipes().elementAt(currentIndex - 1);
   }
 
-  void _setFavorite(bool favorite){
+  void _setFavorite(bool favorite) {
     Recept recept = _enrichedRecept.recept;
     recept.favorite = favorite;
     _recipesService.saveRecept(recept);
@@ -151,18 +154,26 @@ class _WidgetState extends State<ReceptDetailsPage> {
   Widget build(BuildContext context) {
     String? swipeDirection;
 
-
-    if (receptImage==null) {
-      final Future<Image> data = _imageStorageService.get300x300(_enrichedRecept.recept.uuid);
-      data.then((value) =>
-          setState(() {
-            receptImage = value;
-          })
-      ).catchError((e) =>
-          print(e)
-      );
+    if (receptImage == null) {
+      final Future<Image> data =
+          _imageStorageService.get300x300(_enrichedRecept.recept.uuid);
+      data
+          .then((value) => setState(() {
+                receptImage = value;
+              }))
+          .catchError((e) => print(e));
     }
-    var img = receptImage != null ? receptImage : Image.asset("assets/images/transparant300x300.png", height: 300, width: 300, fit: BoxFit.cover);
+    var img = receptImage != null
+        ? receptImage
+        : Image.asset("assets/images/transparant300x300.png",
+            height: 300, width: 300, fit: BoxFit.cover);
+    String mdstring = """ 
+Markdown is the **best**!
+
+* It has lists.
+* It has [links - FlutterCampus.com](https://www.fluttercampus.com).
+* It has _so much more_...
+""";
 
     return Scaffold(
         appBar: AppBar(
@@ -188,35 +199,39 @@ class _WidgetState extends State<ReceptDetailsPage> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(_enrichedRecept.recept.name,
-                    style: TextStyle(fontSize: 25.0)),
-                Container(
-                  alignment: Alignment.topLeft, // use aligment
-                  padding:
-                      EdgeInsets.only(left: 0, bottom: 0, right: 20, top: 0),
-                  child: img
-                ),
-                if (_enrichedRecept.recept.favorite) new Icon(ICON_YELLOW_STAR, size: 20.0, color: Colors.yellow),
-                Text(''),
-                Text('Opmerkingen:',
-                    style:
-                        TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
-                Text(_enrichedRecept.recept.remark),
-                Text(''),
-                Text('Toegevoegd op:',
-                    style:
-                    TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
-                Text(DateFormat('yyyy-MM-dd').format(DateTime.fromMillisecondsSinceEpoch(_enrichedRecept.recept.dateAdded)).toString()),
-                Text(''),
-                Text('Aantal personen:',
-                    style:
-                    TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
-                Text(_enrichedRecept.recept.nrPersons.toString()),
-                Text(''),
-                Text('Ingredienten:',
-                    style:
-                        TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
-              ]+
+                    Text(_enrichedRecept.recept.name,
+                        style: TextStyle(fontSize: 25.0)),
+                    Container(
+                        alignment: Alignment.topLeft, // use aligment
+                        padding: EdgeInsets.only(
+                            left: 0, bottom: 0, right: 20, top: 0),
+                        child: img),
+                    if (_enrichedRecept.recept.favorite)
+                      new Icon(ICON_YELLOW_STAR,
+                          size: 20.0, color: Colors.yellow),
+                    Text(''),
+                    Text('Opmerkingen:',
+                        style: TextStyle(
+                            fontSize: 20.0, fontWeight: FontWeight.bold)),
+                    Text(_enrichedRecept.recept.remark),
+                    Text(''),
+                    Text('Toegevoegd op:',
+                        style: TextStyle(
+                            fontSize: 20.0, fontWeight: FontWeight.bold)),
+                    Text(DateFormat('yyyy-MM-dd')
+                        .format(DateTime.fromMillisecondsSinceEpoch(
+                            _enrichedRecept.recept.dateAdded))
+                        .toString()),
+                    Text(''),
+                    Text('Aantal personen:',
+                        style: TextStyle(
+                            fontSize: 20.0, fontWeight: FontWeight.bold)),
+                    Text(_enrichedRecept.recept.nrPersons.toString()),
+                    Text(''),
+                    Text('Ingredienten:',
+                        style: TextStyle(
+                            fontSize: 20.0, fontWeight: FontWeight.bold)),
+                  ] +
                   _enrichedRecept.ingredienten.map((item) {
                     return Container(
                       child: Column(
@@ -226,74 +241,79 @@ class _WidgetState extends State<ReceptDetailsPage> {
                               height: 20.0,
                             ),
                             alignment: Alignment.topLeft,
-                            child:
-                             ReceptIngredientItemWidget(
-                                 ingredient: item, key: ObjectKey(item)),
+                            child: ReceptIngredientItemWidget(
+                                ingredient: item, key: ObjectKey(item)),
                           ),
                         ],
                       ),
                       margin: EdgeInsets.all(0),
                       padding: EdgeInsets.all(0),
                     );
-                  }).toList()+[
-                Text(''),
-                Text('Bereiding:',
-                    style:
-                        TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
-                Text(_enrichedRecept.recept.directions),
-                Text(''),
-                Text('Details:',
-                    style:
-                        TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
-                Container(
-                  alignment: Alignment.center, // use aligment
-                  padding:
-                      EdgeInsets.only(left: 0, bottom: 0, right: 20, top: 0),
-                  child: tableWithValues(),
-                ),
-                Text(''),
-                Text('Tags:',
-                    style:
-                        TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
-                Text("${_enrichedRecept.tags.map((e) => e?.tag).join("\n")}"),
-                Text(''),
-                ElevatedButton(
-                  child: Text('Bewerk'),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ReceptEditPage(
-                              title: 'Edit', recept: _enrichedRecept)),
-                    );
-                  },
-                ),
-                Text(''),
-                ElevatedButton(
-                  child: Text('Voeg toe aan planner'),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ReceptEditPage(
-                              title: 'Edit', recept: _enrichedRecept)),
-                    );
-                  },
-                ),
-                Text(''),
-                if (!_enrichedRecept.recept.favorite) ElevatedButton(
-                  child: Text('Voeg toe aan favorieten'),
-                  onPressed: () {
-                    _setFavorite(true);
-                  },
-                ),
-                if (_enrichedRecept.recept.favorite) ElevatedButton(
-                  child: Text('Verwijder van favorieten'),
-                  onPressed: () {
-                    _setFavorite(false);
-                  },
-                ),
-              ],
+                  }).toList() +
+                  [
+                    Text(''),
+                    Text('Bereiding:',
+                        style: TextStyle(
+                            fontSize: 20.0, fontWeight: FontWeight.bold)),
+                    MarkdownBody(
+                      data: _enrichedRecept.recept.directions,
+                    ),
+                    Text(''),
+                    Text('Details:',
+                        style: TextStyle(
+                            fontSize: 20.0, fontWeight: FontWeight.bold)),
+                    Container(
+                      alignment: Alignment.center, // use aligment
+                      padding: EdgeInsets.only(
+                          left: 0, bottom: 0, right: 20, top: 0),
+                      child: tableWithValues(),
+                    ),
+                    Text(''),
+                    Text('Tags:',
+                        style: TextStyle(
+                            fontSize: 20.0, fontWeight: FontWeight.bold)),
+                    Text(
+                        "${_enrichedRecept.tags.map((e) => e?.tag).join("\n")}"),
+                    Text(''),
+                    ElevatedButton(
+                      child: Text('Bewerk'),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ReceptEditPage(
+                                  title: 'Edit', recept: _enrichedRecept)),
+                        );
+                      },
+                    ),
+                    Text(''),
+                    ElevatedButton(
+                      child: Text('Voeg toe aan planner'),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ReceptEditPage(
+                                  title: 'Edit', recept: _enrichedRecept)),
+                        );
+                      },
+                    ),
+                    Text(''),
+                    if (!_enrichedRecept.recept.favorite)
+                      ElevatedButton(
+                        child: Text('Voeg toe aan favorieten'),
+                        onPressed: () {
+                          _setFavorite(true);
+                        },
+                      ),
+                    if (_enrichedRecept.recept.favorite)
+                      ElevatedButton(
+                        child: Text('Verwijder van favorieten'),
+                        onPressed: () {
+                          _setFavorite(false);
+                        },
+                      ),
+                  ],
             ))));
   }
 }

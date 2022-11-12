@@ -37,6 +37,7 @@ class _WidgetState extends State<ReceptEditPage> {
   var _enricher = getIt<Enricher>();
   StreamSubscription? _eventStreamSub;
   Image? receptImage = null;
+  final TextEditingController _textEditingController = TextEditingController();
 
   _WidgetState(EnrichedRecept recept) {
     this._recept = recept;
@@ -44,6 +45,8 @@ class _WidgetState extends State<ReceptEditPage> {
   }
 
   _saveRecept() {
+    _newRecept.directions =  _textEditingController.text;
+
     _recipesService
         .saveRecept(_newRecept)
         .whenComplete(() => Navigator.pop(context));
@@ -84,6 +87,7 @@ class _WidgetState extends State<ReceptEditPage> {
 
   @override
   Widget build(BuildContext context) {
+    _textEditingController.text = _recept.recept.directions;
 
     if (receptImage==null) {
       final Future<Image> data = _imageStorageService.get300x300(_recept.recept.uuid);
@@ -102,7 +106,8 @@ class _WidgetState extends State<ReceptEditPage> {
         appBar: AppBar(
           title: Text(widget.title),
         ),
-        body: Center(
+        body: SingleChildScrollView(
+        child: Center(
             child: Column(
           children: <Widget>[
             Container(
@@ -172,6 +177,12 @@ class _WidgetState extends State<ReceptEditPage> {
               decoration: InputDecoration(label: Text('Tags:')),
               initialValue: "${_recept.tags.map((e) => e?.tag).join(",")}",
             ),
+            TextField(
+              controller: _textEditingController,
+              keyboardType: TextInputType.multiline,
+              minLines: 1,//Normal textInputField will be displayed
+              maxLines: 10,// when user presses enter it will adapt to it
+            ),
             ElevatedButton(
               child: Text('SAVE!'),
               onPressed: () {
@@ -179,7 +190,7 @@ class _WidgetState extends State<ReceptEditPage> {
               },
             ),
           ],
-        )));
+        ))));
   }
 
 }
