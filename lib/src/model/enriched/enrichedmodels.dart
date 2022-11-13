@@ -14,12 +14,13 @@ class EnrichedRecept {
 }
 
 class EnrichedReceptIngredient {
+  ReceptIngredient receptIngredient;
   String name;
   Ingredient? ingredient;
   ReceptIngredientAmount? amount = null;
   NutritionalValues nutritionalValues;
 
-  EnrichedReceptIngredient(this.name, this.ingredient, this.amount, this.nutritionalValues);
+  EnrichedReceptIngredient(this.receptIngredient, this.name, this.ingredient, this.amount, this.nutritionalValues);
 
   String toTextString() {
     if (amount!=null){

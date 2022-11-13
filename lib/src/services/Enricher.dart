@@ -27,6 +27,7 @@ class Enricher {
     Ingredient? ingredient = _ingredientsRepository.getIngredientByName(receptIngredient.name);
 
     return EnrichedReceptIngredient(
+        receptIngredient,
         receptIngredient.name,
         ingredient,
         receptIngredient.amount,

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-import '../../../GetItDependencies.dart';
-import '../../../model/enriched/enrichedmodels.dart';
-import '../../../model/recipes/v1/recept.dart';
-import '../../../services/RecipesService.dart';
+import '../../../../GetItDependencies.dart';
+import '../../../../model/enriched/enrichedmodels.dart';
+import '../../../../model/recipes/v1/recept.dart';
+import '../../../../services/RecipesService.dart';
 
 class ReceptEditTagsPage extends StatefulWidget {
   ReceptEditTagsPage({Key? key, required this.title, required this.recept})

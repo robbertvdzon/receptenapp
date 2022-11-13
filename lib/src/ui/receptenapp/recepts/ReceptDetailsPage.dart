@@ -17,10 +17,10 @@ import '../../../services/Enricher.dart';
 import '../../../services/ImageStorageService.dart';
 import '../../../services/RecipesService.dart';
 import '../../Icons.dart';
-import 'ReceptEditDetailsPage.dart';
-import 'ReceptEditIngredientsPage.dart';
-import 'ReceptEditInstructionsPage.dart';
-import 'ReceptEditTagsPage.dart';
+import 'edit/ReceptEditDetailsPage.dart';
+import 'edit/ReceptEditIngredientsPage.dart';
+import 'edit/ReceptEditInstructionsPage.dart';
+import 'edit/ReceptEditTagsPage.dart';
 import 'ReceptIngredientItemWidget.dart';
 
 class ReceptDetailsPage extends StatefulWidget {

@@ -5,14 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:pasteboard/pasteboard.dart';
 import 'package:collection/collection.dart';
 
-import '../../../GetItDependencies.dart';
-import '../../../events/ReceptChangedEvent.dart';
-import '../../../model/enriched/enrichedmodels.dart';
-import '../../../model/recipes/v1/recept.dart';
-import '../../../services/AppStateService.dart';
-import '../../../services/Enricher.dart';
-import '../../../services/ImageStorageService.dart';
-import '../../../services/RecipesService.dart';
+import '../../../../GetItDependencies.dart';
+import '../../../../events/ReceptChangedEvent.dart';
+import '../../../../model/enriched/enrichedmodels.dart';
+import '../../../../model/recipes/v1/recept.dart';
+import '../../../../services/AppStateService.dart';
+import '../../../../services/Enricher.dart';
+import '../../../../services/ImageStorageService.dart';
+import '../../../../services/RecipesService.dart';
 import 'dart:typed_data';
 import 'package:flutter/widgets.dart';
 
