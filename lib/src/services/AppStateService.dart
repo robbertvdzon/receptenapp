@@ -58,7 +58,6 @@ class AppStateService {
     filteredRecipes = recipes;
   }
 
-
   @override
   void dispose() {
     _eventStreamSub?.cancel();

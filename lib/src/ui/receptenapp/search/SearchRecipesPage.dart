@@ -7,6 +7,7 @@ import 'package:receptenapp/src/services/Enricher.dart';
 
 import '../../../GetItDependencies.dart';
 import '../../../events/ReceptCreatedEvent.dart';
+import '../../../events/ReceptRemovedEvent.dart';
 import '../../../model/enriched/enrichedmodels.dart';
 import '../../../model/recipes/v1/recept.dart';
 import '../../../services/AppStateService.dart';
@@ -36,7 +37,8 @@ class _SearchRecipesPageState extends State<SearchRecipesPage> {
   void initState() {
     super.initState();
     _filterRecipes();
-    _eventStreamSub = _eventBus.on<ReceptCreatedEvent>().listen((event) => _processEvent(event));
+    _eventStreamSub = _eventBus.on<ReceptCreatedEvent>().listen((event) => _processReceptCreatedEvent(event));
+    _eventStreamSub = _eventBus.on<ReceptRemovedEvent>().listen((event) => _processReceptRemovedEvent(event));
   }
 
   @override
@@ -45,7 +47,13 @@ class _SearchRecipesPageState extends State<SearchRecipesPage> {
     _eventStreamSub?.cancel();
   }
 
-  void _processEvent(ReceptCreatedEvent event) {
+  void _processReceptRemovedEvent(ReceptRemovedEvent event) {
+      setState(() {
+        _filterRecipes();
+      });
+  }
+
+  void _processReceptCreatedEvent(ReceptCreatedEvent event) {
       setState(() {
         _filter = event.recept.name;
         _filterRecipes();

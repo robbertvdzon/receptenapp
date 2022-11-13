@@ -12,6 +12,7 @@ import '../../../GetItDependencies.dart';
 import '../../../events/ReceptChangedEvent.dart';
 import '../../../model/enriched/enrichedmodels.dart';
 import '../../../model/recipes/v1/recept.dart';
+import '../../../repositories/RecipesRepository.dart';
 import '../../../services/AppStateService.dart';
 import '../../../services/Enricher.dart';
 import '../../../services/ImageStorageService.dart';
@@ -42,7 +43,7 @@ class _WidgetState extends State<ReceptDetailsPage> {
   var _enricher = getIt<Enricher>();
   var _eventBus = getIt<EventBus>();
   var _imageStorageService = getIt<ImageStorageService>();
-
+  var _recipesRepository = getIt<RecipesRepository>();
   StreamSubscription? _eventStreamSub;
   Image? receptImage = null;
 
@@ -122,6 +123,24 @@ class _WidgetState extends State<ReceptDetailsPage> {
     }
   }
 
+  void removeRecept() async {
+    Recept currentRecept = _enrichedRecept.recept;
+    Recept nextRecept = _getNextRecept(_enrichedRecept.recept);
+    if (nextRecept==currentRecept){
+      // this is the last recept, close this page when removed
+      _recipesService.removeRecept(currentRecept);
+      Navigator.pop(context);
+    }
+    else{
+      _recipesService.removeRecept(currentRecept);
+      _enrichedRecept = _enricher.enrichRecipe(nextRecept);
+      receptImage = null;
+      setState(() {});
+    }
+
+
+  }
+
   Table tableWithValues() {
     return Table(
       columnWidths: const {
@@ -181,14 +200,6 @@ class _WidgetState extends State<ReceptDetailsPage> {
         ? receptImage
         : Image.asset("assets/images/transparant300x300.png",
             height: 300, width: 300, fit: BoxFit.cover);
-    String mdstring = """ 
-Markdown is the **best**!
-
-* It has lists.
-* It has [links - FlutterCampus.com](https://www.fluttercampus.com).
-* It has _so much more_...
-""";
-
     return Scaffold(
         appBar: AppBar(
           title: Text(widget.title),
@@ -217,6 +228,10 @@ Markdown is the **best**!
                 PopupMenuItem<int>(
                   value: 4,
                   child: Text("Update image from clipboard"),
+                ),
+                PopupMenuItem<int>(
+                  value: 5,
+                  child: Text("Remove recept"),
                 ),
               ];
             }, onSelected: (value) {
@@ -250,6 +265,8 @@ Markdown is the **best**!
                 );
               } else if (value == 4) {
                 updateImageFromClipboard();
+              } else if (value == 5) {
+                removeRecept();
               }
             }),
           ],

@@ -41,6 +41,15 @@ class RecipesRepository {
     return _saveRecipes(recipes);
   }
 
+  Future<void> removeRecept(String uuid) async {
+    var recipes = getRecipes();
+    var oldRecept = recipes.recipes.firstWhereOrNull((element) => element.uuid==uuid);
+    if (oldRecept!=null){
+      recipes.recipes.remove(oldRecept);
+    }
+    return _saveRecipes(recipes);
+  }
+
   Future<void> addRecept(Recept recept) async {
     var recipes = getRecipes();
     recipes.recipes.add(recept);
