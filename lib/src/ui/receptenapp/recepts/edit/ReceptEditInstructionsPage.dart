@@ -4,6 +4,7 @@ import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
 import 'package:pasteboard/pasteboard.dart';
 import 'package:collection/collection.dart';
+import 'package:receptenapp/src/ui/receptenapp/recepts/edit/ReceptEditTagsPage.dart';
 
 import '../../../../GetItDependencies.dart';
 import '../../../../events/ReceptChangedEvent.dart';
@@ -17,25 +18,28 @@ import 'dart:typed_data';
 import 'package:flutter/widgets.dart';
 
 class ReceptEditInstructionsPage extends StatefulWidget {
-  ReceptEditInstructionsPage({Key? key, required this.title, required this.recept})
+  ReceptEditInstructionsPage({Key? key, required this.title, required this.recept, required this.insertMode})
       : super(key: key) {}
 
   final EnrichedRecept recept;
   final String title;
+  final bool insertMode;
 
   @override
-  State<ReceptEditInstructionsPage> createState() => _WidgetState(recept);
+  State<ReceptEditInstructionsPage> createState() => _WidgetState(recept, insertMode);
 }
 
 class _WidgetState extends State<ReceptEditInstructionsPage> {
   late EnrichedRecept _recept;
   late Recept _newRecept;
+  late bool _insertMode;
   var _recipesService = getIt<RecipesService>();
   final TextEditingController _textEditingController = TextEditingController();
 
-  _WidgetState(EnrichedRecept recept) {
+  _WidgetState(EnrichedRecept recept, bool insertMode) {
     this._recept = recept;
     this._newRecept = recept.recept;
+    this._insertMode = insertMode;
   }
 
   _saveRecept() {
@@ -44,6 +48,16 @@ class _WidgetState extends State<ReceptEditInstructionsPage> {
         .saveRecept(_newRecept)
         .whenComplete(() => Navigator.pop(context));
   }
+
+  _newReceptNextStep() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => ReceptEditTagsPage(
+            title: 'Setup tags', recept: _recept, insertMode: true,)),
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -64,9 +78,14 @@ class _WidgetState extends State<ReceptEditInstructionsPage> {
               maxLines: 20,// when user presses enter it will adapt to it
             ),
             ElevatedButton(
-              child: Text('Save'),
+              child: _insertMode?Text('Next'):Text('Save'),
               onPressed: () {
-                _saveRecept();
+                if (_insertMode){
+                  _newReceptNextStep();
+                }
+                else{
+                  _saveRecept();
+                }
               },
             ),
           ],

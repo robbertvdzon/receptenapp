@@ -76,7 +76,7 @@ class _SearchRecipesPage2State extends State<SearchRecipesPage2> {
         MaterialPageRoute(
             builder: (context) =>
                 ReceptEditDetailsPage(
-                    title: 'Nieuw recept', recept: enrichedNewRecept)),
+                    title: 'Nieuw recept', recept: enrichedNewRecept, insertMode: true,)),
       );
   }
 

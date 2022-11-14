@@ -51,6 +51,7 @@ class _MyAppState extends State<ReceptenApp> {
             return MaterialApp(
               title: 'Gutz',
               theme: ThemeData(
+                scaffoldBackgroundColor: Colors.blueGrey,
                 brightness: Brightness.dark,
                 primarySwatch: Colors.blue,
               ),

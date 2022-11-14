@@ -7,31 +7,35 @@ import '../../../../GetItDependencies.dart';
 import '../../../../model/enriched/enrichedmodels.dart';
 import '../../../../model/recipes/v1/recept.dart';
 import '../../../../services/RecipesService.dart';
+import 'ReceptEditInstructionsPage.dart';
 
 class ReceptEditIngredientsPage extends StatefulWidget {
   ReceptEditIngredientsPage(
-      {Key? key, required this.title, required this.recept})
+      {Key? key, required this.title, required this.recept, required this.insertMode})
       : super(key: key) {}
 
   final EnrichedRecept recept;
   final String title;
+  final bool insertMode;
 
   @override
-  State<ReceptEditIngredientsPage> createState() => _WidgetState(recept);
+  State<ReceptEditIngredientsPage> createState() => _WidgetState(recept, insertMode);
 }
 
 class _WidgetState extends State<ReceptEditIngredientsPage> {
   late EnrichedRecept _recept;
   late Recept _newRecept;
+  late bool _insertMode;
   var ingredientsString = "";
   String importErrors = "";
 
   var _recipesService = getIt<RecipesService>();
   final TextEditingController _textEditingController = TextEditingController();
 
-  _WidgetState(EnrichedRecept recept) {
+  _WidgetState(EnrichedRecept recept, bool insertMode) {
     this._recept = recept;
     this._newRecept = recept.recept;
+    this._insertMode = insertMode;
     ingredientsString =
         _recept.ingredienten.map((e) => e.toTextString()).join("\n");
   }
@@ -50,10 +54,18 @@ class _WidgetState extends State<ReceptEditIngredientsPage> {
               new Center(child: new Container(child: new Text(importErrors)))
             ]);
       });
-
     }
-
   }
+
+  _newReceptNextStep() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => ReceptEditInstructionsPage(
+            title: 'Setup instructions', recept: _recept, insertMode: true,)),
+    );
+  }
+
 
   List<ReceptIngredient> verifyText(String text) {
     // setState(() {
@@ -116,7 +128,18 @@ class _WidgetState extends State<ReceptEditIngredientsPage> {
               //Normal textInputField will be displayed
               maxLines: 20, // when user presses enter it will adapt to it
             ),
-            ElevatedButton(child: Text('SAVE'),onPressed: () {_saveRecept();},)
+            ElevatedButton(
+              child: _insertMode?Text('Next'):Text('Save'),
+              onPressed: () {
+              if (_insertMode){
+                _newReceptNextStep();
+              }
+              else{
+                _saveRecept();
+              }
+
+
+              },)
             // button,
           ],
         ))));

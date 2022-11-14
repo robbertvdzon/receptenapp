@@ -8,6 +8,7 @@ import 'package:receptenapp/src/services/Enricher.dart';
 import '../../../GetItDependencies.dart';
 import '../../../events/ReceptCreatedEvent.dart';
 import '../../../events/ReceptRemovedEvent.dart';
+import '../../../events/RepositoriesLoadedEvent.dart';
 import '../../../model/enriched/enrichedmodels.dart';
 import '../../../model/recipes/v1/recept.dart';
 import '../../../services/AppStateService.dart';
@@ -38,7 +39,8 @@ class _SearchRecipesPageState extends State<SearchRecipesPage> {
     super.initState();
     _filterRecipes();
     _eventStreamSub = _eventBus.on<ReceptCreatedEvent>().listen((event) => _processReceptCreatedEvent(event));
-    _eventStreamSub = _eventBus.on<ReceptRemovedEvent>().listen((event) => _processReceptRemovedEvent(event));
+    _eventStreamSub = _eventBus.on<ReceptRemovedEvent>().listen((event) => _reloadFilter());
+    _eventStreamSub = _eventBus.on<RepositoriesLoadedEvent>().listen((event) => _reloadFilter());
   }
 
   @override
@@ -47,7 +49,7 @@ class _SearchRecipesPageState extends State<SearchRecipesPage> {
     _eventStreamSub?.cancel();
   }
 
-  void _processReceptRemovedEvent(ReceptRemovedEvent event) {
+  void _reloadFilter() {
       setState(() {
         _filterRecipes();
       });
@@ -75,14 +77,14 @@ class _SearchRecipesPageState extends State<SearchRecipesPage> {
   }
 
   void _createNewRecept() {
-    Recept newRecept = new Recept(List.empty(), "Nieuw recept");
+    Recept newRecept = new Recept(List.empty(), "");
     EnrichedRecept enrichedNewRecept = _enricher.enrichRecipe(newRecept);
       Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) =>
                 ReceptEditDetailsPage(
-                    title: 'Nieuw recept', recept: enrichedNewRecept)),
+                    title: 'Nieuw recept', recept: enrichedNewRecept, insertMode: true)),
       );
   }
 

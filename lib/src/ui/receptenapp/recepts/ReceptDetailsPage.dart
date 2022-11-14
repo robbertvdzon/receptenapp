@@ -240,28 +240,28 @@ class _WidgetState extends State<ReceptDetailsPage> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => ReceptEditDetailsPage(
-                          title: 'Edit', recept: _enrichedRecept)),
+                          title: 'Edit', recept: _enrichedRecept, insertMode: false)),
                 );
               } else if (value == 1) {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                       builder: (context) => ReceptEditIngredientsPage(
-                          title: 'Edit', recept: _enrichedRecept)),
+                          title: 'Edit', recept: _enrichedRecept, insertMode: false)),
                 );
               } else if (value == 2) {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                       builder: (context) => ReceptEditInstructionsPage(
-                          title: 'Edit', recept: _enrichedRecept)),
+                          title: 'Edit', recept: _enrichedRecept, insertMode: false)),
                 );
               } else if (value == 3) {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                       builder: (context) => ReceptEditTagsPage(
-                          title: 'Edit', recept: _enrichedRecept)),
+                          title: 'Edit', recept: _enrichedRecept, insertMode: false)),
                 );
               } else if (value == 4) {
                 updateImageFromClipboard();
@@ -305,12 +305,12 @@ class _WidgetState extends State<ReceptDetailsPage> {
                     ElevatedButton(
                       child: Text('Voeg toe aan planner'),
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ReceptEditDetailsPage(
-                                  title: 'Edit', recept: _enrichedRecept)),
-                        );
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //       builder: (context) => ReceptEditDetailsPage(
+                        //           title: 'Edit', recept: _enrichedRecept)),
+                        // );
                       },
                     ),
                     Text(''),

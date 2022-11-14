@@ -5,32 +5,46 @@ import '../../../../GetItDependencies.dart';
 import '../../../../model/enriched/enrichedmodels.dart';
 import '../../../../model/recipes/v1/recept.dart';
 import '../../../../services/RecipesService.dart';
+import 'ReceptEditIngredientsPage.dart';
 
 class ReceptEditDetailsPage extends StatefulWidget {
-  ReceptEditDetailsPage({Key? key, required this.title, required this.recept})
+
+  ReceptEditDetailsPage({Key? key, required this.title, required this.recept, required this.insertMode})
       : super(key: key) {}
 
   final EnrichedRecept recept;
   final String title;
+  final bool insertMode;
 
   @override
-  State<ReceptEditDetailsPage> createState() => _WidgetState(recept);
+  State<ReceptEditDetailsPage> createState() => _WidgetState(recept, insertMode);
 }
 
 class _WidgetState extends State<ReceptEditDetailsPage> {
   late EnrichedRecept _recept;
   late Recept _newRecept;
+  late bool _insertMode;
   var _recipesService = getIt<RecipesService>();
 
-  _WidgetState(EnrichedRecept recept) {
+  _WidgetState(EnrichedRecept recept, bool insertMode) {
     this._recept = recept;
     this._newRecept = recept.recept;
+    this._insertMode = insertMode;
   }
 
   _saveRecept() {
     _recipesService
         .saveRecept(_newRecept)
         .whenComplete(() => Navigator.pop(context));
+  }
+
+  _newReceptNextStep() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => ReceptEditIngredientsPage(
+              title: 'Setup ingredients', recept: _recept, insertMode: true,)),
+    );
   }
 
   @override
@@ -79,9 +93,14 @@ class _WidgetState extends State<ReceptEditDetailsPage> {
               },
             ),
             ElevatedButton(
-              child: Text('SAVE'),
+              child: _insertMode?Text('Next'):Text('Save'),
               onPressed: () {
-                _saveRecept();
+                if (_insertMode){
+                  _newReceptNextStep();
+                }
+                else{
+                  _saveRecept();
+                }
               },
             ),
           ],

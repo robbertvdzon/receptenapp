@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:receptenapp/src/ui/receptenapp/recepts/edit/ReceptEditInstructionsPage.dart';
 
 import '../../../../GetItDependencies.dart';
 import '../../../../model/enriched/enrichedmodels.dart';
@@ -8,27 +9,30 @@ import '../../../../repositories/RecipesTagsRepository.dart';
 import '../../../../services/RecipesService.dart';
 
 class ReceptEditTagsPage extends StatefulWidget {
-  ReceptEditTagsPage({Key? key, required this.title, required this.recept})
+  ReceptEditTagsPage({Key? key, required this.title, required this.recept, required this.insertMode})
       : super(key: key) {}
 
   final EnrichedRecept recept;
   final String title;
+  final bool insertMode;
 
   @override
-  State<ReceptEditTagsPage> createState() => _WidgetState(recept);
+  State<ReceptEditTagsPage> createState() => _WidgetState(recept, insertMode);
 }
 
 class _WidgetState extends State<ReceptEditTagsPage> {
   late EnrichedRecept _recept;
   late Recept _newRecept;
+  late bool _insertMode;
   var _recipesService = getIt<RecipesService>();
   var _recipesTagsRepository = getIt<RecipesTagsRepository>();
   var _tagsSet = Set<String>();
   var _additionalTags= "";
 
-  _WidgetState(EnrichedRecept recept) {
+  _WidgetState(EnrichedRecept recept, bool insertMode) {
     this._recept = recept;
     this._newRecept = recept.recept;
+    this._insertMode = insertMode;
     _recept.tags.forEach((element) {
       _tagsSet.add(element?.tag??"");
     });
@@ -44,7 +48,16 @@ class _WidgetState extends State<ReceptEditTagsPage> {
     });
     _recipesService
         .saveRecept(_newRecept)
-        .whenComplete(() => Navigator.pop(context));
+        .whenComplete(() => Navigator.pop(context))
+    ;
+  }
+
+  _newReceptNextStep() {
+    _saveRecept();
+    // pop 3 extra times (all other edit fields!)
+    Navigator.pop(context);
+    Navigator.pop(context);
+    Navigator.pop(context);
   }
 
   @override
@@ -89,9 +102,14 @@ class _WidgetState extends State<ReceptEditTagsPage> {
                     ),
 
                     ElevatedButton(
-                      child: Text('Save'),
+                      child: _insertMode?Text('Add recept'):Text('Save'),
                       onPressed: () {
-                        _saveRecept();
+                        if (_insertMode){
+                          _newReceptNextStep();
+                        }
+                        else{
+                          _saveRecept();
+                        }
                       },
                     ),
                   ],
