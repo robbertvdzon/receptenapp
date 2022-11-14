@@ -73,6 +73,7 @@ class _WidgetState extends State<ReceptEditInstructionsPage> {
             child: Column(
           children: <Widget>[
             TextField(
+              autofocus: true,
               controller: _textEditingController,
               keyboardType: TextInputType.multiline,
               minLines: 1,//Normal textInputField will be displayed

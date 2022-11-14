@@ -130,6 +130,7 @@ class _WidgetState extends State<ReceptEditIngredientsPage> {
                 child: Column(
           children: <Widget>[
             TextField(
+              autofocus: true,
               onChanged: (text) {
                 verifyText(text);
               },

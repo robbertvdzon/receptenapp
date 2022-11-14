@@ -126,6 +126,7 @@ class _WidgetState extends State<ReceptEditDetailsPage> {
             ),
 
             TextFormField(
+              autofocus: true,
               decoration: InputDecoration(label: Text('Name:')),
               initialValue: "${_recept.recept.name}",
               onChanged: (text) {
