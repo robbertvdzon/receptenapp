@@ -43,7 +43,6 @@ class _WidgetState extends State<ReceptDetailsPage> {
   var _enricher = getIt<Enricher>();
   var _eventBus = getIt<EventBus>();
   var _imageStorageService = getIt<ImageStorageService>();
-  var _recipesRepository = getIt<RecipesRepository>();
   StreamSubscription? _eventStreamSub;
   Image? receptImage = null;
 

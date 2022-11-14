@@ -58,12 +58,23 @@ class _WidgetState extends State<ReceptEditIngredientsPage> {
   }
 
   _newReceptNextStep() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) => ReceptEditInstructionsPage(
-            title: 'Setup instructions', recept: _recept, insertMode: true,)),
-    );
+    if (importErrors.isEmpty){
+      _recept.recept.ingredients = verifyText(_textEditingController.text);
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => ReceptEditInstructionsPage(
+              title: 'Setup instructions', recept: _recept, insertMode: true,)),
+      );
+    }
+    else{
+      showDialog(context: context, builder: (context) {
+        return new SimpleDialog(
+            children: <Widget>[
+              new Center(child: new Container(child: new Text(importErrors)))
+            ]);
+      });
+    }
   }
 
 

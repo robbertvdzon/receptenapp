@@ -50,6 +50,7 @@ class _WidgetState extends State<ReceptEditInstructionsPage> {
   }
 
   _newReceptNextStep() {
+    _recept.recept.instructions = _textEditingController.text;
     Navigator.push(
       context,
       MaterialPageRoute(

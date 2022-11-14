@@ -38,7 +38,8 @@ class _SearchRecipesPageState extends State<SearchRecipesPage> {
   void initState() {
     super.initState();
     _filterRecipes();
-    _eventStreamSub = _eventBus.on<ReceptCreatedEvent>().listen((event) => _processReceptCreatedEvent(event));
+    // _eventStreamSub = _eventBus.on<ReceptCreatedEvent>().listen((event) => _processReceptCreatedEvent(event));
+    _eventStreamSub = _eventBus.on<ReceptCreatedEvent>().listen((event) => _reloadFilter());
     _eventStreamSub = _eventBus.on<ReceptRemovedEvent>().listen((event) => _reloadFilter());
     _eventStreamSub = _eventBus.on<RepositoriesLoadedEvent>().listen((event) => _reloadFilter());
   }
@@ -55,12 +56,12 @@ class _SearchRecipesPageState extends State<SearchRecipesPage> {
       });
   }
 
-  void _processReceptCreatedEvent(ReceptCreatedEvent event) {
-      setState(() {
-        _filter = event.recept.name;
-        _filterRecipes();
-      });
-  }
+  // void _processReceptCreatedEvent(ReceptCreatedEvent event) {
+  //     setState(() {
+  //       _filter = event.recept.name;
+  //       _filterRecipes();
+  //     });
+  // }
 
   void _updateFilter(String filter) {
     setState(() {
