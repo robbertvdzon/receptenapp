@@ -6,15 +6,18 @@ import 'package:flutter/material.dart';
 import 'package:receptenapp/src/services/Enricher.dart';
 
 import '../../../GetItDependencies.dart';
+import '../../../events/FilterModifiedEvent.dart';
 import '../../../events/ReceptCreatedEvent.dart';
 import '../../../events/ReceptRemovedEvent.dart';
 import '../../../events/RepositoriesLoadedEvent.dart';
 import '../../../model/enriched/enrichedmodels.dart';
 import '../../../model/recipes/v1/recept.dart';
 import '../../../services/AppStateService.dart';
+import '../../../services/Filter.dart';
 import '../recepts/edit/ReceptEditDetailsPage.dart';
 import '../recepts/ReceptItemWidget.dart';
 import '../recepttags/RecipesTagsPage.dart';
+import 'SearchRecipesFilterPage.dart';
 import 'SearchRecipesPage2.dart';
 
 class SearchRecipesPage extends StatefulWidget {
@@ -30,15 +33,13 @@ class _SearchRecipesPageState extends State<SearchRecipesPage> {
   var _appStateService = getIt<AppStateService>();
   var _enricher = getIt<Enricher>();
   var _eventBus = getIt<EventBus>();
-  String _filter = "";
-  bool? _filterOnFavorite = false;
   StreamSubscription? _eventStreamSub;
 
   @override
   void initState() {
     super.initState();
     _filterRecipes();
-    // _eventStreamSub = _eventBus.on<ReceptCreatedEvent>().listen((event) => _processReceptCreatedEvent(event));
+    _eventStreamSub = _eventBus.on<FilterModifiedEvent>().listen((event) => _reloadFilter());
     _eventStreamSub = _eventBus.on<ReceptCreatedEvent>().listen((event) => _reloadFilter());
     _eventStreamSub = _eventBus.on<ReceptRemovedEvent>().listen((event) => _reloadFilter());
     _eventStreamSub = _eventBus.on<RepositoriesLoadedEvent>().listen((event) => _reloadFilter());
@@ -56,27 +57,6 @@ class _SearchRecipesPageState extends State<SearchRecipesPage> {
       });
   }
 
-  // void _processReceptCreatedEvent(ReceptCreatedEvent event) {
-  //     setState(() {
-  //       _filter = event.recept.name;
-  //       _filterRecipes();
-  //     });
-  // }
-
-  void _updateFilter(String filter) {
-    setState(() {
-      _filter = filter;
-      _filterRecipes();
-    });
-  }
-
-  void _updateFilterOnFavorite(bool? filterOnFavorite) {
-    setState(() {
-      _filterOnFavorite = filterOnFavorite;
-      _filterRecipes();
-    });
-  }
-
   void _createNewRecept() {
     Recept newRecept = new Recept(List.empty(), "");
     EnrichedRecept enrichedNewRecept = _enricher.enrichRecipe(newRecept);
@@ -89,25 +69,20 @@ class _SearchRecipesPageState extends State<SearchRecipesPage> {
       );
   }
 
-  void _filterRecipes() {
-    bool filterOnFavorite = _filterOnFavorite == true;
+  void _openFilter(){
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) =>
+              SearchRecipesFilterPage(
+                  title: 'Filter')),
+    );
+  }
 
-    // TODO: dit kan vast in 1 query!
+  void _filterRecipes() {
+    Filter filter = _appStateService.filter;
     List<Recept> recipes = _getSortedListOfRecipes();
-    if (filterOnFavorite) {
-      _appStateService.setFilteredRecipes(recipes
-          .where((element) =>
-      element.favorite &&
-          element.name != null &&
-          element.name.toLowerCase().contains(_filter.toLowerCase()))
-          .toList());
-    } else {
-      _appStateService.setFilteredRecipes(recipes
-          .where((element) =>
-      element.name != null &&
-          element.name.toLowerCase().contains(_filter.toLowerCase()))
-          .toList());
-    }
+    _appStateService.setFilteredRecipes(recipes.where((element) =>element.matchFilter(filter)) .toList());
   }
 
   List<Recept> _getSortedListOfRecipes() {
@@ -169,32 +144,13 @@ class _SearchRecipesPageState extends State<SearchRecipesPage> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            SizedBox(
-                height: 50,
-                width: 500,
-                child: TextFormField(
-                  key: Key(_filter.toString()),
-                  decoration: InputDecoration(
-                      border: InputBorder.none,
-                      labelText:
-                      'Quickfilter: (${_appStateService
-                          .getFilteredRecipes()
-                          .length} recepten)'),
-                  // autofocus: true,
-                  controller: TextEditingController()..text = '$_filter',
-                  onChanged: (text) => {_updateFilter(text)},
-                )),
-            SizedBox(
-                height: 50,
-                width: 500,
-                child: CheckboxListTile(
-                  checkColor: Colors.white,
-                  title: Text("Filter op favoriet"),
-                  value: _filterOnFavorite,
-                  onChanged: (bool? value) {
-                    _updateFilterOnFavorite(value);
-                  },
-                )),
+            ElevatedButton(
+              child: Text('Filter'),
+              onPressed: () {
+                _openFilter();
+              },
+            ),
+
             SizedBox(
               height: 650,
               width: 500,

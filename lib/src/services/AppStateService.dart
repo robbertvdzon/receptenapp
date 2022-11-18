@@ -16,6 +16,7 @@ import '../repositories/RecipesRepository.dart';
 import '../repositories/RecipesTagsRepository.dart';
 import '../repositories/UserRepository.dart';
 import 'Enricher.dart';
+import 'Filter.dart';
 
 class AppStateService {
   // stamdata
@@ -27,6 +28,7 @@ class AppStateService {
   User? user = null;
 
   // filter data
+  Filter filter = Filter();
   List<Recept> filteredRecipes = List.empty();
   
   StreamSubscription? _eventStreamSub;

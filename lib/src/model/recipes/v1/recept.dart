@@ -1,6 +1,8 @@
 import 'package:uuid/uuid.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+import '../../../services/Filter.dart';
+
 part 'recept.g.dart';
 
 var uuid = Uuid();
@@ -44,6 +46,51 @@ class Recept {
 
   bool containsTag(String? tag) {
     return this.tags.contains(tag);
+  }
+
+  bool matchFilter(Filter filter){
+    bool match = true;
+
+    if (filter.favorite){
+      if (!favorite) match = false;
+    }
+
+    if (filter.maxCoockTime.isNotEmpty){
+      int? maxCoockTime = int.tryParse(filter.maxCoockTime);
+      if (maxCoockTime!=null){
+        if (totalCookingTime>maxCoockTime){
+          match = false;
+        }
+      }
+    }
+
+    if (filter.tagFilter.isNotEmpty){
+      List<String> tags = filter.tagFilter.split(",");
+      tags.forEach((element) {
+        if (!containsTag(element)){
+          match = false;
+        }
+      });
+    }
+
+    if (filter.ingredientsFilter.isNotEmpty){
+      List<String> ingredients = filter.ingredientsFilter.split(",");
+      ingredients.forEach((element) {
+        if (!containsIngredient(element)){
+          match = false;
+        }
+      });
+    }
+
+    if (filter.nameFilter.isNotEmpty){
+      if (!name.toLowerCase().contains(filter.nameFilter.toLowerCase())){
+        match = false;
+      }
+    }
+
+    print("filter Recept $name : $match");
+    return match;
+
   }
 
 }
