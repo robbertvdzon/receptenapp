@@ -72,7 +72,7 @@ class _WidgetState extends State<ReceptEditTagsPage> {
                 child: Column(
                   children: <Widget>[
                     SizedBox(
-                      height: 650,
+                      height: 400,
                       width: 500,
                       child: ListView(
                         children: _recipesTagsRepository.getTags().tags.map((item) {
