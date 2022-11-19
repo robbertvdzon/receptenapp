@@ -41,7 +41,7 @@ class _WidgetState extends State<IngredientTagDetailsPage> {
                   ),
                   TextFormField(
                     decoration: InputDecoration(label: Text('ingredients:')),
-                    initialValue: "${_ingredientTag.ingredients.map((e) => e?.name).join(",")}",
+                    initialValue: "${_ingredientTag.ingredients.map((e) => e.name).join(",")}",
                   ),
                   TextFormField(
                     decoration: InputDecoration(label: Text('recipes:')),

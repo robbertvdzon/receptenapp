@@ -374,7 +374,7 @@ class _WidgetState extends State<ReceptDetailsPage> {
                         style: TextStyle(
                             fontSize: 20.0, fontWeight: FontWeight.bold)),
                     MarkdownBody(
-                      data: _enrichedRecept.recept.instructions ?? "",
+                      data: _enrichedRecept.recept.instructions,
                     ),
                     Text(''),
                     Text('Details:',

@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 
 import '../../../GetItDependencies.dart';
 import '../../../events/FilterModifiedEvent.dart';
+import '../../../repositories/RecipesTagsRepository.dart';
 import '../../../services/AppStateService.dart';
 
 class SearchRecipesFilterPage extends StatefulWidget {
@@ -18,12 +19,14 @@ class SearchRecipesFilterPage extends StatefulWidget {
 class _WidgetState extends State<SearchRecipesFilterPage> {
   var _appStateService = getIt<AppStateService>();
   var _eventBus = getIt<EventBus>();
+  var _recipesTagsRepository = getIt<RecipesTagsRepository>();
 
   String _nameFilter = "";
   String _ingredientsFilter = "";
   String _tagFilter = "";
   String _maxCoockTime = "";
   bool? _favorite = false;
+  var _tagsSet = Set<String>();
 
   _WidgetState() {
     _nameFilter = _appStateService.filter.nameFilter;
@@ -31,6 +34,10 @@ class _WidgetState extends State<SearchRecipesFilterPage> {
     _tagFilter = _appStateService.filter.tagFilter;
     _maxCoockTime = _appStateService.filter.maxCoockTime;
     _favorite = _appStateService.filter.favorite;
+
+    _tagFilter.split(",").forEach((element) {
+      _tagsSet.add(element);
+    });
   }
 
   _apply() {
@@ -72,13 +79,6 @@ class _WidgetState extends State<SearchRecipesFilterPage> {
               },
             ),
             TextFormField(
-              decoration: InputDecoration(label: Text('tagFilter:')),
-              initialValue: "${_tagFilter}",
-              onChanged: (text) {
-                _tagFilter = text;
-              },
-            ),
-            TextFormField(
               decoration: InputDecoration(label: Text('maxCoockTime:')),
               initialValue: "${_maxCoockTime}",
               onChanged: (text) {
@@ -98,19 +98,94 @@ class _WidgetState extends State<SearchRecipesFilterPage> {
                     });
                   },
                 )),
-            ElevatedButton(
-              child: Text('Cancel'),
-              onPressed: () {
-                _cancel();
-              },
+
+            SizedBox(
+              height: 400,
+              width: 500,
+              child: ListView(
+                children: _recipesTagsRepository.getTags().tags.map((item) {
+                  return Container(
+                    child: Column(
+                      children: [
+                        Container(
+                          constraints: BoxConstraints.expand(
+                            height: 40.0,
+                          ),
+                          alignment: Alignment.center,
+                          child: buildTag(item.tag??"unknown"),
+                        ),
+                      ],
+                    ),
+                    margin: EdgeInsets.all(0),
+                    padding: EdgeInsets.all(0),
+                  );
+                }).toList(),
+              ),
             ),
-            ElevatedButton(
-              child: Text('Apply'),
-              onPressed: () {
-                _apply();
-              },
-            ),
+
+
+
+
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    ElevatedButton(
+                      child: Text('Cancel'),
+                      onPressed: () {
+                        _cancel();
+                      },
+                    ),
+                    ElevatedButton(
+                      child: Text('Apply'),
+                      onPressed: () {
+                        _apply();
+                      },
+                    ),
+
+                  ],
+                )
+              ],
+            )
+
+
           ],
         ))));
+  }
+
+  Widget buildTag(String tag) {
+    return InkWell(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Checkbox(
+                  checkColor: Colors.white,
+                  value: _tagsSet.contains(tag),
+                  onChanged: (bool? value) {
+                    setState(() {
+                      if (value==true){
+                        _tagsSet.add(tag);
+                      }
+                      else{
+                        _tagsSet.remove(tag);
+                      }
+                      _tagFilter = _tagsSet.join(",");
+                    });
+                  },
+                ),
+                Text(tag),
+              ],
+            )
+          ],
+        ));
   }
 }

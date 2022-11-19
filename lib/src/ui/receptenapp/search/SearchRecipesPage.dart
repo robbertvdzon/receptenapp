@@ -79,6 +79,12 @@ class _SearchRecipesPageState extends State<SearchRecipesPage> {
     );
   }
 
+  void _clearFilter(){
+    _appStateService.clearFilter();
+
+  }
+
+
   void _filterRecipes() {
     Filter filter = _appStateService.filter;
     List<Recept> recipes = _getSortedListOfRecipes();
@@ -137,6 +143,32 @@ class _SearchRecipesPageState extends State<SearchRecipesPage> {
                 }
               }
           ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  ElevatedButton(
+                    child: Text('Filter'),
+                    onPressed: () {
+                      _openFilter();
+                    },
+                  ),
+                  ElevatedButton(
+                    child: Text('Clear filter'),
+                    onPressed: () {
+                      _clearFilter();
+                    },
+                  ),
+
+                ],
+              )
+            ],
+          )
+
         ],
       ),
       body: Center(

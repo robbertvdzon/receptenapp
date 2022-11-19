@@ -3,6 +3,7 @@ import 'package:event_bus/event_bus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:receptenapp/src/repositories/IngredientTagsRepository.dart';
 import 'package:receptenapp/src/repositories/IngredientsRepository.dart';
+import '../events/FilterModifiedEvent.dart';
 import '../events/RepositoriesLoadedEvent.dart';
 import '../model/enriched/enrichedmodels.dart';
 import '../model/ingredients/v1/ingredientTags.dart';
@@ -72,6 +73,11 @@ class AppStateService {
     products = _productsRepository.cachedProducts?.products??List.empty();
     receptTags = _recipesTagsRepository.cachedTags?.tags??List.empty();
     user = _userRepository.getUser();
+  }
+
+  void clearFilter() {
+    filter = Filter();
+    _eventBus.fire(FilterModifiedEvent());
   }
 
 

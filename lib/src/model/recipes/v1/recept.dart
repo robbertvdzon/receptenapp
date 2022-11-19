@@ -40,8 +40,13 @@ class Recept {
 
   Map<String, dynamic> toJson() => _$ReceptToJson(this);
 
-  bool containsIngredient(String name) {
-    return this.ingredients.where((element) => element.name==name).isNotEmpty;
+  bool containsIngredient(String name, {bool excactMatch = false}) {
+    if (excactMatch) {
+      return this.ingredients
+          .where((element) => element.name == name)
+          .isNotEmpty;
+    }
+    return this.ingredients.any((ingredient) => ingredient.name.toLowerCase().contains(name.toLowerCase()));
   }
 
   bool containsTag(String? tag) {
@@ -50,6 +55,7 @@ class Recept {
 
   bool matchFilter(Filter filter){
     bool match = true;
+    print("start filter for : #${name}# with tags: ${tags}");
 
     if (filter.favorite){
       if (!favorite) match = false;
@@ -65,10 +71,12 @@ class Recept {
     }
 
     if (filter.tagFilter.isNotEmpty){
-      List<String> tags = filter.tagFilter.split(",");
-      tags.forEach((element) {
-        if (!containsTag(element)){
-          match = false;
+      List<String> filterTags = filter.tagFilter.split(",");
+      filterTags.forEach((element) {
+        if (element.isNotEmpty) {
+          if (!containsTag(element.trim())) {
+            match = false;
+          }
         }
       });
     }
@@ -94,7 +102,6 @@ class Recept {
   }
 
 }
-
 
 
 @JsonSerializable()
