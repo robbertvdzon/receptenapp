@@ -7,6 +7,7 @@ import 'package:receptenapp/src/repositories/RecipesRepository.dart';
 import '../GetItDependencies.dart';
 import '../Toggles.dart';
 import '../events/RepositoriesLoadedEvent.dart';
+import 'DiaryRepository.dart';
 import 'RecipesTagsRepository.dart';
 import 'UserRepository.dart';
 
@@ -18,6 +19,7 @@ class Repositories {
   var _ingredientTagsRepository = getIt<IngredientTagsRepository>();
   var _recipesTagsRepository = getIt<RecipesTagsRepository>();
   var _userRepository = getIt<UserRepository>();
+  var _diaryRepository = getIt<DiaryRepository>();
   var _eventBus = getIt<EventBus>();
 
   void initRepositories() {
@@ -27,7 +29,8 @@ class Repositories {
       _recipesRepository.init(email),
       _ingredientTagsRepository.init(email),
       _recipesTagsRepository.init(email),
-      _ingredientsRepository.init(email)
+      _ingredientsRepository.init(email),
+      _diaryRepository.init(email)
     ];
     Future.wait(futures).then((value) {
       _eventBus.fire(RepositoriesLoadedEvent());

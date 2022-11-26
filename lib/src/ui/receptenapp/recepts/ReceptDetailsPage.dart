@@ -10,8 +10,10 @@ import 'package:pasteboard/pasteboard.dart';
 
 import '../../../GetItDependencies.dart';
 import '../../../events/ReceptChangedEvent.dart';
+import '../../../model/diary/v1/diary.dart';
 import '../../../model/enriched/enrichedmodels.dart';
 import '../../../model/recipes/v1/recept.dart';
+import '../../../repositories/DiaryRepository.dart';
 import '../../../repositories/RecipesRepository.dart';
 import '../../../services/AppStateService.dart';
 import '../../../services/Enricher.dart';
@@ -37,6 +39,7 @@ class ReceptDetailsPage extends StatefulWidget {
 
 class _WidgetState extends State<ReceptDetailsPage> {
   var _recipesService = getIt<RecipesService>();
+  var _diaryRepository = getIt<DiaryRepository>(); // TODO: via service!
   var _appStateService = getIt<AppStateService>();
 
   late EnrichedRecept _enrichedRecept;
@@ -136,8 +139,18 @@ class _WidgetState extends State<ReceptDetailsPage> {
       receptImage = null;
       setState(() {});
     }
+  }
 
-
+  void addToDiary() async {
+    var now = DateTime.now();
+    var lastMidnight = DateTime(now.year, now.month, now.day);
+    DiaryDay? diaryDay = _diaryRepository.getDay(lastMidnight.millisecondsSinceEpoch);
+    var recept = _enrichedRecept.recept;
+    if (diaryDay==null){
+      diaryDay = DiaryDay(lastMidnight.millisecondsSinceEpoch);
+    }
+    diaryDay.breakfast.add(recept);
+    _diaryRepository.saveDiaryDay(diaryDay);
   }
 
   Table tableWithValues() {
@@ -302,14 +315,9 @@ class _WidgetState extends State<ReceptDetailsPage> {
                           size: 20.0, color: Colors.yellow),
                     Text(''),
                     ElevatedButton(
-                      child: Text('Voeg toe aan planner'),
+                      child: Text('Voeg toe aan dagboek'),
                       onPressed: () {
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //       builder: (context) => ReceptEditDetailsPage(
-                        //           title: 'Edit', recept: _enrichedRecept)),
-                        // );
+                        addToDiary();
                       },
                     ),
                     Text(''),

@@ -27,7 +27,7 @@ class IngredientEditPage extends StatefulWidget {
 class _WidgetState extends State<IngredientEditPage> {
   late EnrichedIngredient _ingredient;
   late Ingredient _newIngredient;
-  late List<String> _categories = List.empty();
+  late List<String> _categories = List.empty(growable: true);
   var _ingredientService = getIt<IngredientsService>();
   var _enricher = getIt<Enricher>();
   var _appStateService = getIt<AppStateService>();

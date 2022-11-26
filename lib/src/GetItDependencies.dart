@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:event_bus/event_bus.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get_it/get_it.dart';
+import 'package:receptenapp/src/repositories/DiaryRepository.dart';
 import 'package:receptenapp/src/repositories/IngredientTagsRepository.dart';
 import 'package:receptenapp/src/repositories/IngredientsRepository.dart';
 import 'package:receptenapp/src/repositories/ProductsRepository.dart';
@@ -26,6 +27,7 @@ Future<void> setupDependencies() async {
   );
   getIt.registerSingleton<FirebaseFirestore>(FirebaseFirestore.instance);
   getIt.registerSingleton<EventBus>(EventBus());
+  getIt.registerSingleton<DiaryRepository>(DiaryRepository());
   getIt.registerSingleton<UserRepository>(UserRepository());
   getIt.registerSingleton<RecipesRepository>(RecipesRepository());
   getIt.registerSingleton<IngredientsRepository>(IngredientsRepository());

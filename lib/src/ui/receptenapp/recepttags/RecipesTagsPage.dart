@@ -16,7 +16,7 @@ class RecipesTagsPage extends StatefulWidget {
 }
 
 class _PageState extends State<RecipesTagsPage> {
-  List<ReceptTag> _tags = List.empty();
+  List<ReceptTag> _tags = List.empty(growable: true);
   var _appStateService = getIt<AppStateService>();
 
   _PageState() {

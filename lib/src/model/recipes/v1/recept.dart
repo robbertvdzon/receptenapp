@@ -32,7 +32,7 @@ class Recept {
   bool favorite = false;
 
   List<ReceptIngredient> ingredients;
-  List<String> tags = List.empty();
+  List<String> tags = List.empty(growable: true);
 
   Recept(this.ingredients, this.name);
 

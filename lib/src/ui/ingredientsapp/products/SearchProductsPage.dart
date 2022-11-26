@@ -23,7 +23,7 @@ class SearchProductsPage extends StatefulWidget {
 class _SearchProductsPageState extends State<SearchProductsPage> {
   var _appStateService = getIt<AppStateService>();
   var _eventBus = getIt<EventBus>();
-  List<Product> _filteredProducts = List.empty();
+  List<Product> _filteredProducts = List.empty(growable: true);
   String _filter = "";
   StreamSubscription? _eventStreamSub;
 

@@ -26,7 +26,7 @@ class SearchIngredientsPage extends StatefulWidget {
 }
 
 class _SearchIngredientsPageState extends State<SearchIngredientsPage> {
-  List<Ingredient> _filteredIngredients = List.empty();
+  List<Ingredient> _filteredIngredients = List.empty(growable: true);
   final _appStateService = getIt<AppStateService>();
   final _eventBus = getIt<EventBus>();
   String _filter = "";

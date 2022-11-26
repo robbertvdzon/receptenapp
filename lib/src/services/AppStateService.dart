@@ -21,16 +21,16 @@ import 'Filter.dart';
 
 class AppStateService {
   // stamdata
-  List<Recept> recipes = List.empty();
-  List<Ingredient> ingredients = List.empty();
-  List<IngredientTag> ingredientTags = List.empty();
-  List<Product> products = List.empty();
-  List<ReceptTag> receptTags = List.empty();
+  List<Recept> recipes = List.empty(growable: true);
+  List<Ingredient> ingredients = List.empty(growable: true);
+  List<IngredientTag> ingredientTags = List.empty(growable: true);
+  List<Product> products = List.empty(growable: true);
+  List<ReceptTag> receptTags = List.empty(growable: true);
   User? user = null;
 
   // filter data
   Filter filter = Filter();
-  List<Recept> filteredRecipes = List.empty();
+  List<Recept> filteredRecipes = List.empty(growable: true);
   
   StreamSubscription? _eventStreamSub;
   var _eventBus = getIt<EventBus>();
@@ -67,11 +67,11 @@ class AppStateService {
   }
 
   void _loadFromStore(){
-    recipes = _recipesRepository.cachedRecipes?.recipes??List.empty();
-    ingredients = _ingredientsRepository.cachedIngredients?.ingredients??List.empty();
-    ingredientTags = _ingredientTagsRepository.cachedTags?.tags??List.empty();
-    products = _productsRepository.cachedProducts?.products??List.empty();
-    receptTags = _recipesTagsRepository.cachedTags?.tags??List.empty();
+    recipes = _recipesRepository.cachedRecipes?.recipes??List.empty(growable: true);
+    ingredients = _ingredientsRepository.cachedIngredients?.ingredients??List.empty(growable: true);
+    ingredientTags = _ingredientTagsRepository.cachedTags?.tags??List.empty(growable: true);
+    products = _productsRepository.cachedProducts?.products??List.empty(growable: true);
+    receptTags = _recipesTagsRepository.cachedTags?.tags??List.empty(growable: true);
     user = _userRepository.getUser();
   }
 

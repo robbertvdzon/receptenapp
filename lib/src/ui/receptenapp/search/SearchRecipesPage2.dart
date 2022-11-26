@@ -69,7 +69,7 @@ class _SearchRecipesPage2State extends State<SearchRecipesPage2> {
   }
 
   void _createNewRecept() {
-    Recept newRecept = new Recept(List.empty(), "Nieuw recept");
+    Recept newRecept = new Recept(List.empty(growable: true), "Nieuw recept");
     EnrichedRecept enrichedNewRecept = _enricher.enrichRecipe(newRecept);
       Navigator.push(
         context,

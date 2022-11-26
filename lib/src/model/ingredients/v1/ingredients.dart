@@ -21,7 +21,7 @@ class Ingredient {
   String name;
   String? productName;
   double gramsPerPiece = 0;
-  List<String> tags = List.empty();
+  List<String> tags = List.empty(growable: true);
 
   Ingredient(this.name);
 
