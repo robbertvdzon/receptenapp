@@ -20,11 +20,11 @@ import '../../../services/Enricher.dart';
 import '../../../services/ImageStorageService.dart';
 import '../../../services/RecipesService.dart';
 import '../../Icons.dart';
+import 'ReceptIngredientItemWidget.dart';
 import 'edit/ReceptEditDetailsPage.dart';
 import 'edit/ReceptEditIngredientsPage.dart';
 import 'edit/ReceptEditInstructionsPage.dart';
 import 'edit/ReceptEditTagsPage.dart';
-import 'ReceptIngredientItemWidget.dart';
 
 class ReceptDetailsPage extends StatefulWidget {
   ReceptDetailsPage({Key? key, required this.title, required this.recept})
@@ -128,12 +128,11 @@ class _WidgetState extends State<ReceptDetailsPage> {
   void removeRecept() async {
     Recept currentRecept = _enrichedRecept.recept;
     Recept nextRecept = _getNextRecept(_enrichedRecept.recept);
-    if (nextRecept==currentRecept){
+    if (nextRecept == currentRecept) {
       // this is the last recept, close this page when removed
       _recipesService.removeRecept(currentRecept);
       Navigator.pop(context);
-    }
-    else{
+    } else {
       _recipesService.removeRecept(currentRecept);
       _enrichedRecept = _enricher.enrichRecipe(nextRecept);
       receptImage = null;
@@ -141,15 +140,36 @@ class _WidgetState extends State<ReceptDetailsPage> {
     }
   }
 
-  void addToDiary() async {
+  void addToDiary(String selectedDay, String partOfDay) async {
     var now = DateTime.now();
-    var lastMidnight = DateTime(now.year, now.month, now.day);
-    DiaryDay? diaryDay = _diaryRepository.getDay(lastMidnight.millisecondsSinceEpoch);
+    var today = DateTime(now.year, now.month, now.day);
+
+    var offsetDays = 0;
+    // TODO: Get this list from a predefined set!
+    if (selectedDay=="3 dagen geleden") offsetDays = -3;
+    if (selectedDay=="Eergisteren") offsetDays = -2;
+    if (selectedDay=="Gisteren") offsetDays = -1;
+    if (selectedDay=="Vandaag") offsetDays = 0;
+    if (selectedDay=="Morgen") offsetDays = 1;
+    if (selectedDay=="Overmorgen") offsetDays = 2;
+    if (selectedDay=="Over 3 dagen") offsetDays = 3;
+    if (selectedDay=="Over 4 dagen") offsetDays = 4;
+    DateTime selectedDate =  today.add(new Duration(days: offsetDays));
+    int selectedDateInMsec = selectedDate.millisecondsSinceEpoch;
+
+    DiaryDay? diaryDay = _diaryRepository.getDay(selectedDateInMsec);
     var recept = _enrichedRecept.recept;
-    if (diaryDay==null){
-      diaryDay = DiaryDay(lastMidnight.millisecondsSinceEpoch);
+    if (diaryDay == null) {
+      diaryDay = DiaryDay(selectedDateInMsec);
     }
-    diaryDay.breakfast.add(recept);
+
+    if (partOfDay=="breakfast") diaryDay.breakfast.add(recept);
+    if (partOfDay=="morningSnack") diaryDay.morningSnack.add(recept);
+    if (partOfDay=="lunch") diaryDay.lunch.add(recept);
+    if (partOfDay=="afternoonSnack") diaryDay.afternoonSnack.add(recept);
+    if (partOfDay=="diner") diaryDay.diner.add(recept);
+    if (partOfDay=="eveningSnack") diaryDay.eveningSnack.add(recept);
+
     _diaryRepository.saveDiaryDay(diaryDay);
   }
 
@@ -252,28 +272,36 @@ class _WidgetState extends State<ReceptDetailsPage> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => ReceptEditDetailsPage(
-                          title: 'Edit', recept: _enrichedRecept, insertMode: false)),
+                          title: 'Edit',
+                          recept: _enrichedRecept,
+                          insertMode: false)),
                 );
               } else if (value == 1) {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                       builder: (context) => ReceptEditIngredientsPage(
-                          title: 'Edit', recept: _enrichedRecept, insertMode: false)),
+                          title: 'Edit',
+                          recept: _enrichedRecept,
+                          insertMode: false)),
                 );
               } else if (value == 2) {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                       builder: (context) => ReceptEditInstructionsPage(
-                          title: 'Edit', recept: _enrichedRecept, insertMode: false)),
+                          title: 'Edit',
+                          recept: _enrichedRecept,
+                          insertMode: false)),
                 );
               } else if (value == 3) {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                       builder: (context) => ReceptEditTagsPage(
-                          title: 'Edit', recept: _enrichedRecept, insertMode: false)),
+                          title: 'Edit',
+                          recept: _enrichedRecept,
+                          insertMode: false)),
                 );
               } else if (value == 4) {
                 updateImageFromClipboard();
@@ -317,7 +345,7 @@ class _WidgetState extends State<ReceptDetailsPage> {
                     ElevatedButton(
                       child: Text('Voeg toe aan dagboek'),
                       onPressed: () {
-                        addToDiary();
+                        showAddToDiaryDialogSelectDay(context);
                       },
                     ),
                     Text(''),
@@ -402,5 +430,100 @@ class _WidgetState extends State<ReceptDetailsPage> {
                         "${_enrichedRecept.tags.map((e) => e?.tag).join("\n")}"),
                   ],
             ))));
+  }
+
+  void showAddToDiaryDialogSelectDay(BuildContext context) {
+    // TODO: Get this list from a predefined set!
+    const List<String> list = <String>['3 dagen geleden', 'Eergisteren', 'Gisteren', 'Vandaag', 'Morgen', 'Overmorgen', "Over 3 dagen", "Over 4 dagen"];
+    String selectedDay = 'Vandaag';
+    showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: const Text('Voeg maaltijd toe aan dagboek'),
+        content: const Text('Voor welke dag?'),
+        actions: <Widget>[
+          DropdownButton<String>(
+            value: selectedDay,
+            icon: const Icon(Icons.arrow_downward),
+            elevation: 16,
+            underline: Container(
+              height: 2,
+            ),
+            onChanged: (String? value) {
+              setState(() {
+                selectedDay = value!;
+              });
+            },
+            items: list.map<DropdownMenuItem<String>>((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Text(value),
+              );
+            }).toList(),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              showAddToDiaryDialogPageSelectPartOfDay(context, selectedDay);
+            },
+            child: const Text('Volgende'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void showAddToDiaryDialogPageSelectPartOfDay(BuildContext context, String selectedDay) {
+    showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: const Text('Voeg maaltijd toe aan dagboek'),
+        content: const Text('Voor welk dagdeel?'),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              addToDiary(selectedDay, 'breakfast');
+            },
+            child: const Text('Ontbijt'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              addToDiary(selectedDay, 'morningSnack');
+            },
+            child: const Text('Ochtendsnack'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              addToDiary(selectedDay, 'lunch');
+            },
+            child: const Text('Lunch'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              addToDiary(selectedDay, 'afternoonSnack');
+            },
+            child: const Text('Middagsnack'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              addToDiary(selectedDay, 'diner');
+            },
+            child: const Text('Avondeten'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              addToDiary(selectedDay, 'eveningSnack');
+            },
+            child: const Text('Avondsnack'),
+          ),
+        ],
+      ),
+    );
   }
 }
