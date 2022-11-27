@@ -6,6 +6,7 @@ import '../../repositories/UserRepository.dart';
 import '../diaryapp/DiaryHomePage.dart';
 import '../ingredientsapp/search/SearchIngredientsPage.dart';
 import '../receptenapp/search/SearchRecipesPage.dart';
+import '../receptenapp/search/SearchSnacksPage.dart';
 import '../shoppingapp/ShoppingHomePage.dart';
 import '../statisticsapp/StatisticsHomePage.dart';
 
@@ -51,8 +52,10 @@ class _AllAppHomePageState extends State<AllAppHomePage> {
             Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
               buildElevatedButton(context, SearchRecipesPage(title: 'Recepten'),
                   "assets/images/recepten.png"),
-              buildElevatedButton(context, PlannerHomePage(title: 'planner'),
+              buildElevatedButton(context, SearchSnacksPage(title: 'Snacks'),
                   "assets/images/planner.png"),
+              // buildElevatedButton(context, PlannerHomePage(title: 'planner'),
+              //     "assets/images/planner.png"),
             ]),
             Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
               buildElevatedButton(

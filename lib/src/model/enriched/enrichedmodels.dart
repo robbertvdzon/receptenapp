@@ -4,6 +4,7 @@ import 'package:receptenapp/src/model/recipes/v1/receptTags.dart';
 import '../ingredients/v1/ingredientTags.dart';
 import '../ingredients/v1/ingredients.dart';
 import '../recipes/v1/recept.dart';
+import '../snacks/v1/snack.dart';
 
 class EnrichedRecept {
   Recept recept;
@@ -11,6 +12,13 @@ class EnrichedRecept {
   List<EnrichedReceptIngredient> ingredienten;
   List<ReceptTag?> tags;
   EnrichedRecept(this.recept, this.nutritionalValues, this.ingredienten, this.tags);
+}
+
+class EnrichedSnack {
+  Snack snack;
+  NutritionalValues nutritionalValues;
+  List<EnrichedReceptIngredient> ingredienten;
+  EnrichedSnack(this.snack, this.nutritionalValues, this.ingredienten);
 }
 
 class EnrichedReceptIngredient {

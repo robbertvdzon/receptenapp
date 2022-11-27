@@ -9,54 +9,52 @@ import 'package:intl/intl.dart';
 import 'package:pasteboard/pasteboard.dart';
 
 import '../../../GetItDependencies.dart';
-import '../../../events/ReceptChangedEvent.dart';
+import '../../../events/SnackChangedEvent.dart';
 import '../../../model/diary/v1/diary.dart';
 import '../../../model/enriched/enrichedmodels.dart';
-import '../../../model/recipes/v1/recept.dart';
+import '../../../model/snacks/v1/snack.dart';
 import '../../../repositories/DiaryRepository.dart';
-import '../../../repositories/RecipesRepository.dart';
+import '../../../repositories/SnacksRepository.dart';
 import '../../../services/AppStateService.dart';
 import '../../../services/Enricher.dart';
 import '../../../services/ImageStorageService.dart';
-import '../../../services/RecipesService.dart';
+import '../../../services/SnacksService.dart';
 import '../../Icons.dart';
-import 'ReceptIngredientItemWidget.dart';
-import 'edit/ReceptEditDetailsPage.dart';
-import 'edit/ReceptEditIngredientsPage.dart';
-import 'edit/ReceptEditInstructionsPage.dart';
-import 'edit/ReceptEditTagsPage.dart';
+import '../recepts/ReceptIngredientItemWidget.dart';
+import 'edit/SnackEditDetailsPage.dart';
+import 'edit/SnackEditIngredientsPage.dart';
 
-class ReceptDetailsPage extends StatefulWidget {
-  ReceptDetailsPage({Key? key, required this.title, required this.recept})
+class SnackDetailsPage extends StatefulWidget {
+  SnackDetailsPage({Key? key, required this.title, required this.snack})
       : super(key: key) {}
 
-  final EnrichedRecept recept;
+  final EnrichedSnack snack;
   final String title;
 
   @override
-  State<ReceptDetailsPage> createState() => _WidgetState(recept);
+  State<SnackDetailsPage> createState() => _WidgetState(snack);
 }
 
-class _WidgetState extends State<ReceptDetailsPage> {
-  var _recipesService = getIt<RecipesService>();
+class _WidgetState extends State<SnackDetailsPage> {
+  var _snacksService = getIt<SnacksService>();
   var _diaryRepository = getIt<DiaryRepository>(); // TODO: via service!
   var _appStateService = getIt<AppStateService>();
 
-  late EnrichedRecept _enrichedRecept;
+  late EnrichedSnack _enrichedSnack;
   var _enricher = getIt<Enricher>();
   var _eventBus = getIt<EventBus>();
   var _imageStorageService = getIt<ImageStorageService>();
   StreamSubscription? _eventStreamSub;
-  Image? receptImage = null;
+  Image? snackImage = null;
 
-  _WidgetState(EnrichedRecept recept) {
-    this._enrichedRecept = recept;
+  _WidgetState(EnrichedSnack snack) {
+    this._enrichedSnack = snack;
   }
 
   @override
   void initState() {
     _eventStreamSub = _eventBus
-        .on<ReceptChangedEvent>()
+        .on<SnackChangedEvent>()
         .listen((event) => _processEvent(event));
   }
 
@@ -66,76 +64,70 @@ class _WidgetState extends State<ReceptDetailsPage> {
     _eventStreamSub?.cancel();
   }
 
-  void _processEvent(ReceptChangedEvent event) {
-    if (event.recept.uuid == _enrichedRecept.recept.uuid) {
+  void _processEvent(SnackChangedEvent event) {
+    if (event.snack.uuid == _enrichedSnack.snack.uuid) {
       setState(() {
-        Recept? updatedRecept = _appStateService.getRecipes().firstWhereOrNull(
-            (element) => element.uuid == _enrichedRecept.recept.uuid);
-        if (updatedRecept != null) {
-          _enrichedRecept = _enricher.enrichRecipe(updatedRecept);
-          receptImage = null;
+        Snack? updatedSnack = _appStateService.getSnacks().firstWhereOrNull(
+            (element) => element.uuid == _enrichedSnack.snack.uuid);
+        if (updatedSnack != null) {
+          _enrichedSnack = _enricher.enrichSnack(updatedSnack);
+          snackImage = null;
         }
       });
     }
   }
 
-  void _nextRecept() {
-    Recept newRecept = _getNextRecept(_enrichedRecept.recept);
-    _enrichedRecept = _enricher.enrichRecipe(newRecept);
-    receptImage = null;
+  void _nextSnack() {
+    Snack newSnack = _getNextSnack(_enrichedSnack.snack);
+    _enrichedSnack = _enricher.enrichSnack(newSnack);
+    snackImage = null;
     setState(() {});
   }
 
-  void _prevRecept() {
-    Recept newRecept = _getPreviousRecept(_enrichedRecept.recept);
-    _enrichedRecept = _enricher.enrichRecipe(newRecept);
-    receptImage = null;
+  void _prevSnack() {
+    Snack newSnack = _getPreviousSnack(_enrichedSnack.snack);
+    _enrichedSnack = _enricher.enrichSnack(newSnack);
+    snackImage = null;
     setState(() {});
   }
 
-  Recept _getNextRecept(Recept recept) {
-    int currentIndex = _appStateService.getFilteredRecipes().indexOf(recept);
+  Snack _getNextSnack(Snack snack) {
+    int currentIndex = _appStateService.getFilteredSnacks().indexOf(snack);
     int newIndex = currentIndex + 1;
-    if (newIndex < _appStateService.getFilteredRecipes().length) {
-      return _appStateService.getFilteredRecipes().elementAt(newIndex);
+    if (newIndex < _appStateService.getFilteredSnacks().length) {
+      return _appStateService.getFilteredSnacks().elementAt(newIndex);
     } else {
-      return _appStateService.getFilteredRecipes().last;
+      return _appStateService.getFilteredSnacks().last;
     }
   }
 
-  Recept _getPreviousRecept(Recept recept) {
-    int currentIndex = _appStateService.getFilteredRecipes().indexOf(recept);
-    if (currentIndex == 0) return recept;
-    if (currentIndex > _appStateService.getFilteredRecipes().length) {
-      return _appStateService.getFilteredRecipes().last;
+  Snack _getPreviousSnack(Snack snack) {
+    int currentIndex = _appStateService.getFilteredSnacks().indexOf(snack);
+    if (currentIndex == 0) return snack;
+    if (currentIndex > _appStateService.getFilteredSnacks().length) {
+      return _appStateService.getFilteredSnacks().last;
     }
-    return _appStateService.getFilteredRecipes().elementAt(currentIndex - 1);
-  }
-
-  void _setFavorite(bool favorite) {
-    Recept recept = _enrichedRecept.recept;
-    recept.favorite = favorite;
-    _recipesService.saveRecept(recept);
+    return _appStateService.getFilteredSnacks().elementAt(currentIndex - 1);
   }
 
   void updateImageFromClipboard() async {
     Uint8List? bytes = await Pasteboard.image;
     if (bytes != null) {
-      _imageStorageService.storeImage(this._enrichedRecept.recept, bytes);
+      _imageStorageService.storeSnackImage(this._enrichedSnack.snack, bytes);
     }
   }
 
-  void removeRecept() async {
-    Recept currentRecept = _enrichedRecept.recept;
-    Recept nextRecept = _getNextRecept(_enrichedRecept.recept);
-    if (nextRecept == currentRecept) {
-      // this is the last recept, close this page when removed
-      _recipesService.removeRecept(currentRecept);
+  void removeSnack() async {
+    Snack currentSnack = _enrichedSnack.snack;
+    Snack nextSnack = _getNextSnack(_enrichedSnack.snack);
+    if (nextSnack == currentSnack) {
+      // this is the last snack, close this page when removed
+      _snacksService.removeSnack(currentSnack);
       Navigator.pop(context);
     } else {
-      _recipesService.removeRecept(currentRecept);
-      _enrichedRecept = _enricher.enrichRecipe(nextRecept);
-      receptImage = null;
+      _snacksService.removeSnack(currentSnack);
+      _enrichedSnack = _enricher.enrichSnack(nextSnack);
+      snackImage = null;
       setState(() {});
     }
   }
@@ -158,8 +150,8 @@ class _WidgetState extends State<ReceptDetailsPage> {
     int selectedDateInMsec = selectedDate.millisecondsSinceEpoch;
 
     DiaryDay? diaryDay = _diaryRepository.getDay(selectedDateInMsec);
-    var recept = _enrichedRecept.recept;
-    var foodEaten = FoodEaten(1,recept, null);
+    var snack = _enrichedSnack.snack;
+    var foodEaten = FoodEaten(1,null, snack);
 
     if (diaryDay == null) {
       diaryDay = DiaryDay(selectedDateInMsec);
@@ -184,34 +176,19 @@ class _WidgetState extends State<ReceptDetailsPage> {
       },
       children: [
         TableRow(children: [
-          Text("Favoriet"),
-          Text(":"),
-          Text("${_enrichedRecept.recept.favorite}"),
-        ]),
-        TableRow(children: [
-          Text("Voorbereidingstijd"),
-          Text(":"),
-          Text("${_enrichedRecept.recept.preparingTime}"),
-        ]),
-        TableRow(children: [
-          Text("Totale kooktijd"),
-          Text(":"),
-          Text("${_enrichedRecept.recept.totalCookingTime}"),
-        ]),
-        TableRow(children: [
           Text("Kcal"),
           Text(":"),
-          Text("${_enrichedRecept.nutritionalValues.kcal}"),
+          Text("${_enrichedSnack.nutritionalValues.kcal}"),
         ]),
         TableRow(children: [
           Text("Vet"),
           Text(":"),
-          Text("${_enrichedRecept.nutritionalValues.fat}"),
+          Text("${_enrichedSnack.nutritionalValues.fat}"),
         ]),
         TableRow(children: [
           Text("Proteine"),
           Text(":"),
-          Text("${_enrichedRecept.nutritionalValues.prot}"),
+          Text("${_enrichedSnack.nutritionalValues.prot}"),
         ]),
       ],
     );
@@ -221,17 +198,17 @@ class _WidgetState extends State<ReceptDetailsPage> {
   Widget build(BuildContext context) {
     String? swipeDirection;
 
-    if (receptImage == null) {
+    if (snackImage == null) {
       final Future<Image> data =
-          _imageStorageService.get300x300(_enrichedRecept.recept.uuid);
+          _imageStorageService.get300x300(_enrichedSnack.snack.uuid);
       data
           .then((value) => setState(() {
-                receptImage = value;
+                snackImage = value;
               }))
           .catchError((e) => print(e));
     }
-    var img = receptImage != null
-        ? receptImage
+    var img = snackImage != null
+        ? snackImage
         : Image.asset("assets/images/transparant300x300.png",
             height: 300, width: 300, fit: BoxFit.cover);
     return Scaffold(
@@ -245,19 +222,11 @@ class _WidgetState extends State<ReceptDetailsPage> {
               return [
                 PopupMenuItem<int>(
                   value: 0,
-                  child: Text("Edit recept details"),
+                  child: Text("Edit snack details"),
                 ),
                 PopupMenuItem<int>(
                   value: 1,
                   child: Text("Edit ingredients"),
-                ),
-                PopupMenuItem<int>(
-                  value: 2,
-                  child: Text("Edit instructions"),
-                ),
-                PopupMenuItem<int>(
-                  value: 3,
-                  child: Text("Edit tags"),
                 ),
                 PopupMenuItem<int>(
                   value: 4,
@@ -265,7 +234,7 @@ class _WidgetState extends State<ReceptDetailsPage> {
                 ),
                 PopupMenuItem<int>(
                   value: 5,
-                  child: Text("Remove recept"),
+                  child: Text("Remove snack"),
                 ),
               ];
             }, onSelected: (value) {
@@ -273,42 +242,24 @@ class _WidgetState extends State<ReceptDetailsPage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => ReceptEditDetailsPage(
+                      builder: (context) => SnackEditDetailsPage(
                           title: 'Edit',
-                          recept: _enrichedRecept,
+                          snack: _enrichedSnack,
                           insertMode: false)),
                 );
               } else if (value == 1) {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => ReceptEditIngredientsPage(
+                      builder: (context) => SnackEditIngredientsPage(
                           title: 'Edit',
-                          recept: _enrichedRecept,
-                          insertMode: false)),
-                );
-              } else if (value == 2) {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => ReceptEditInstructionsPage(
-                          title: 'Edit',
-                          recept: _enrichedRecept,
-                          insertMode: false)),
-                );
-              } else if (value == 3) {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => ReceptEditTagsPage(
-                          title: 'Edit',
-                          recept: _enrichedRecept,
+                          snack: _enrichedSnack,
                           insertMode: false)),
                 );
               } else if (value == 4) {
                 updateImageFromClipboard();
               } else if (value == 5) {
-                removeRecept();
+                removeSnack();
               }
             }),
           ],
@@ -322,10 +273,10 @@ class _WidgetState extends State<ReceptDetailsPage> {
                 return;
               }
               if (swipeDirection == 'left') {
-                _nextRecept();
+                _nextSnack();
               }
               if (swipeDirection == 'right') {
-                _prevRecept();
+                _prevSnack();
               }
             },
             child: SingleChildScrollView(
@@ -333,17 +284,13 @@ class _WidgetState extends State<ReceptDetailsPage> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                    Text(_enrichedRecept.recept.name,
+                    Text(_enrichedSnack.snack.name,
                         style: TextStyle(fontSize: 25.0)),
                     Container(
                         alignment: Alignment.topLeft, // use aligment
                         padding: EdgeInsets.only(
                             left: 0, bottom: 0, right: 20, top: 0),
                         child: img),
-                    if (_enrichedRecept.recept.favorite)
-                      new Icon(ICON_YELLOW_STAR,
-                          size: 20.0, color: Colors.yellow),
-                    Text(''),
                     ElevatedButton(
                       child: Text('Voeg toe aan dagboek'),
                       onPressed: () {
@@ -351,44 +298,11 @@ class _WidgetState extends State<ReceptDetailsPage> {
                       },
                     ),
                     Text(''),
-                    if (!_enrichedRecept.recept.favorite)
-                      ElevatedButton(
-                        child: Text('Voeg toe aan favorieten'),
-                        onPressed: () {
-                          _setFavorite(true);
-                        },
-                      ),
-                    if (_enrichedRecept.recept.favorite)
-                      ElevatedButton(
-                        child: Text('Verwijder van favorieten'),
-                        onPressed: () {
-                          _setFavorite(false);
-                        },
-                      ),
-                    Text(''),
-                    Text('Opmerkingen:',
-                        style: TextStyle(
-                            fontSize: 20.0, fontWeight: FontWeight.bold)),
-                    Text(_enrichedRecept.recept.remark),
-                    Text(''),
-                    Text('Toegevoegd op:',
-                        style: TextStyle(
-                            fontSize: 20.0, fontWeight: FontWeight.bold)),
-                    Text(DateFormat('yyyy-MM-dd')
-                        .format(DateTime.fromMillisecondsSinceEpoch(
-                            _enrichedRecept.recept.dateAdded))
-                        .toString()),
-                    Text(''),
-                    Text('Aantal personen:',
-                        style: TextStyle(
-                            fontSize: 20.0, fontWeight: FontWeight.bold)),
-                    Text(_enrichedRecept.recept.nrPersons.toString()),
-                    Text(''),
                     Text('Ingredienten:',
                         style: TextStyle(
                             fontSize: 20.0, fontWeight: FontWeight.bold)),
                   ] +
-                  _enrichedRecept.ingredienten.map((item) {
+                  _enrichedSnack.ingredienten.map((item) {
                     return Container(
                       child: Column(
                         children: [
@@ -408,13 +322,6 @@ class _WidgetState extends State<ReceptDetailsPage> {
                   }).toList() +
                   [
                     Text(''),
-                    Text('Instructions:',
-                        style: TextStyle(
-                            fontSize: 20.0, fontWeight: FontWeight.bold)),
-                    MarkdownBody(
-                      data: _enrichedRecept.recept.instructions,
-                    ),
-                    Text(''),
                     Text('Details:',
                         style: TextStyle(
                             fontSize: 20.0, fontWeight: FontWeight.bold)),
@@ -424,12 +331,6 @@ class _WidgetState extends State<ReceptDetailsPage> {
                           left: 0, bottom: 0, right: 20, top: 0),
                       child: tableWithValues(),
                     ),
-                    Text(''),
-                    Text('Tags:',
-                        style: TextStyle(
-                            fontSize: 20.0, fontWeight: FontWeight.bold)),
-                    Text(
-                        "${_enrichedRecept.tags.map((e) => e?.tag).join("\n")}"),
                   ],
             ))));
   }

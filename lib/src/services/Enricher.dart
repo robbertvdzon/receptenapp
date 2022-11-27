@@ -10,6 +10,7 @@ import '../GetItDependencies.dart';
 import '../model/enriched/enrichedmodels.dart';
 import '../model/ingredients/v1/ingredients.dart';
 import '../model/recipes/v1/recept.dart';
+import '../model/snacks/v1/snack.dart';
 import '../repositories/RecipesRepository.dart';
 import '../repositories/RecipesTagsRepository.dart';
 import 'ProductsService.dart';
@@ -69,6 +70,39 @@ class Enricher {
     var enrichedIngredients =
         recept.ingredients.map((e) => enrichtReceptIngredient(e)).toList();
     var result = EnrichedRecept(recept,nutritionalValues, enrichedIngredients, tags);
+    return result;
+  }
+
+  EnrichedSnack enrichSnack(Snack snack) {
+    print("enrich "+snack.name);
+    var nutritionalValues = NutritionalValues();
+    snack.ingredients.forEach((receptIngredient) {
+      var ingredient = _ingredientsRepository.getIngredientByName(receptIngredient.name);
+      if (ingredient!=null) {
+        var productName = ingredient.productName;
+        if (productName!=null) {
+          var product = _productsService.getProductByName(productName);
+          double weight = 0.0;
+          if (receptIngredient.amount!=null) {
+            // TODO: CALCULATE REAL WEIGHT BASED ON UNIT TYPE
+            weight = receptIngredient.amount!.nrUnit * ingredient.gramsPerPiece;
+          }
+          nutritionalValues.kcal += weight*(product?.kcal??0)/100;
+          nutritionalValues.prot += weight*(product?.prot??0)/100;
+          nutritionalValues.nt += weight*(product?.nt??0)/100;
+          nutritionalValues.fat += weight*(product?.fat??0)/100;
+          nutritionalValues.sugar += weight*(product?.sugar??0)/100;
+          nutritionalValues.na += weight*(product?.na??0)/100;
+          nutritionalValues.k += weight*(product?.k??0)/100;
+          nutritionalValues.fe += weight*(product?.fe??0)/100;
+          nutritionalValues.mg += weight*(product?.mg??0)/100;
+        }
+      }
+    });
+
+    var enrichedIngredients =
+      snack.ingredients.map((e) => enrichtReceptIngredient(e)).toList();
+    var result = EnrichedSnack(snack,nutritionalValues, enrichedIngredients);
     return result;
   }
 

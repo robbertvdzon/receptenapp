@@ -98,8 +98,8 @@ class _DiaryHomePageState extends State<DiaryHomePage> {
     return result;
   }
 
-  List<Widget> buildChildrenForPartOfDay(List<Recept> meals) {
-    return  meals.map((e) => Text(e.name)).toList();
+  List<Widget> buildChildrenForPartOfDay(List<FoodEaten> meals) {
+    return meals.map((e) => Text("${e.portions} portions of ${e.getName()}")).toList();
   }
 
 }

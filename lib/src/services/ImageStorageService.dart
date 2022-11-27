@@ -6,7 +6,9 @@ import 'package:flutter/widgets.dart';
 
 import '../GetItDependencies.dart';
 import '../events/ReceptChangedEvent.dart';
+import '../events/SnackChangedEvent.dart';
 import '../model/recipes/v1/recept.dart';
+import '../model/snacks/v1/snack.dart';
 import 'ImageTool.dart';
 
 class ImageStorageService {
@@ -40,5 +42,16 @@ class ImageStorageService {
     await image120Ref.putData(image120);
     await image300Ref.putData(image300);
     _eventBus.fire(ReceptChangedEvent(recept));
+  }
+
+  Future<void> storeSnackImage(Snack snack, Uint8List rawImage) async {
+    final uuid = snack.uuid;
+    final image120 = resizeImage2(rawImage, 120);
+    final image300 = resizeImage2(rawImage, 300);
+    final image120Ref = storageRef.child(uuid + "120x120.jpg");
+    final image300Ref = storageRef.child(uuid + "300x300.jpg");
+    await image120Ref.putData(image120);
+    await image300Ref.putData(image300);
+    _eventBus.fire(SnackChangedEvent(snack));
   }
 }

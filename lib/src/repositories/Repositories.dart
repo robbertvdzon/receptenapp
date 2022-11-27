@@ -9,6 +9,7 @@ import '../Toggles.dart';
 import '../events/RepositoriesLoadedEvent.dart';
 import 'DiaryRepository.dart';
 import 'RecipesTagsRepository.dart';
+import 'SnacksRepository.dart';
 import 'UserRepository.dart';
 
 
@@ -16,6 +17,7 @@ class Repositories {
   var _ingredientsRepository = getIt<IngredientsRepository>();
   var _productsRepository = getIt<ProductsRepository>();
   var _recipesRepository = getIt<RecipesRepository>();
+  var _snacksRepository = getIt<SnacksRepository>();
   var _ingredientTagsRepository = getIt<IngredientTagsRepository>();
   var _recipesTagsRepository = getIt<RecipesTagsRepository>();
   var _userRepository = getIt<UserRepository>();
@@ -27,6 +29,7 @@ class Repositories {
     List<Future<void>> futures = [
       _productsRepository.init(email),
       _recipesRepository.init(email),
+      _snacksRepository.init(email),
       _ingredientTagsRepository.init(email),
       _recipesTagsRepository.init(email),
       _ingredientsRepository.init(email),
